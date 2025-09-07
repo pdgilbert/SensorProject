@@ -1,0 +1,209 @@
+#!/usr/bin/env python3
+
+"""
+Listen for  LoRa messages from sensor modules and record to file.
+For debugging transmitters it can help to print to the screen too (.
+
+./SensorRecord  --channel='CH_00_900'  --filename= 'SensorRecordOuput.txt'  #903.08
+./SensorRecord  --channel='CH_12_900'  --filename= 'SensorRecordOuput.txt'  #915.0
+./SensorRecord  --filename= 'SensorRecordOuput.txt'  --debug=True #915.0
+"""
+
+# See also LoRaListen_debugging in repo LoRaGPS and  examples in repo pySX127x.
+
+import argparse
+from time import sleep, strftime
+from SX127x.LoRa import *
+from SX127x.board_config import BOARD
+
+import os
+import socket
+import json
+
+import datetime
+
+#https://www.rfwireless-world.com/Tutorials/LoRa-channels-list.html
+channels = {
+   'CH_00_900': 903.08, 'CH_01_900': 905.24, 'CH_02_900': 907.40,
+   'CH_03_900': 909.56, 'CH_04_900': 911.72, 'CH_05_900': 913.88,
+   'CH_06_900': 916.04, 'CH_07_900': 918.20, 'CH_08_900': 920.36,
+   'CH_09_900': 922.52, 'CH_10_900': 924.68, 'CH_11_900': 926.84, 'CH_12_900': 915.00,
+
+   'CH_10_868': 865.20, 'CH_11_868': 865.50, 'CH_12_868': 865.80,
+   'CH_13_868': 866.10, 'CH_14_868': 866.40, 'CH_15_868': 866.70,
+   'CH_16_868': 867   , 'CH_17_868': 868   ,   
+   }
+
+CodingRates = {"4_5": CODING_RATE.CR4_5,  "4_6": CODING_RATE.CR4_6,
+               "4_7": CODING_RATE.CR4_7,  "4_8": CODING_RATE.CR4_8 }
+
+parser = argparse.ArgumentParser(description= 
+           'Listen for  LoRa messages and record to file. Optionally print to screen (for debugging transmitters).')
+
+parser.add_argument('--quiet', type=bool, default=False,
+                    help='if True suppress message printing. (default: False)')
+
+
+parser.add_argument('--debug', type=bool, default=False,
+                    help='if True print received sensor readings to screen. Default: False')
+
+
+
+# following are settings passed to LoRa
+
+parser.add_argument('--channel', type=str, default='CH_12_900',
+          help='LoRa channel (frequency). (default: "CH_12_900" is 915Mhz)' + 
+               ' The full list of channels is ' + str(channels))
+
+#parser.add_argument('--freq', type=int, default=915,
+#          help='LoRa frequency. 169, 315, 433, 868 Mhz. (default: 915)')
+
+parser.add_argument('--bw', type=int, default=125,
+          help='LoRa bandwidth. 125, 250 and 500 (khz). (default: 125)')
+
+parser.add_argument('--Cr', type=str, default='4_8',
+          help='LoRa coding rate. (default: "4_8")' + 
+              ' The full list of coding rates is ' + str(CodingRates))
+
+parser.add_argument('--Sf', type=int, default=7,
+          help='LoRa spreading factor. 7-12, 7-10 at 915Mhz. (default: 7)')
+
+args = parser.parse_args()
+
+
+assert(args.channel in channels)
+assert(args.Cr in     CodingRates)
+assert(args.bw in (125, 250, 500))
+assert(args.Sf in    range(7, 13))
+# North America requires 915MHz, Sf 7-10 == 128 - 1024 chips/symbol == 2**7 - 2**10
+
+###################################################################
+
+class LoRaRx(LoRa):
+    '''
+      quiet   True/False  is used to turn off/on stdout printing of messages.
+      debug   True/False  is used to turn off/on stdout printing of received date.
+    Arguments passed on to class LoRa from SX127x.LoRa
+      freq=915, bw=125, Cr='4_8', Sf=7
+      verbose True/False  is used by pySX127x to print extra information (mode setting).
+      do_calibration=True, calibration_freq=915
+    '''
+    def __init__(self, quiet=False, debug=False, filename='SensorRecordOuput.txt',
+           freq=915, bw=125, Cr='4_8', Sf=7,
+           verbose=False, do_calibration=True, calibration_freq=915):
+        
+        super(LoRaRx, self).__init__(verbose, do_calibration, calibration_freq)
+        
+        self.quiet=quiet
+        self.debug=debug
+        
+        self.file = open(filename, 'w')
+
+
+        # SX127x class LoRa has (Medium Range  Defaults after init):
+        #  Medium Range     434.0MHz, Bw = 125 kHz, Cr = 4/5, Sf =  128chips/symbol, CRC on 13 dBm
+        #  Slow+long range            Bw = 125 kHz, Cr = 4/8, Sf = 4096chips/symbol, CRC on 13 dBm
+
+        # CHECK  CRC on 13 dBm
+        
+        self.set_mode(MODE.SLEEP)
+        self.set_freq(freq)
+        self.set_bw((BW.BW125, BW.BW250, BW.BW500)[(125, 250, 500).index(bw)])
+        self.set_coding_rate(CodingRates[args.Cr])
+        self.set_spreading_factor(Sf)
+        
+        self.set_dio_mapping([0] * 6)
+        self.set_mode(MODE.STDBY)
+        #note cheap RFM95 boards seem to have this true by default, which is for
+        # boost, and is not correct? This sets boost off?
+        self.set_pa_dac(False)	
+        # pa_select=0  sets boost off, 1 is on
+        #self.set_pa_config(pa_select=0, max_power=21, output_power=15)
+        self.set_pa_config(pa_select=1, max_power=21, output_power=15)
+        self.set_rx_crc(False)   #True
+        self.set_low_data_rate_optim(False)  #True
+        
+        #.set_pa_ramp(PA_RAMP.RAMP_50_us)
+        #.set_agc_auto_on(True)
+        #.set_pa_config(pa_select=1)
+        #.set_lna_gain(GAIN.G1)
+        #.set_implicit_header_mode(False)
+   
+        self.last_tm = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    
+    def on_rx_done(self):
+        # on interupt read LoRa payload
+        self.clear_irq_flags(RxDone=1)
+        payload = self.read_payload(nocheck=True)        
+        self.set_mode(MODE.STDBY)
+        snr  = self.get_pkt_snr_value()
+        rssi = self.get_pkt_rssi_value()
+        self.set_mode(MODE.SLEEP)
+        self.reset_ptr_rx()
+        rx = bytes(payload).decode("utf-8",'ignore')
+        
+        now =  str(datetime.datetime.now()) + ' UTC'
+        # something like this if tz needed. Assuming UTC above.
+        #tznow = datetime.datetime.now(datetime.timezone.utc).astimezone().tzname()
+
+        #if self.debug :
+        print(rx + ' ' + now)
+        print(' SNR ' + str(snr) + '  RSSI ' + str(rssi) )
+        
+        self.file.write('\n' + rx + ' ' + now)
+        self.file.write('\n' + ' SNR ' + str(snr) + '  RSSI ' + str(rssi) )
+
+        #print( [ord(ch) for ch in payload])
+        #print(chr(payload[0]))
+        self.set_mode(MODE.RXCONT)
+    
+    def start(self):
+        self.reset_ptr_rx()
+        self.set_mode(MODE.RXCONT)
+        if not self.quiet :
+            print("\nrecording to file " + self.file.name, ".")
+            print("\nstarted listening.")
+        while True:
+            sleep(.5)
+            #rssi_value = self.get_rssi_value()
+            #status = self.get_modem_status()
+            #sys.stdout.flush()
+            #sys.stdout.write("\r%d %d %d" % (rssi_value, status['rx_ongoing'], status['modem_clear']))
+
+
+###################################################################
+        
+###################################################################
+
+if __name__ == '__main__':
+    
+    quiet=args.quiet
+    
+    BOARD.setup()
+    
+    lora = LoRaRx(quiet=args.quiet, 
+                 freq=channels[args.channel], bw=args.bw, Cr=args.Cr, Sf=args.Sf, 
+                 verbose=False, do_calibration=True, calibration_freq=channels[args.channel])
+    
+    if not quiet :  print(lora)
+    
+    assert(lora.get_agc_auto_on() == 1)
+    assert(abs(lora.get_freq() - channels[args.channel]) < 0.0001)
+        
+    try:
+        lora.start()
+    except KeyboardInterrupt:
+        if not quiet :
+           sys.stdout.flush()
+           print("")
+           sys.stderr.write("Interrupt. ")
+    finally:
+        lora.set_mode(MODE.SLEEP)
+        BOARD.teardown()
+        
+        lora.file.close()
+
+        if not quiet :
+            sys.stdout.flush()
+            sys.stderr.write("Base station shut down.\n")
+

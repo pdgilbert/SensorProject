@@ -1,0 +1,3 @@
+A:  NE floor profile
+B:  person door (2 extra unused sensors AW & AS)
+

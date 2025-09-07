@@ -1,0 +1,169 @@
+#!/usr/bin/env python3
+
+"""
+Convert raw data as saved by `SensorRecord` in a txt file to a csv file
+with the sensor ID indicated for each sensor reading.
+The sensor IDs are also used as location indicators in the Rhino building drawing.
+The csv format is (working toward) a good format to read into Rhino to illustrater the data.
+
+Uses default files  'SensorRecorded.txt', 'output.csv',  `SensorIdHash.txt`
+ 
+./SensorDataReformat --dir=Garage
+./SensorDataReformat --dir=Garage  --infile=SensorRecorded.txt  --outfile=output.csv  --SensorIdHash=SensorIdHash.txt
+./SensorDataReformat --dir=Garage  --infile=z.txt  --outfile=output.csv  --SensorIdHash=SensorIdHash.txt 
+./SensorDataReformat --dir=Garage  --infile=SensorRecordOuput12.txt  --outfile=output.csv  --SensorIdHash=SensorIdHash.txt 
+
+v1 output format  time stamp for each sensor:
+BH,13.0, 2025-08-03 18:07:31.920439,
+AK,19.5, 2025-08-03 18:07:31.920439,
+BQ,19.8, 2025-08-03 18:07:31.920439,
+...
+
+output format 1 line time stamp for a module, then all sensors for the module:
+ 2025-08-03 18:07:31.920439
+BH,13.0,
+AK,19.5,
+BQ,19.8,
+...
+
+
+"""
+
+import argparse
+#from time import sleep, strftime
+
+import os
+#import socket
+#import json
+
+#import datetime
+
+
+parser = argparse.ArgumentParser(description= 
+           'Convert raw data saved by SensorRecord')
+
+parser.add_argument('--quiet', type=bool, default=False,
+                    help='if True suppress message printing. (default: False)')
+
+
+parser.add_argument('--debug', type=bool, default=False,
+                    help='if True print received sensor readings to screen. Default: False')
+
+parser.add_argument('--dir', type=str, default='',
+                    help='directory used for all files. (Default: ')
+
+parser.add_argument('--infile', type=str, default='SensorRecorded.txt',
+                    help='input data file as produced by SensorRecord. Default: SensorRecorded.txt')
+
+parser.add_argument('--outfile', type=str, default='output.csv',
+                    help='output csv file. Default: output.csv')
+
+parser.add_argument('--SensorIdHash', type=str, default='SensorIdHash.txt',
+                    help='map of module and socket to sensor ID. Default: SensorIdHash.txt')
+
+
+args = parser.parse_args()
+
+###################################################################
+
+
+if not (os.path.isfile(args.dir + '/' + args.infile)): 
+   print('file '     + args.dir + '/' + args.infile +' does not exist.')
+   exit()
+
+if not (os.path.isfile(args.dir + '/' + args.SensorIdHash)): 
+   print('file '     + args.dir + '/' + args.SensorIdHash +' does not exist.')
+   exit()
+
+###################################################################
+
+#f = sys.argv[1]
+#if not (os.path.isfile(f)): 
+#   print('file ' + f +' does not exist.')
+#   exit()
+
+#IdHashFile = open('Garage/SensorIdHash.txt', 'r')
+
+IdHashFile = open(args.dir + '/' + args.SensorIdHash, 'r')
+h = IdHashFile.read().split()  #read file and (whitespace) split into list 
+del h[0:3]                 # remove 3 elements ['ModID,', 'socket,', 'sensorID'] coming from header line
+
+#create dictionary of MonitorID_socket: sensorID   (eg 'A_J1': 'BH')
+IdHash = {h[i] + '_' + h [i + 1]: h[i + 2] for i in range(0, len(h), 3)} 
+
+#infile = open('Garage/zreject.txt.test', 'r')
+
+infile = open(args.dir + '/' + args.infile, 'r')
+d = infile.read().split('\n')  # split into lines
+d.remove('')                   # remove blank lines
+
+max_length = 200   # CHECK THIS, and it may not be needed given try/continue below
+
+for i in reversed(range(len(d))):
+   if (len(d[i]) >  max_length): z = d.pop(i)  # long lines (probably jumbled collisions)
+
+for i in reversed(range(len(d))):
+   if ('RSSI' in d[i]): z = d.pop(i)  # remove RSSI lines
+
+# if data is not clean then
+# CLEAN OUT JUNK LINES HERE
+# or try to handle exceptions below
+
+outfile = open(args.dir + '/' + args.outfile, 'w')
+rejects = open(args.dir + '/zrejects.txt', 'w')      # this is for debugging
+
+#outfile = open('Garage/zoutput.csv', 'w')
+#rejects = open('Garage/zreject.txt', 'w')
+
+#ln = d[0]
+
+lnNum = 0                                            # this is for debugging
+
+for ln in d:               # if a ln is badly formed then it is skipped (continue)
+   lnNum += 1
+   #print(lnNum)
+   fd = ln.split('<')      # ln is supposed to be   modId< J#:data  J#:data ...> timestamp so split using < and >.
+   modID = fd.pop(0)
+   try:    fd = fd[0].split('>')
+   except: continue
+   try:    timestamp = fd.pop(1)   # fd[0] is now  [' J1:data  J2:data ...  ']
+   except: continue
+
+   fd = fd[0].strip()                    # remove leading white space
+   fd = fd.split('J')                    # split into  ['1:data', '2:data' ... ] (removes J too)
+   #fd.remove('')                        # remove empty strings but thows error if the are none.
+   fd = [x for x in fd if x.strip()]     # strips leading and trailing white space, then includes only if non-empty
+   fd = [modID + '_J' + s for s in fd]   # add modID_ and re add J removed by split so now  ['J1:data', 'J2:data' ... ]
+   
+   #form dictionary  MonitorID_socket: temperature  (eg {'A_J1': '19.5', ... })
+   try:
+      #v = {modID + '_' + fd[i].replace(':',''): fd[i + 1] for i in range(0, len(fd)-1, 2)} 
+      v = {h.split(':').pop(0): h.split(':').pop(1) for h in fd}   #eg {'C_J1': ' 71.6 ', 'C_J2': ' 22.1 ', ... }
+   except:
+      print('data error ', modID, timestamp, lnNum)
+      z = rejects.write(ln + '\n')
+      continue
+
+   v = {key: val.strip()  for key, val in v.items()} # strips leading and trailing white space (should not be any empty )
+    
+   #form dictionary  SensorID: temperature  (eg 'BH': '13.0')
+   try:
+      v2 = {IdHash[key]: val  for key, val in v.items()}      #eg {'GP': '71.6', 'CG': '22.1',  ... } 
+   except KeyError:
+      print('KeyError skip ', modID, key, 'lnNum', lnNum)
+      z = rejects.write(ln + '\n')
+      continue
+   
+   # z is char written. Could error check?
+   z = outfile.write(timestamp + '\n')
+   for key, val in v2.items(): z = outfile.write(key + ',' + val + ',\n') 
+   outfile.flush()
+
+outfile.close()
+
+rejects.flush()
+rejects.close()
+
+#sys.stdout.flush()
+#sys.stdout.write("\r%d %d %d" % (rssi_value, status['rx_ongoing'], status['modem_clear']))
+
