@@ -67,6 +67,40 @@ D       J14     BV
 D       J15     FU
 D       J16     BD
 
+E       J1      xx 
+E       J2      xx
+E       J3      CV 
+E       J4      FX
+E       J5      GO
+E       J6      CY
+E       J7      GG
+E       J8      IZ
+E       J9      DG
+E       J10     BZ
+E       J11     DR
+E       J12     AH
+E       J13     AQ
+E       J14     AF
+E       J15     CO
+E       J16     AM
+
+F       J1      unlabelled
+F       J2      FW
+F       J3      BC
+F       J4      EO
+F       J5      EI
+F       J6      GI
+F       J7      BP
+F       J8      BL
+F       J9      AT
+F       J10     IM
+F       J11     AP
+F       J12     BF
+F       J13     BU
+F       J14     BN
+F       J15     AI
+F       J16     DI
+
 K       J1      ML
 K       J2      MY
 K       J3      MD
