@@ -106,7 +106,7 @@ A shielded module like G-NiceRF LoRa1276-C1-915 is probably better but I have no
 Pin settings for the RFM95W to Raspberry Pi are as follows:
 
 |  RFM95 |Pi pin|   Pi GPIO=BCM     |       
-|:-------|:-----|:------------------|       
+|:------:|:----:|:-----------------:|       
 |  DIO0  |   7  |     GPIO  4       |       
 |  DIO1  |  11  |     GPIO 17       |       
 |  DIO2  |  12  |     GPIO 18       |       
