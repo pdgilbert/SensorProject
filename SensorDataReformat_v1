@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+
+"""
+Convert raw data saved by SensorRecord (in default 'SensorRecordOuput.txt') to file 
+with sensor ID and temperature, for input to Rhino.
+ 
+./SensorDataReformat --infile= 'SensorRecordOuput.txt' --outfile= 'SensorRecordOuput.csv' 
+"""
+
+import argparse
+#from time import sleep, strftime
+
+import os
+#import socket
+#import json
+
+#import datetime
+
+
+parser = argparse.ArgumentParser(description= 
+           'Convert raw data saved by SensorRecord')
+
+parser.add_argument('--quiet', type=bool, default=False,
+                    help='if True suppress message printing. (default: False)')
+
+
+parser.add_argument('--debug', type=bool, default=False,
+                    help='if True print received sensor readings to screen. Default: False')
+
+
+
+
+args = parser.parse_args()
+
+
+###################################################################
+f = sys.argv[1]
+if not (os.path.isfile(f)): 
+   print('file ' + f +' does not exist.')
+   exit()
+
+IdHashFile = open('SensorIdHash_garage.txt', 'r')
+h = IdHashFile.read().split()  #read file and (whitespace) split into list 
+del h[0:3]                 # remove 3 elements ['ModID,', 'socket,', 'sensorID'] coming from header line
+
+#create dictionary of MonitorID_socket: sensorID   (eg 'A_J1': 'BH')
+IdHash = {h[i] + '_' + h [i + 1]: h[i + 2] for i in range(0, len(h), 3)} 
+
+infile = open('z.txt', 'r')
+d = infile.read().split('\n')  # split into lines
+d.remove('')                   # remove blank lines
+
+for i in reversed(range(len(d))):
+   if ('RSSI' in d[i]): z = d.pop(i)  # remove RSSI lines
+
+# CLEAN OUT JUNK LINES HERE
+
+
+outfile = open('output.csv', 'w')
+
+#ln = d[0]
+
+for ln in d:
+   fd = ln.split('<')  
+   modID = fd.pop(0)
+   fd = fd[0].split('>')
+   timestamp = fd.pop(1)
+   fd = fd[0].split()  
+   
+   #dictionary  MonitorID_socket: temperature  (eg 'A_J1': '19.5')
+   v = {modID + '_' + fd[i].replace(':',''): fd[i + 1] for i in range(0, len(fd), 2)} 
+   
+   #dictionary  SensorID: temperature  (eg 'BH': '13.0')
+   v2 = {IdHash[key]: val  for key, val in v.items()} 
+   
+   # z is char written. Could error check?
+   for key, val in v2.items(): z = outfile.write(key + ',' + val + ',' + timestamp + ',\n') 
+   outfile.flush()
+
+outfile.close()
+
+#sys.stdout.flush()
+#sys.stdout.write("\r%d %d %d" % (rssi_value, status['rx_ongoing'], status['modem_clear']))
+

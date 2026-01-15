@@ -1,0 +1,8 @@
+The roof axis is NE-SW.
+
+The front door is in roughly the middle SE wall.
+The sliding door is in the NE wall.
+
+
+hA:  Wall profile in NE wall of office.
+hb:  Roof profile roughly at the peak about 10' from the NE wall.

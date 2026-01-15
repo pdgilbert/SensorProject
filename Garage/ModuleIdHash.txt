@@ -14,4 +14,4 @@ E:  Floor profile from W corner.
 F:  Floor profile from S corner
 
 K:  Wall profile around window on NE wall.
-F:  Roof profile up middle of SW roof.
+L:  Roof profile up middle of SW roof.

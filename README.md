@@ -218,14 +218,16 @@ Possibly change the base station name:
 ```
 sudo hostname basestationX   # or whatever
 #or
-sudo hostnamectl set-hostname  basestationX
+sudo hostnamectl set-hostname  basestationX   # (this does not change /etc/hosts)
 #or
-sudo raspi-config  # ...> change hostname >
+sudo raspi-config  # ...> change hostname >   # (this changes /etc/hosts too)
 ```
+The old hostname should also be replace with the new in /etc/hosts file too, eg sudo nano /etc/hosts,
+otherwise there are error messages about `unable to resolve host`. 
+
 The new name does not appear as the prompt until a new terminal is started.)
 
-If there are error messages about `unable to resolve host`, then 
-the old hostname should also be replace with the new in /etc/hosts file, eg sudo nano /etc/hosts.
+
 
 Ensure that SPI is enabled for the RFM95 LoRa module
 ```
