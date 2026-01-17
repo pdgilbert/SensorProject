@@ -1,5 +1,18 @@
-# This is for a grasshopper script to read data.
-# See loadSQLite  to load the db.
+# This is for a grasshopper script to read sensor data.
+# See loadSensorReadingsSQLite  to load sensor readings to the db.
+# See loadIDlocationsSQLite to load sensor locations to the db.
+
+# Inputs:
+#   dbName 
+#   SliceStart  
+#   SlicePeriod 
+
+# Outputs:
+# id, timeStamp, temperature, location 
+
+# consider output locations(pass through?) to pass to dots cloud?
+# or consider adding location to db?
+
 #  https://realpython.com/python-sql-libraries/
 #  https://www.sqlitetutorial.net/sqlite-python/creating-tables
 #  https://www.geeksforgeeks.org/python/python-convert-string-to-datetime-and-vice-versa/
@@ -8,19 +21,18 @@
 #     detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
 #  which is possibly faster, but let's see.
 
-# Slice is a short window uses for a time period where most sensors will report.
+# Slice is a short window used for a time period where most sensors will report.
 # It might be 12 minutes if sensors report every 10 minutes.
-# If more than report for a sensor then the last one will get used.
-# A Window may get future use to indicate a period to scroll through.
+# If there is more than one report for a sensor then the last one will get used.
+# The term Window may get future use to indicate a longer period to scroll through.
 
 import sqlite3
-from datetime import datetime, timedelta #note both the library and a module call datetime
+from datetime import datetime, timedelta # library and a module are both called datetime
 
 fmt = '%Y-%m-%d %H:%M:%S'
 
-# grasshopper inputs
-# test values
-#   dbName = "SenorReadings.sqlite.db"  # grasshopper inputs
+# test values for grasshopper inputs
+#   dbName = "SenorReadings.sqlite.db"
 #   SliceStart  = datetime.strptime('2025-08-03 18:18:30', fmt)
 #   SlicePeriod = timedelta(days=0, hours=0, minutes=0, seconds=5)
 

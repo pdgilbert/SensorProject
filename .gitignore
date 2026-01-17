@@ -1,0 +1,7 @@
+## see https://docs.kicad.org/7.0/en/kicad/kicad.html re file names/uses
+
+zot/
+old/
+*.bak
+short_test_output_v1.csv
+python-SQLite-Notes.txt
