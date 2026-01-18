@@ -15,7 +15,7 @@ The repositories for the various pieces are as follows;
 
  * This repository (`SensorProject`) has (Python) code for a base station that receives and 
 records data from sensor modules. A Raspberry Pi setup is described below. 
-It also has some programs for processing data.
+It also has some example programs for processing data and displaying it.
 
  * [SensorProject_t16-pcb](https://github.com/pdgilbert/SensorProject_t16-pcb) has a Kicad 
 design for a module with analog digital converters and connectors for
@@ -33,6 +33,7 @@ for the `multiplexI2C` hardware.
 
 ## Base Station Summary
 
+Code for the base station is in the subdirectory `RecordData`.
 The program `SensorRecord` is `python3` code which runs on a base station. 
 It receives and records data from the sensor modules. 
 The current version simply listens on a LoRa channel and records any transmissions received.
@@ -62,7 +63,7 @@ The file `ModuleIdHash.txt` gives more meaningful names (eg. "NE floor profile")
 It is not (yet) used in programs.
 The file `SensorIdHash.txt` gives the map from a module identifier and connector to a sensor identifier.
 
-## Recording software setup
+### Recording software setup
 
 `SensorRecord` is `python3` code for receiving and recording data from the sensor modules.
 To run it with default argument values:
@@ -83,7 +84,15 @@ and
 [Mark Zachmann blog](https://medium.com/home-wireless/testing-lora-radios-with-the-limesdr-mini-part-2-37fa481217ff)
 
 
-##  Example Configation of a Base Station using Raspberry Pi
+## Display Software Example
+
+Subdirectory `DisplayData` contains code for an example of one way to display the sensor data.
+The example uses a Rhino model of the building and displays coloured dots representing
+temperature at the location of the sensors. 
+The data is first arranged in a SQLite database, which might be useful for other analyis of the data. More details coming ... .
+
+
+##  Example Configuration of a Base Station using Raspberry Pi
 
 ###  Hardware
 

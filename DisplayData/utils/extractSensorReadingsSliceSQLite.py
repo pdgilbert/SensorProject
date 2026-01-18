@@ -4,14 +4,11 @@
 
 # Inputs:
 #   dbName 
-#   SliceStart  
-#   SlicePeriod 
+#   SliceStart   a string representing a datetime
+#   SlicePeriod  a timedelta
 
 # Outputs:
-# id, timeStamp, temperature, location 
-
-# consider output locations(pass through?) to pass to dots cloud?
-# or consider adding location to db?
+# timeStamp, temperature, location=(x,y,z)
 
 #  https://realpython.com/python-sql-libraries/
 #  https://www.sqlitetutorial.net/sqlite-python/creating-tables
@@ -32,9 +29,9 @@ from datetime import datetime, timedelta # library and a module are both called 
 fmt = '%Y-%m-%d %H:%M:%S'
 
 # test values for grasshopper inputs
-#   dbName = "SenorReadings.sqlite.db"
-#   SliceStart  = datetime.strptime('2025-08-03 18:18:30', fmt)
-#   SlicePeriod = timedelta(days=0, hours=0, minutes=0, seconds=5)
+#   dbName = "SensorReadings.sqlite.db"
+SliceStart  = datetime.strptime('2025-08-03 18:18:30', fmt)
+SlicePeriod = timedelta(days=0, hours=0, minutes=0, seconds=5)
 
 SliceEnd = SliceStart + SlicePeriod
 #print(SliceEnd)
@@ -47,11 +44,26 @@ con = sqlite3.connect(dbName)
 st = "(timeStamp > '" +SliceStart.strftime(fmt) + "')"
 en = "(timeStamp < '" +   SliceEnd.strftime(fmt) + "')"
 
-z = con.execute("SELECT id, timeStamp, temp FROM sensorData \
-                  WHERE " + st + " AND " +  en ).fetchall()
+q = "SELECT timeStamp, temperature, x, y, z FROM sensorData INNER JOIN \
+    sensorLocation ON sensorData.id = sensorLocation.id  WHERE " + st + " AND " +  en 
+    
+zz = con.execute(q).fetchall()
+#print(zz)
+#len(zz)
+#zz.pop()
 
-print(z)
+# timeStamp, temperature, location = (x,y,z)
+# there are more (efficient?) Pythonic ways to do this
 
-#len(z)
-#z.pop()
+timeStamp   = ['' for i in range(len(zz))]
+temperature = [-500.0 for i in range(len(zz))]
+location    = [(-500.0, -500.0, -500.0) for i in range(len(zz))]
+
+for i in range(len(zz)):
+      fd = zz[i]
+      timeStamp[i]   = fd[0] 
+      temperature[i] = fd[1] 
+      location[i]    = (fd[2], fd[3], fd[4])
+
+
 con.close() 
