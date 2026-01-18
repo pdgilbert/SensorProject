@@ -15,7 +15,7 @@ Usage:
 loadIDlocationsSQLite  --infile=InputLocationFile  --outdb=OutputDatabaseName 
 
 Example:
-loadSensorIDlocationsSQLite  --infile='sensorLocations.txt'  --outdb='SensorReadings.sqlite.db'
+loadSensorIDlocationsSQLite  --infile='Garage/sensorLocations.txt'  --outdb='SensorReadings.sqlite.db'
 """
 import argparse
 import os
