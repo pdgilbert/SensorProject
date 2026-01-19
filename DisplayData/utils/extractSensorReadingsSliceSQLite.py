@@ -3,12 +3,13 @@
 # See loadIDlocationsSQLite to load sensor locations to the db.
 
 # Inputs:
-#   dbName 
-#   SliceStart   a string representing a datetime
-#   SlicePeriod  a timedelta
+#   dbName     eg 'SensorReadings.sqlite.db' selected with path browser
+#   sliceStart   a string representing a datetime, eg '2025-08-03 18:18:30'
+#   sliceMinutes an number indicating minutes for timedelta slice period (a day is 1440 minutes)
+#   sliceSeconds an number indicating seconds for timedelta slice period.
 
 # Outputs:
-# timeStamp, temperature, location=(x,y,z)
+# timeStamp, x,y,z, temperature, minTemp, maxTemp
 
 #  https://realpython.com/python-sql-libraries/
 #  https://www.sqlitetutorial.net/sqlite-python/creating-tables
@@ -30,10 +31,12 @@ fmt = '%Y-%m-%d %H:%M:%S'
 
 # test values for grasshopper inputs
 #   dbName = "SensorReadings.sqlite.db"
-SliceStart  = datetime.strptime('2025-08-03 18:18:30', fmt)
-SlicePeriod = timedelta(days=0, hours=0, minutes=0, seconds=5)
+#sliceStart ='2025-08-03 18:18:30'
+#sliceMinutes = 12
+#sliceSeconds = 0
 
-SliceEnd = SliceStart + SlicePeriod
+SliceStart  = datetime.strptime(sliceStart, fmt)
+SliceEnd = SliceStart + timedelta(days=0, hours=0, minutes=sliceMinutes, seconds=sliceSeconds)
 #print(SliceEnd)
 
 
@@ -57,13 +60,21 @@ zz = con.execute(q).fetchall()
 
 timeStamp   = ['' for i in range(len(zz))]
 temperature = [-500.0 for i in range(len(zz))]
-location    = [(-500.0, -500.0, -500.0) for i in range(len(zz))]
+x = [-500.0 for i in range(len(zz))]
+y = [-500.0 for i in range(len(zz))]
+z = [-500.0 for i in range(len(zz))]
+minTemp = 1000.0
+maxTemp = -500.0
 
 for i in range(len(zz)):
       fd = zz[i]
       timeStamp[i]   = fd[0] 
-      temperature[i] = fd[1] 
-      location[i]    = (fd[2], fd[3], fd[4])
+      temperature[i] = fd[1]
+      x[i] =  fd[2]
+      y[i] =  fd[3]
+      z[i] =  fd[4]
 
+minTemp = min(temperature)
+maxTemp = max(temperature)
 
 con.close() 
