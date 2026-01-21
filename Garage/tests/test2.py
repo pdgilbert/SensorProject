@@ -16,7 +16,9 @@ sliceSeconds = 0
 
 SliceStart  = datetime.strptime(sliceStart, fmt)
 SliceEnd = SliceStart + timedelta(days=0, hours=0, minutes=sliceMinutes, seconds=sliceSeconds)
-#print(SliceEnd)
+
+print("SliceStart: ", SliceStart)
+print("SliceEnd:   ", SliceEnd)
 
 con = sqlite3.connect(dbName)
 

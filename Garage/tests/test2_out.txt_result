@@ -1,4 +1,6 @@
 database:  SensorReadings_2026-01-19.db
+SliceStart:  2025-08-03 18:18:30
+SliceEnd:    2025-08-03 18:30:30
 records returned  48
 temperature range 11.4  to  23.9
 min x  3105.895359 max x  3156.895359

@@ -1,4 +1,6 @@
 database:  SensorReadings_2026-01-19.db
+SliceStart:  2026-01-03 00:12:00
+SliceEnd:    2026-01-03 02:12:00
 records returned  1968
 temperature range -10.3  to  71.7
 min x  2859.895359 max x  3351.895359

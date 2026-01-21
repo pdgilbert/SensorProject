@@ -9,18 +9,15 @@ from datetime import datetime, timedelta # library and a module are both called 
 
 fmt = '%Y-%m-%d %H:%M:%S'
 
-# slice for first test data
-#sliceStart ='2025-08-03 18:18:30'
-#sliceMinutes = 12
-#sliceSeconds = 0
-
 sliceStart ='2026-01-03 00:12:00'
 sliceMinutes = 120
 sliceSeconds = 0
 
 SliceStart  = datetime.strptime(sliceStart, fmt)
 SliceEnd = SliceStart + timedelta(days=0, hours=0, minutes=sliceMinutes, seconds=sliceSeconds)
-#print(SliceEnd)
+
+print("SliceStart: ", SliceStart)
+print("SliceEnd:   ", SliceEnd)
 
 con = sqlite3.connect(dbName)
 
