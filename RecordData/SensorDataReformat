@@ -1,0 +1,135 @@
+#!/usr/bin/env python3
+
+"""
+Convert raw data, which has data with module ID and wire connector socket J#,
+to instead indicate sensor ID and data. Also filter out bad data (noisy transmitions)/
+Raw data is in a .txt file as saved by SensorRecord.
+Write sensor ID and data (temperature [and humidity] ) to a csv file, 
+The output .csv file is in a format for input to an SQL db (using
+The SQL db will be used by Grasshopper/Rhino.
+  
+SensorDataReformat --infile='All_data.txt' --SensorHash='SensorIdHash.txt' --outfile='All_data.csv' 
+"""
+
+import argparse
+#from time import sleep, strftime
+
+import os
+#import socket
+#import json
+
+#import datetime
+
+
+parser = argparse.ArgumentParser(description= 
+           'Convert raw data saved by SensorRecord')
+
+#parser.add_argument('--quiet', type=bool, default=False,
+#                    help='if True suppress message printing. (default: False)')
+
+
+parser.add_argument('--debug', type=bool, default=False,
+                    help='if True print received sensor readings to screen. Default: False')
+
+
+parser.add_argument('--infile', type=str, default='All_data.txt',
+                    help='input data file as recorded from sensors. Default: All_data.txt')
+
+parser.add_argument('--SensorHash', type=str, default='SensorIdHash.txt',
+                    help='input Hash file which maps module and connector to sensor Id. Default: SensorIdHash.txt')
+
+parser.add_argument('--outfile', type=str, default='All_data.csv',
+                    help='output data csv file for loading to SQL.  Default: All_data.csv')
+
+
+
+args = parser.parse_args()
+
+debug=args.debug
+
+inpath=args.infile
+if not os.path.isfile(inpath): 
+   print('file   '  + inpath +' does not exist.')
+   exit()
+
+Hashpath=args.SensorHash
+if not os.path.isfile(Hashpath): 
+   print('file   '  + Hashpath +' does not exist.')
+   exit()
+
+outpath = args.outfile
+if os.path.isfile(outpath): 
+   print('file   ' + outpath +' exists. Delete it first.')
+   print('Error exit.')
+   exit()
+
+###################################################################
+
+if (debug): print("debug set True")
+
+IdHashFile = open(Hashpath, 'r')
+h = IdHashFile.read().split('\n')         # split into lines
+
+for i in reversed(range(len(h))):
+    if ('' == h[i]): z = h.pop(i)         # remove blank lines
+
+for i in reversed(range(len(h))):
+   if ('#' in h[i][0]): z = h.pop(i)      # remove lines with '#' in first column
+
+h = [h[i].split() for i in range(len(h))] # split lines into fields
+
+#create dictionary of MonitorID_socket: sensorID   (eg 'A_J1': 'BH') to use below
+IdHash = {h[i][0] + '_' + h [i][1]: h[i][2] for i in range(len(h))} 
+
+if (debug): print("IdHash", IdHash)
+
+
+# this could be done line by line if it gets too big, 
+#    but reading all at once is simple and quick
+d = open(inpath, 'r').read().split('\n')  # read infile and split into lines
+#if (debug): print("d.0 ", d)
+
+for i in reversed(range(len(d))):
+    if ('' == d[i]): z = d.pop(i)     # remove blank lines
+
+for i in reversed(range(len(d))):
+   if ('RSSI' in d[i]): z = d.pop(i)  # remove RSSI lines
+
+for i in reversed(range(len(d))):
+         d[i] = d[i].replace(' ', '')  # remove white space, it messes up .split() below
+#for i in reversed(d):
+#         d = d.replace(' ', '')  # remove white space, it messes up .split() below
+
+# Could clean out some junk lines here. Most? will get caught by check while writing.
+
+
+outfile = open(outpath, 'w')
+
+# go through line by line. Only write a line if it passes checks.
+for ln in d:
+   fd = ln.split('<')        # check should split to exactly 2 parts           
+   if (len(fd) == 2):
+      modID = fd.pop(0)
+      fd = fd[0].split('>')  # check should split to exactly 2 parts
+      if (len(fd) == 2):
+         timestamp = fd.pop(1)
+         fd = fd[0].replace('J', ' ' + modID + '_J').split() # eg 'A_J1:(7.0,84)' or 'F_J1:41.2'
+         if (debug): print("2/ fd  ", fd)
+         #dictionary  MonitorID_socket: temperature  eg ['K_J1', '(7.5,64)']
+         v = [x.split(':') for x in fd] 
+
+         if (len(v) == 16):   # check this should be 8 for temp,humid  and 16 for temp. PUNT FOR NOW ON T,H
+            if all([2 == len(x)  for  x in v]):                # check all elements are pairs
+               #if (debug): print([x[0] in IdHash  for  x in v])
+               if all([x[0] in IdHash  for  x in v]):   # check all dictionary keys are valid
+                  v2 = {IdHash[x[0]]: x[1]  for  x in v}       # dictionary  SensorID: temperature  (eg 'BH': '13.0')
+                  #if (debug): print("v2  ", v2)
+                  #if (debug): print("key,val ")
+                  if (debug): 
+                     for key, val in v2.items(): print(key + ',' + val + ',' + timestamp + ',\n') 
+                  # result z is char written. Could error check?
+                  for key, val in v2.items(): z = outfile.write(key + ',' + val + ',' + timestamp + ',\n') 
+                  outfile.flush()
+
+outfile.close()
+

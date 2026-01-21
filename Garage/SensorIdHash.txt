@@ -1,4 +1,4 @@
-# ModID, socket, sensorID   "# " for comment
+# ModID, socket, sensorID   "#" in first character of line for a comment line
 A       J1      BH
 A       J2      AK
 A       J3      BQ
@@ -45,10 +45,10 @@ C       J9      CB
 C       J10     AD
 C       J11     IT
 C       J12     IJ
-# C       J13     NONE
-# C       J14     NONE
-# C       J15     NONE
-# C       J16     NONE
+C       J13     NONE
+C       J14     NONE
+C       J15     NONE
+C       J16     NONE
 
 D       J1      CI
 D       J2      AY
@@ -67,8 +67,8 @@ D       J14     BV
 D       J15     FU
 D       J16     BD
 
-# E       J1      xx 
-# E       J2      xx
+E       J1      xx 
+E       J2      xx
 E       J3      CV 
 E       J4      FX
 E       J5      GO
@@ -84,7 +84,7 @@ E       J14     AF
 E       J15     CO
 E       J16     AM
 
-# F       J1      unlabelled
+F       J1      xx
 F       J2      FW
 F       J3      BC
 F       J4      EO
@@ -117,4 +117,4 @@ L       J4      HF
 L       J5      MK
 L       J6      MS
 L       J7      MI
-# L       J8      NONE
+L       J8      NONE
