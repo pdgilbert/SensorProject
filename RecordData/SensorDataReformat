@@ -81,22 +81,23 @@ h = [h[i].split() for i in range(len(h))] # split lines into fields
 #create dictionary of MonitorID_socket: sensorID   (eg 'A_J1': 'BH') to use below
 IdHash = {h[i][0] + '_' + h [i][1]: h[i][2] for i in range(len(h))} 
 
-if (debug): print("IdHash", IdHash)
+#if (debug): print("IdHash", IdHash)
 
 
 # this could be done line by line if it gets too big, 
 #    but reading all at once is simple and quick
 d = open(inpath, 'r').read().split('\n')  # read infile and split into lines
+
 #if (debug): print("d.0 ", d)
 
 for i in reversed(range(len(d))):
-    if ('' == d[i]): z = d.pop(i)     # remove blank lines
+    if ('' == d[i].lstrip()): z = d.pop(i)     # remove blank lines
 
 for i in reversed(range(len(d))):
    if ('RSSI' in d[i]): z = d.pop(i)  # remove RSSI lines
 
-for i in reversed(range(len(d))):
-         d[i] = d[i].replace(' ', '')  # remove white space, it messes up .split() below
+#for i in reversed(range(len(d))):
+#         d[i] = d[i].replace(' ', '')  # remove white space, it messes up .split() below
 #for i in reversed(d):
 #         d = d.replace(' ', '')  # remove white space, it messes up .split() below
 
@@ -110,14 +111,17 @@ for ln in d:
    fd = ln.split('<')        # check should split to exactly 2 parts           
    if (len(fd) == 2):
       modID = fd.pop(0)
-      fd = fd[0].split('>')  # check should split to exactly 2 parts
-      if (len(fd) == 2):
-         timestamp = fd.pop(1)
-         fd = fd[0].replace('J', ' ' + modID + '_J').split() # eg 'A_J1:(7.0,84)' or 'F_J1:41.2'
+      fd = fd[0].split('>') 
+      if (len(fd) == 2):               # check should split to exactly 2 parts
+         # note that the timestamp needs a space between date and time
+         # so do not remove whitespace before here.
+         timestamp = fd.pop(1).lstrip()# remove leading white spaces
+         fd = fd[0].replace(' ', '')   # remove white spaces
+         fd = fd.replace('J', '@' + modID + '_J').split('@') # eg 'A_J1:(7.0,84)' or 'F_J1:41.2'
+         z = fd.pop(0)                 # remove empty first string caused by leading @
          if (debug): print("2/ fd  ", fd)
          #dictionary  MonitorID_socket: temperature  eg ['K_J1', '(7.5,64)']
          v = [x.split(':') for x in fd] 
-
          if (len(v) == 16):   # check this should be 8 for temp,humid  and 16 for temp. PUNT FOR NOW ON T,H
             if all([2 == len(x)  for  x in v]):                # check all elements are pairs
                #if (debug): print([x[0] in IdHash  for  x in v])

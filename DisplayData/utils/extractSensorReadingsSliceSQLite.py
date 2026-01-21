@@ -30,9 +30,15 @@ from datetime import datetime, timedelta # library and a module are both called 
 fmt = '%Y-%m-%d %H:%M:%S'
 
 # test values for grasshopper inputs
-#   dbName = "SensorReadings.sqlite.db"
+#dbName = "SensorReadings.db"
+
+# slice for first test data
 #sliceStart ='2025-08-03 18:18:30'
 #sliceMinutes = 12
+#sliceSeconds = 0
+
+#sliceStart ='2026-01-03 00:12:00'
+#sliceMinutes = 120
 #sliceSeconds = 0
 
 SliceStart  = datetime.strptime(sliceStart, fmt)

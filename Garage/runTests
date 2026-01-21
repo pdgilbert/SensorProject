@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo test1.py 
+python3 <tests/test1.py             >tmp/test1_out.txt
+echo test1 diff
+diff     tests/test1_out.txt_result  tmp/test1_out.txt
+
+echo test2.py 
+python3 <tests/test2.py             >tmp/test2_out.txt
+echo test1 diff
+diff     tests/test2_out.txt_result  tmp/test2_out.txt
