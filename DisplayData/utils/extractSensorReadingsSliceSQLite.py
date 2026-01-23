@@ -58,6 +58,8 @@ fmt = '%Y-%m-%d %H:%M:%S'
 #
 #
 # previously sliceStart ='2026-01-03 00:12:00'
+# previously SliceStart  = datetime.strptime(sliceStart, fmt)
+
 #sliceStartYear  = 2026
 #sliceStartMonth = 1
 #sliceStartDay   = 3
@@ -69,8 +71,6 @@ fmt = '%Y-%m-%d %H:%M:%S'
 #sliceHours = 2
 #sliceMinutes = 0
 #sliceSeconds = 0
-
-# previously SliceStart  = datetime.strptime(sliceStart, fmt)
 
 SliceStart  = datetime(year=sliceStartYear, month=sliceStartMonth, day=sliceStartDay,
                 hour=sliceStartHour, minute=sliceStartMinute, second=sliceStartSecond )

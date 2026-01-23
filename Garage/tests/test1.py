@@ -9,12 +9,20 @@ from datetime import datetime, timedelta # library and a module are both called 
 
 fmt = '%Y-%m-%d %H:%M:%S'
 
-sliceStart ='2026-01-03 00:12:00'
-sliceMinutes = 120
-sliceSeconds = 0
+sliceStartYear  = 2026
+sliceStartMonth = 1
+sliceStartDay   = 3
+sliceStartHour   =  0
+sliceStartMinute = 12
+sliceStartSecond =  0
 
-SliceStart  = datetime.strptime(sliceStart, fmt)
-SliceEnd = SliceStart + timedelta(days=0, hours=0, minutes=sliceMinutes, seconds=sliceSeconds)
+SliceStart  = datetime(year=sliceStartYear, month=sliceStartMonth, day=sliceStartDay,
+                hour=sliceStartHour, minute=sliceStartMinute, second=sliceStartSecond )
+
+sliceHours = 2
+sliceMinutes = 0
+sliceSeconds = 0
+SliceEnd = SliceStart + timedelta(days=0, hours=sliceHours, minutes=sliceMinutes, seconds=sliceSeconds)
 
 print("SliceStart: ", SliceStart)
 print("SliceEnd:   ", SliceEnd)
