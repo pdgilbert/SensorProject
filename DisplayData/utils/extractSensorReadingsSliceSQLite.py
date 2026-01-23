@@ -53,32 +53,19 @@ con = sqlite3.connect(dbName)
 st = "(timeStamp > '" +SliceStart.strftime(fmt) + "')"
 en = "(timeStamp < '" +   SliceEnd.strftime(fmt) + "')"
 
-q = "SELECT timeStamp, temperature, x, y, z FROM sensorData INNER JOIN \
+q = "SELECT sensorData.id, timeStamp, temperature, x, y, z FROM sensorData INNER JOIN \
     sensorLocation ON sensorData.id = sensorLocation.id  WHERE " + st + " AND " +  en 
     
 zz = con.execute(q).fetchall()
-#print(zz)
-#len(zz)
-#zz.pop()
+print("records returned ", len(zz))
 
-# timeStamp, temperature, location = (x,y,z)
-# there are more (efficient?) Pythonic ways to do this
+timeStamp   = [ v[1]  for v in zz ]
+temperature = [ v[2]  for v in zz ]
+x = [ v[3]  for v in zz ]
+y = [ v[4]  for v in zz ]
+z = [ v[5]  for v in zz ]
 
-timeStamp   = ['' for i in range(len(zz))]
-temperature = [-500.0 for i in range(len(zz))]
-x = [-500.0 for i in range(len(zz))]
-y = [-500.0 for i in range(len(zz))]
-z = [-500.0 for i in range(len(zz))]
-minTemp = 1000.0
-maxTemp = -500.0
-
-for i in range(len(zz)):
-      fd = zz[i]
-      timeStamp[i]   = fd[0] 
-      temperature[i] = fd[1]
-      x[i] =  fd[2]
-      y[i] =  fd[3]
-      z[i] =  fd[4]
+IDtemperature = [ [v[0],v[2]]  for v in zz ]
 
 minTemp = min(temperature)
 maxTemp = max(temperature)

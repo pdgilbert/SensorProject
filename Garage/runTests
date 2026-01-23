@@ -1,5 +1,15 @@
 #!/bin/bash
 
+mkdir -p tmp
+
+echo sql_test1.sql 
+echo    SensorReadings_2026-01-19.db r/w >tmp/sql_test1_out.txt
+sqlite3 SensorReadings_2026-01-19.db <tests/sql_test1.sql  >>tmp/sql_test1_out.txt
+echo sql_test1 diff
+diff tests/sql_test1_out.txt_result  tmp/sql_test1_out.txt
+
+
+
 echo test1.py 
 python3 <tests/test1.py             >tmp/test1_out.txt
 echo test1 diff
@@ -7,5 +17,5 @@ diff     tests/test1_out.txt_result  tmp/test1_out.txt
 
 echo test2.py 
 python3 <tests/test2.py             >tmp/test2_out.txt
-echo test1 diff
+echo test2 diff
 diff     tests/test2_out.txt_result  tmp/test2_out.txt
