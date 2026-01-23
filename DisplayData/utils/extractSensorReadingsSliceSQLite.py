@@ -4,12 +4,22 @@
 
 # Inputs:
 #   dbName     eg 'SensorReadings.sqlite.db' selected with path browser
-#   sliceStart   a string representing a datetime, eg '2025-08-03 18:18:30'
-#   sliceMinutes an number indicating minutes for timedelta slice period (a day is 1440 minutes)
+#   previously sliceStart   a string representing a datetime, eg '2025-08-03 18:18:30'
+#      but does not work well with slider.
+#   sliceStartYear   a number indicating start year   eg 2025
+#   sliceStartMonth  a number indicating start month  eg 8
+#   sliceStartDay    a number indicating start day    eg 3
+#   sliceStartHour   a number indicating start hour   eg 18
+#   sliceStartMinute a number indicating start minute (often 0)
+#   sliceStartSecond a number indicating start second (normally 0)
+
+#   sliceDays  an number indicating days for timedelta slice period (normally 0).
+#   sliceHours an number indicating hours for timedelta slice period (often 0).
+#   sliceMinutes an number indicating minutes for timedelta slice period.
 #   sliceSeconds an number indicating seconds for timedelta slice period.
 
 # Outputs:
-# timeStamp, x,y,z, temperature, minTemp, maxTemp
+# timeStamp, x,y,z, temperature, minTemp, maxTemp, IDtemperature
 
 #  https://realpython.com/python-sql-libraries/
 #  https://www.sqlitetutorial.net/sqlite-python/creating-tables
@@ -30,19 +40,43 @@ from datetime import datetime, timedelta # library and a module are both called 
 fmt = '%Y-%m-%d %H:%M:%S'
 
 # test values for grasshopper inputs
-#dbName = "SensorReadings.db"
-
+#dbName = "SensorReadings_2026-01-19.db"
+#
 # slice for first test data
-#sliceStart ='2025-08-03 18:18:30'
+# previously sliceStart ='2025-08-03 18:18:30'
+#sliceStartYear  = 2025
+#sliceStartMonth = 8
+#sliceStartDay   = 3
+#sliceStartHour   = 18
+#sliceStartMinute = 18
+#sliceStartSecond = 30
+#
+#sliceDays = 0
+#sliceHours = 0
 #sliceMinutes = 12
 #sliceSeconds = 0
-
-#sliceStart ='2026-01-03 00:12:00'
-#sliceMinutes = 120
+#
+#
+# previously sliceStart ='2026-01-03 00:12:00'
+#sliceStartYear  = 2026
+#sliceStartMonth = 1
+#sliceStartDay   = 3
+#sliceStartHour   =  0
+#sliceStartMinute = 12
+#sliceStartSecond =  0
+#
+#sliceDays = 0
+#sliceHours = 2
+#sliceMinutes = 0
 #sliceSeconds = 0
 
-SliceStart  = datetime.strptime(sliceStart, fmt)
-SliceEnd = SliceStart + timedelta(days=0, hours=0, minutes=sliceMinutes, seconds=sliceSeconds)
+# previously SliceStart  = datetime.strptime(sliceStart, fmt)
+
+SliceStart  = datetime(year=sliceStartYear, month=sliceStartMonth, day=sliceStartDay,
+                hour=sliceStartHour, minute=sliceStartMinute, second=sliceStartSecond )
+
+SliceEnd = SliceStart + timedelta(days=sliceDays, 
+                      hours=sliceHours, minutes=sliceMinutes, seconds=sliceSeconds)
 #print(SliceEnd)
 
 
