@@ -6,3 +6,4 @@ The sliding door is in the NE wall.
 
 hA:  Wall profile in NE wall of office.
 hb:  Roof profile roughly at the peak about 10' from the NE wall.
+hK   Foundation profile in utility room.

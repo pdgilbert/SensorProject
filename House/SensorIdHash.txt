@@ -16,3 +16,20 @@ hb       J5      DP
 hb       J6      IN
 hb       J7      AL
 hb       J8      IU
+
+hK       J1      W1
+hK       J2      I4A
+hK       J3      I2A
+hK       J4      I3A
+hK       J5      W2
+hK       J6      W3A
+hK       J7      O1
+hK       J8      I5
+#hK       J9      NONE     
+#hK       J10     NONE     
+#hK       J11     NONE     
+#hK       J12     NONE     
+#hK       J13     NONE     
+#hK       J14     NONE    
+#hK       J15     NONE     
+#hK       J16     NONE   

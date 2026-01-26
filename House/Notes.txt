@@ -1,5 +1,7 @@
 Need to better confirm positions and place on sketches.
-
+2 sensors to hK need connectors.
+Need profile drawings with sensor locations.
+  
 
 X       J1      
 X       J2      
