@@ -5,8 +5,8 @@ hA       J3      un
 hA       J4      1
 #hA       J5      NONE
 #hA       J6      NONE
-#hA       J7      NONE
-hA       J8      pink
+hA       J7      pink
+#hA       J8      NONE
 
 hb       J1      II
 hb       J2      DL
