@@ -27,10 +27,10 @@ parser.add_argument('--infile', type=str, default='output_v1.csv',
                     help='input data file as produced by SensorDataReformat_v1. Default: output_v1.csv')
 
 #parser.add_argument('--sensorIdHash', type=str, default='Garage/sensorIdHash.txt',
-#                    help='input data file as produced bySensorDataReformat_v1. Default: Garage/sensorIdHash.txt')
+#                    help='input data file as manually edited with install information. Default: Garage/sensorIdHash.txt')
 
 parser.add_argument('--outdb', type=str, default='SenorReadings.sqlite.db',
-                    help='input data file as produced bySensorDataReformat_v1. Default: SenorReadings.sqlite.db')
+                    help='output database file. Default: SenorReadings.sqlite.db')
 
 args = parser.parse_args()
 

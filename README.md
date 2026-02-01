@@ -1,4 +1,9 @@
 Status:  Things described here are work in progress and subject to change.
+         The main parts are working but need improvement in several aspects.
+         Some reorganization is necessary and documentation needs work.
+         All sensors have not yet been connected properly. 
+         Data is available for testing code but needs filtering to be
+         used for the actual intended purposes.
 
 ## Project Overview
 
@@ -14,8 +19,9 @@ results and (optionally) connect to the Internet.
 The repositories for the various pieces are as follows;
 
  * This repository (`SensorProject`) has (Python) code for a base station that receives and 
-records data from sensor modules. A Raspberry Pi setup is described below. 
-It also has some example programs for processing data and displaying it.
+records data from sensor modules. A Raspberry Pi base station setup is described below. 
+There are also for programs processing data and example programs for displaying it,
+described in sections below.
 
  * [SensorProject_t16-pcb](https://github.com/pdgilbert/SensorProject_t16-pcb) has a Kicad 
 design for a module with analog digital converters and connectors for
@@ -91,6 +97,7 @@ The example uses a Rhino model of the building and displays coloured dots repres
 temperature at the location of the sensors. 
 The data is first arranged in a SQLite database, which might be useful for other analyis of the data. More details coming ... .
 
+See more details in [Garage notes.](./Garage/Notes.txt)
 
 ##  Example Configuration of a Base Station using Raspberry Pi
 
@@ -134,7 +141,7 @@ Raspberry Pi 3B, 2B, and Zero W all have the same pinouts.  See for example
 https://www.etechnophiles.com/raspberry-pi-3-gpio-pinout-pin-diagram-and-specs-in-detail-model-b/
 or https://pinout.xyz/
 
-### Install Software
+### Install Base Station Software
 
 #### Background
 
