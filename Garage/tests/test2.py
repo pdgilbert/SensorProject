@@ -26,7 +26,7 @@ st = "(timeStamp > '" +SliceStart.strftime(fmt) + "')"
 en = "(timeStamp < '" +   SliceEnd.strftime(fmt) + "')"
 
 q = "SELECT sensorData.id, timeStamp, temperature, x, y, z FROM sensorData INNER JOIN \
-    sensorLocation ON sensorData.id = sensorLocation.id  WHERE " + st + " AND " +  en 
+    Sensors ON sensorData.id = Sensors.id  WHERE " + st + " AND " +  en 
     
 zz = con.execute(q).fetchall()
 print("records returned ", len(zz))

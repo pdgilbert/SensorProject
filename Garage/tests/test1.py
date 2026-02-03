@@ -33,7 +33,7 @@ st = "(timeStamp > '" +SliceStart.strftime(fmt) + "')"
 en = "(timeStamp < '" +   SliceEnd.strftime(fmt) + "')"
 
 q = "SELECT sensorData.id, timeStamp, temperature, x, y, z FROM sensorData INNER JOIN \
-    sensorLocation ON sensorData.id = sensorLocation.id  WHERE " + st + " AND " +  en 
+    Sensors ON sensorData.id = Sensors.id  WHERE " + st + " AND " +  en 
     
 zz = con.execute(q).fetchall()
 print("records returned ", len(zz))
@@ -44,6 +44,7 @@ x = [ v[3]  for v in zz ]
 y = [ v[4]  for v in zz ]
 z = [ v[5]  for v in zz ]
 
+ID = [ v[0] for v in zz ]
 IDtemperature = [ [v[0],v[2]]  for v in zz ]
 
 minTemp = min(temperature)
@@ -53,5 +54,11 @@ print("temperature range", minTemp, " to ", maxTemp)
 print("min x ", min(x), "max x ", max(x))
 print("min y ", min(y), "max y ", max(y))
 print("min z ", min(z), "max z ", max(z))
+
+#  z.index(min(z)) gets only one of the minimums
+
+#indexMin = [i for i, j in enumerate(z) if j == min(z)]
+#minID = [ID[i] for i in indexMin]
+#minz = [z[i] for i in indexMin]
 
 con.close() 

@@ -19,3 +19,8 @@ echo test2.py
 python3 <tests/test2.py             >tmp/test2_out.txt
 echo test2 diff
 diff     tests/test2_out.txt_result  tmp/test2_out.txt
+
+echo test3.py 
+python3 <tests/test3.py             >tmp/test3_out.txt
+echo test3 diff
+diff     tests/test3_out.txt_result  tmp/test3_out.txt

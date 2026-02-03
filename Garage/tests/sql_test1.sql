@@ -17,7 +17,7 @@ SELECT printf('COUNT(DISTINCT id ) %i',  COUNT(DISTINCT id )) FROM sensorData
          AND (timeStamp < '2026-01-03 00:14:00') ;
 
 SELECT printf('COUNT(*) %i', COUNT(*)) FROM sensorData 
-    INNER JOIN sensorLocation ON sensorData.id = sensorLocation.id  
+    INNER JOIN Sensors ON sensorData.id = Sensors.id  
        WHERE (timeStamp > '2026-01-03 00:12:00')
          AND (timeStamp < '2026-01-03 00:14:00') ;
     
@@ -25,7 +25,7 @@ SELECT printf('COUNT(*) %i', COUNT(*)) FROM sensorData
 SELECT printf('sensorData.id, timeStamp, temperature, x, y, z');
 
 SELECT sensorData.id, timeStamp, temperature, x, y, z FROM sensorData 
-    INNER JOIN sensorLocation ON sensorData.id = sensorLocation.id  
+    INNER JOIN Sensors ON sensorData.id = Sensors.id  
        WHERE (timeStamp > '2026-01-03 00:12:00')
          AND (timeStamp < '2026-01-03 00:14:00') ;
 
