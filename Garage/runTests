@@ -2,34 +2,38 @@
 
 mkdir -p tmp
 
-# test result comparison files made with SensorReadings_2026-01-19.db
-export TARGET="target/SensorReadings.db"
+export DB="target/SensorReadings.db"
 
-echo sql_test1.sql 
-echo    ${TARGET}  >tmp/sql_test1_out.txt
-sqlite3 ${TARGET} <tests/sql_test1.sql  >>tmp/sql_test1_out.txt
-echo sql_test1 diff:
+echo "*************** testing" ${DB}
+echo "****** comparison results from SensorReadings_2026-01-19.db"
+
+echo -n sql_test1.sql ... 
+sqlite3 ${DB} <tests/sql_test1.sql  >tmp/sql_test1_out.txt
+echo "      diff:"
 diff tests/sql_test1_out.txt_result  tmp/sql_test1_out.txt
 
-sqlite3 ${TARGET} <tests/sql_test2.sql  >>tmp/sql_test2_out.txt
-echo sql_test2 diff:
+echo -n sql_test2.sql ...
+sqlite3 ${DB} <tests/sql_test2.sql  >tmp/sql_test2_out.txt
+echo "      diff:"
 diff tests/sql_test2_out.txt_result  tmp/sql_test2_out.txt
 
-sqlite3 ${TARGET} <tests/sql_test3.sql  >>tmp/sql_test3_out.txt
-echo sql_test3 diff:
+echo -n sql_test3.sql ... 
+sqlite3 ${DB} <tests/sql_test3.sql  >tmp/sql_test3_out.txt
+echo "      diff:"
 diff tests/sql_test3_out.txt_result  tmp/sql_test3_out.txt
 
-echo test1.py 
-python3 <tests/test1.py             >tmp/test1_out.txt
-echo test1 diff
-diff     tests/test1_out.txt_result  tmp/test1_out.txt
 
-echo test2.py 
-python3 <tests/test2.py             >tmp/test2_out.txt
-echo test2 diff
-diff     tests/test2_out.txt_result  tmp/test2_out.txt
+echo -n test1.py ... 
+python3 tests/test1.py --dbName=${DB} >tmp/test1_out.txt
+echo "      diff:"
+diff     tests/test1_out.txt_result    tmp/test1_out.txt
 
-echo test3.py 
-python3 <tests/test3.py             >tmp/test3_out.txt
-echo test3 diff
-diff     tests/test3_out.txt_result  tmp/test3_out.txt
+echo -n test2.py ... 
+python3 tests/test2.py --dbName=${DB} >tmp/test2_out.txt
+echo "      diff:"
+diff     tests/test2_out.txt_result    tmp/test2_out.txt
+
+echo -n test3.py  ...
+python3 tests/test3.py --dbName=${DB} >tmp/test3_out.txt
+echo "      diff:"
+diff     tests/test3_out.txt_result    tmp/test3_out.txt

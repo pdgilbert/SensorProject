@@ -1,11 +1,12 @@
-#  sqlite3 SensorReadings_2026-01-19.db  <tests/test3.sql  >tmp/sql_test3_out.txt
+#  sqlite3 SensorReadings_2026-01-19.db  <tests/sql_test3.sql  >tmp/sql_test3_out.txt
 #  diff     tests/sql_test3_out.txt_result  tmp/sql_test3_out.txt
 
 #print("database: ", dbName) 
 #.databases
 .sha3sum
 
-PRAGMA table_info(Sensors);   #SHOW TABLE 
+#show table
+PRAGMA table_info(Sensors);
 
 SELECT * FROM Sensors;
 SELECT printf('COUNT(*) %i', COUNT(*)) FROM Sensors;
@@ -23,7 +24,8 @@ SELECT COUNT(DISTINCT(sensorData.id)) FROM SensorData
     INNER JOIN Sensors ON sensorData.id = Sensors.id  
        WHERE  Sensors.modID IS NOT NULL
        AND    40. < temperature ;
-these are the same if modID has been set for all working sensors ?? hA ?
+
+#these are the same if modID has been set for all working sensors ?? hA ? CHECK
 SELECT COUNT(DISTINCT(sensorData.id)) FROM SensorData 
     INNER JOIN Sensors ON sensorData.id = Sensors.id  
        WHERE  40. < temperature ;
@@ -39,10 +41,6 @@ SELECT COUNT(DISTINCT(Sensors.id)) FROM SensorData
 SELECT COUNT(DISTINCT(sensorData.id)) FROM SensorData 
     INNER JOIN Sensors ON sensorData.id = Sensors.id  
        WHERE 40. > temperature ;
-
-SELECT COUNT(DISTINCT(Sensors.id, Sensors.modID)) FROM Sensors 
-    INNER JOIN sensorData ON sensorData.id = Sensors.id  
-       WHERE 40. < sensorData.temperature ;
 
 SELECT sensorData.id, timeStamp, temperature, x, y, z FROM sensorData 
     INNER JOIN Sensors ON sensorData.id = Sensors.id  
@@ -71,9 +69,10 @@ SELECT printf('z = -3. : %i',   COUNT(DISTINCT(sensorData.id))) FROM sensorData
          AND (timeStamp < '2026-01-03 00:14:00') 
          AND (-3.1 < z ) AND (z < -2.9) ;
 
-# sensors suspect because too hot
-SELECT temperature, timeStamp, sensorData.id,  FROM sensorData 
+# sensors suspect because too hot  THIS NEEDS WORK
+SELECT temperature, timeStamp, sensorData.id, modID, socket  FROM sensorData 
     INNER JOIN Sensors ON sensorData.id = Sensors.id  
        WHERE (timeStamp > '2026-01-01 00:12:00')
          AND (timeStamp < '2026-01-03 00:14:00') 
-         AND (-3.1 < z ) AND (z < -2.9) ;
+         AND (-3.1 < z ) AND (z < -2.9)
+         AND (temperature > 45.0) ;

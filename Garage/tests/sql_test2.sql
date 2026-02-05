@@ -1,4 +1,4 @@
-#  sqlite3 SensorReadings_2026-01-19.db  <tests/test2.sql  >tmp/sql_test2_out.txt
+#  sqlite3 SensorReadings_2026-01-19.db  <tests/sql_test2.sql  >tmp/sql_test2_out.txt
 #  diff     tests/sql_test2_out.txt_result  tmp/sql_test2_out.txt
 
 #print("database: ", dbName) 
@@ -39,9 +39,3 @@ SELECT printf('z = -3. : %i',   COUNT(DISTINCT(sensorData.id))) FROM sensorData
          AND (timeStamp < '2026-01-03 00:14:00') 
          AND (-3.1 < z ) AND (z < -2.9) ;
 
-# sensors suspect because too hot
-SELECT temperature, timeStamp, sensorData.id,  FROM sensorData 
-    INNER JOIN Sensors ON sensorData.id = Sensors.id  
-       WHERE (timeStamp > '2026-01-01 00:12:00')
-         AND (timeStamp < '2026-01-03 00:14:00') 
-         AND (-3.1 < z ) AND (z < -2.9) ;

@@ -1,4 +1,4 @@
-#  sqlite3 SensorReadings_2026-01-19.db  <tests/test1.sql  >tmp/sql_test1_out.txt
+#  sqlite3 SensorReadings_2026-01-19.db  <tests/sql_test1.sql  >tmp/sql_test1_out.txt
 #  diff     tests/sql_test1_out.txt_result  tmp/sql_test1_out.txt
 
 #print("database: ", dbName) 

@@ -1,11 +1,21 @@
-#  python3 <tests/test2.py             >tmp/test2_out.txt
-#  diff     tests/test2_out.txt_result  tmp/test2_out.txt
-
-dbName = "SensorReadings_2026-01-19.db"
-print("database: ", dbName)
+#  python3 <tests/test2.py   dbName=FileName.db  >tmp/test2_out.txt
 
 import sqlite3
 from datetime import datetime, timedelta # library and a module are both called datetime
+
+import argparse
+import os
+
+parser = argparse.ArgumentParser(description='Database tests.')
+parser.add_argument('--dbName', type=str, help='database to test')
+args = parser.parse_args()
+dbName=args.dbName
+#print("database: ", dbName)
+
+if not os.path.isfile(dbName): 
+   print('file   ' + dbName +' does not exist.')
+   exit(1)
+
 
 fmt = '%Y-%m-%d %H:%M:%S'
 
