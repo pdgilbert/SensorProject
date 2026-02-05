@@ -4,3 +4,5 @@ zot/
 old/
 *.bak
 python-SQLite-Notes.txt
+*/tmp/
+*/target/

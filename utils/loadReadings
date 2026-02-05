@@ -69,7 +69,7 @@ with open(inpath, 'r') as f:
          #print("ln    '" + ln + "'")
 
 print(inpath + " lines " + str(i))
-print("error lines " + str(e))
+print(str(e) + " lines with errors.")
 
 con.commit()
 con.close()

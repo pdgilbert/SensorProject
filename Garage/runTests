@@ -2,13 +2,22 @@
 
 mkdir -p tmp
 
+# test result comparison files made with SensorReadings_2026-01-19.db
+export TARGET="target/SensorReadings.db"
+
 echo sql_test1.sql 
-echo    SensorReadings_2026-01-19.db r/w >tmp/sql_test1_out.txt
-sqlite3 SensorReadings_2026-01-19.db <tests/sql_test1.sql  >>tmp/sql_test1_out.txt
-echo sql_test1 diff
+echo    ${TARGET}  >tmp/sql_test1_out.txt
+sqlite3 ${TARGET} <tests/sql_test1.sql  >>tmp/sql_test1_out.txt
+echo sql_test1 diff:
 diff tests/sql_test1_out.txt_result  tmp/sql_test1_out.txt
 
+sqlite3 ${TARGET} <tests/sql_test2.sql  >>tmp/sql_test2_out.txt
+echo sql_test2 diff:
+diff tests/sql_test2_out.txt_result  tmp/sql_test2_out.txt
 
+sqlite3 ${TARGET} <tests/sql_test3.sql  >>tmp/sql_test3_out.txt
+echo sql_test3 diff:
+diff tests/sql_test3_out.txt_result  tmp/sql_test3_out.txt
 
 echo test1.py 
 python3 <tests/test1.py             >tmp/test1_out.txt

@@ -12,23 +12,6 @@ The base station could be any computer that runs python3 but it needs a LoRa mod
 receive information. It can be run headless but a monitor is very useful for initial setup.
 (An older project that has similar LoRa requirements is in repository `LoRaGPS`.) 
 
-The program  `SensorDataReformat` is an example that filters the recorded data and rearranges
-it for use in another program. It can be run on any computer with python3. 
-
-Data associated with a group of sensors, typically a building, is arranged in subdirectories. 
-The directory `Garage/` is the most developed example.
-
-These programs and example hardware are described more in sections below.
-
-## Filtering and re-arranging recorded data
-
-The `python3` code `SensorDataReformat` takes recorded data and rearranges it for use in other programs.
-Most notably, it attaches the sensor identifier to data records.
-This id gives a way to map a data record to a location.
-
-The file `ModuleIdHash.txt` gives more meaningful names (eg. "NE floor profile") to modules.
-It is not (yet) used in programs.
-The file `SensorIdHash.txt` gives the map from a module identifier and connector to a sensor identifier.
 
 ### Recording software setup
 
