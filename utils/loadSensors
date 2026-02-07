@@ -20,11 +20,12 @@ See extractSensorReadingsSliceSQLite.py for a grasshopper python script to extra
 from the database and use it in Grasshopper.
 
 Usage:
-loadSensors  --sensorLocations=locationsFile --SensorIdHash=SensorIdHash.txt --outdb=OutputDatabaseName 
-NOT YET --modules=modulesFile 
+loadSensors  --sensorLocations=locationsFile --SensorIdHash=SensorIdHashFile \
+      --ModuleIdHash=modulesFile --outdb=OutputDatabaseName 
 
 Example:
-loadSensors  --sensorLocations='sensorLocations.txt' --SensorIdHash='SensorIdHash.txt'  --outdb='SensorReadings_2026-01-19.db'
+loadSensors  --sensorLocations='sensorLocations.txt' --SensorIdHash='SensorIdHash.txt' \
+     --ModuleIdHash='ModuleIdHash.txt' --outdb='SensorReadings_2026-01-19.db'
 """
 import argparse
 import os
@@ -38,10 +39,13 @@ parser.add_argument('--sensorLocations', type=str, default='sensorLocations.txt'
                     help='input data file as produced by extractSensorsLocations.ghx. Default: sensorLocations.txt')
 
 parser.add_argument('--SensorIdHash', type=str, default='SensorIdHash.txt',
-                    help='input data file as manually edited with install information. Default: SensorsHash.txt')
+                    help='input data file as manually edited with install information. Default: SensorIdHash.txt')
+
+parser.add_argument('--ModuleIdHash', type=str, default='ModuleIdHash.txt',
+                    help='input data file as manually edited module profile description. Default: ModuleIdHash.txt')
 
 parser.add_argument('--outdb', type=str, default='SenorReadings.db',
-                    help='input data file as produced by SensorDataReformat_v1. Default: SenorReadings.db')
+                    help='input data file as produced by SensorDataReformat. Default: SenorReadings.db')
 
 args = parser.parse_args()
 
@@ -50,15 +54,19 @@ locationPath=args.sensorLocations
 
 if not os.path.isfile(locationPath): 
    print('file   ' + locationPath +' does not exist.')
-   exit()
+   exit(1)
 
 SensorIdHashpath = args.SensorIdHash
 if not os.path.isfile(SensorIdHashpath): 
    print('file   '  + SensorIdHashpath +' does not exist.')
-   exit()
+   exit(1)
+
+ModuleIdHashpath = args.ModuleIdHash
+if not os.path.isfile(ModuleIdHashpath): 
+   print('file   '  + ModuleIdHashpath +' does not exist.')
+   exit(1)
 
 dbpath = args.outdb
-#print(dbpath)
 
 ###################################################################
 con = sqlite3.connect(dbpath)
@@ -73,23 +81,20 @@ con.execute("""
     description TEXT NOT NULL 
   );""")
 
-# figure out if this is really needed for joins
+# figure out if this is really helpful for joins
 #FOREIGN KEY (user_id) REFERENCES users (id)
 
-#                         THIS SHOULD COME  FROM ModulesHash.txt
-con.execute("""
-  INSERT INTO
-    Modules (modID, description)
-  VALUES
-    ('A', 'Floor profile from NE wall.'),
-    ('B', 'Floor around person door. (2 extra unused sensors AW & AS)'),
-    ('C', 'Floor around garage door.'),
-    ('D', 'Floor profile from E corner.'),
-    ('E', 'Floor profile from W corner.'),
-    ('F', 'Floor profile from S corner'),
-    ('K', 'Wall profile around window on NE wall.'),
-    ('L', 'Roof profile up middle of SW roof.')
-  """)
+#populate module and connector J# in table Sensors 
+with open(ModuleIdHashpath, 'r') as f: 
+   for ln in f:
+      fd = ln.split(':')
+      if (fd != [] ):        # should skip blank lines but not working
+         if (fd[0] != '#'):  # skip lines starting with "#:" eg header line
+            s = '("' + fd[0] + '", "' + fd[1].lstrip().rstrip()  + '")'
+            q = 'INSERT INTO Modules (modID, description) VALUES ' + s 
+            #print(q)
+            z = con.execute(q) #z= mutes printing returned obj.
+
 
 ###################################################################
 # drop the table if it exists, so it can be replaced

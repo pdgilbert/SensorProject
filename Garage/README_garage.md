@@ -5,29 +5,24 @@ Also, errors in reception may occur on one base station and not on others.
 
 Put everything in SQL db then we will see if it needs to be filtered to remove duplication.
 
-1/ Edit SensorIdHash.txt as necessary for any new sensors installed.
-    NEED TO ADD MORE MODULES TO SensorIdHash.txt
+- Edit SensorIdHash.txt   NEED TO ADD MORE SENSORS AND MODULES.
+- Edit ModuleIdHash.txt  to add description for new modules.
+- Extract new  sensorLocations.txt from .3dm drawing.
 
-2/ Put all files from `SensorRecord` into one file: 
-     rm tmp/All_data.txt   #if it exists
-     cat raw_data/SensorRecordOuput*.txt >>tmp/All_data.txt  # or eg   tmp/All_data_2026-01-19.txt
+ ../buildDB
 
-3/ Filter and convert module Id & J# to sensor ID: In dir Garage do
-     ../utils/SensorDataReformat  --SensorHash='SensorIdHash.txt'  \
-         --infile='tmp/All_data.txt'  --outfile='tmp/All_data.csv' 
+Bash script does
 
-    test file STILL USING THIS???
+1/ Put files in raw_data/  from basestation `SensorRecord` into one file.
+
+2/ Filter and convert module Id & J# to sensor ID.
+    test file STILL USING test_data_2026-01-19.txt??
      ../utils/SensorDataReformat --infile='test_data_2026-01-19.txt' \
             --SensorHash='SensorIdHash.txt' --outfile='tmp/test_data_2026-01-19.csv'  --debug=True 
 
-4/ Load csv files into SQLite db:
-     ../utils/loadReadings --infile='tmp/All_data.csv' --outdb='target/SensorReadings.db'
-
-     ../utils/loadSensors  --sensorLocations='sensorLocations.txt' \
-         --SensorIdHash='SensorIdHash.txt'  --outdb='target/SensorReadings.db'
+3/ Load readings and sensor information files into db.
 
     test file STILL USING THIS???
      ../utils/loadReadings --infile='test_data_2026-01-19.csv' --outdb='test_2026-01-19.db'
 
-
-5/ ./runTests
+4/ ./runTests   MORE TESTS CAN BE ADDED HERE AND UPDATED.
