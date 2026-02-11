@@ -114,7 +114,7 @@ so the previous data is not erased by the new recording. (A better solution will
 eventually.) These recording files need to be moved from the basestation(s) to another
 computer for processing and display. This has been done by USB transfer or by `scp`.
 
-See [README_BaseStation](./RecordData/README_BaseStation.md) for more details.
+See [README_BaseStation](./BaseStation/README_BaseStation.md) for more details.
 
 
 ### Database
@@ -130,18 +130,18 @@ Files used to build the database are as follows:
 - `SensorRecordOuput*.txt` files are moved from basestation(s) to directory `raw_data/`. 
 
 The process is as follows.
-- The intermediate file of readings `tmp/All_data.txt` needs to be prepared by:
+- The intermediate file of readings, for example `tmp/All_data.txt`, needs to be prepared by:
 ```
            cat raw_data/SensorRecordOuput*.txt >tmp/All_data.txt
 ```
-      Or optionally run through `SensorDataFreqFilter` to reduce frequency, for example
+Or optionally run through `SensorDataFreqFilter` to reduce frequency, for example
 ```
            cat raw_data/SensorRecordOuput*.txt | \
                ../utils/SensorDataFreqFilter  120   >tmp/All_data.txt
 ```
-      This reduces the number of readings so there is at least 120 minutes (2 hours)
-      between readings for a module.
-      (Beware that runTests will indicate differences because the test sample is changed.)
+The filter reduces the number of readings so there is at least 120 minutes (2 hours)
+between readings for a module. (Beware that runTests will indicate 
+differences because the test sample is changed.)
 
 - The shell (bash) script `buildDB` uses these files and python programs in `utils/` to
 build the database. In the directory corresponding to a building (eg `Garage`) run
@@ -154,7 +154,7 @@ and runs some tests to check things have loaded properly.
 
 The `buildDB` script does the following:
 
-1/ The combined file is filter to remove some (obvious) faulty transmition recordings
+1/ The combined `.txt` file is filter to remove some (obvious) faulty transmition recordings
      and module Id and J# are converted to a sensor ID.
 
 2/ The resulting converted file is loaded into the target database (table `SensorData`).
@@ -163,7 +163,7 @@ The `buildDB` script does the following:
      the target database (table `Sensors`) and the module descriptions are loaded into 
      the target database (table `Modules`).
 
-4/ The script ./runTests is run to check the database.
+4/ The script `./runTests` is run to check the database.
 
 See the `buildDB` script for syntax details. For working notes see [README_garage](./Garage/README_garage.md).
 
