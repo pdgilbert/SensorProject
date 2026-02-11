@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+
+"""
+Filter  raw data to remove any module transmissions sooner than maxFreq minutes after
+the last kept transmission. This reads stdin and writes stdout files in the same 
+raw data .txt file format as saved by SensorRecord, without RSSI and blank lines.
+The output can also be processed by SensorDataReformat.
+
+Note there is no attempt to synchonize across modules.
+One may be at the beginning of the period and another at the end.
+
+Usage:
+../utils/SensorDataFreqFilter <tmp/All_data.txt  >tmp/FreqFilter_data.txt 
+"""
+
+#import argparse
+#from time import sleep, strftime
+
+#import os
+#import socket
+#import json
+
+from datetime import datetime, timedelta # library and a module are both called datetime
+
+import sys
+
+###################################################################
+
+maxFreq =30  # skip any modules readings that are sooner the maxFreq  minutes
+
+# data circa August 2025 does not have UTC in the time stamp
+# Both with and without are handled below by removing UTC.
+#fmt = '%Y-%m-%d %H:%M:%S.%f %Z'
+fmt = '%Y-%m-%d %H:%M:%S.%f'
+
+#create dictionary for ModID: time
+timeHash = {} 
+
+for ln in sys.stdin:
+   ln = ln.rstrip('\r') 
+   if   ('' != ln.lstrip()) & ('RSSI' not in ln):  # skip blank lines && RSSI lines
+      fd = ln.split('<')                
+      if (len(fd) == 2):          # check should split to exactly 2 parts
+         modID = fd.pop(0)
+         fd = fd[0].split('>') 
+         if (len(fd) == 2):       # check should split to exactly 2 parts
+            timestamp = fd.pop(1).lstrip().rstrip('\r\n')  # remove leading white spaces
+            timestamp = timestamp.replace(' UTC', '')
+            
+            try:      # punt if timestamp is misformed
+               timestamp = datetime.strptime(timestamp, fmt)
+
+               if (len(fd[0].split(':')) in (17, 9)):    # 16 ':'s give len 17
+                  if modID not in timeHash:
+                     timeHash.update({modID : timestamp + timedelta(minutes=maxFreq)})
+                     print(ln, end='')
+                  elif (timeHash[modID] < timestamp):
+                     timeHash.update({modID : timestamp + timedelta(minutes=maxFreq)})
+                     print(ln, end='')
+            except:
+              pass   # punt on this line if timestamp is misformed or other errors
+
+#outfile.close()
+

@@ -1,16 +1,12 @@
 #  sqlite3 SensorReadings_2026-01-19.db  <tests/sql_test3.sql  >tmp/sql_test3_out.txt
 #  diff     tests/sql_test3_out.txt_result  tmp/sql_test3_out.txt
 
-#print("database: ", dbName) 
-#.databases
-.sha3sum
 
 #show table
 PRAGMA table_info(Sensors);
 
 SELECT * FROM Sensors;
 SELECT printf('COUNT(*) %i', COUNT(*)) FROM Sensors;
-SELECT printf('COUNT(*) %i', COUNT(*)) FROM sensorData ;
 
 SELECT COUNT(*) FROM Sensors WHERE modID IS NOT NULL ;
  
@@ -20,23 +16,6 @@ SELECT printf('COUNT(*) %i', COUNT(*)) FROM Sensors
 SELECT * FROM Sensors
        WHERE (-12.6 < z ) AND (z < -12.4) ;
   
-SELECT COUNT(DISTINCT(sensorData.id)) FROM SensorData 
-    INNER JOIN Sensors ON sensorData.id = Sensors.id  
-       WHERE  Sensors.modID IS NOT NULL
-       AND    40. < temperature ;
-
-#these are the same if modID has been set for all working sensors ?? hA ? CHECK
-SELECT COUNT(DISTINCT(sensorData.id)) FROM SensorData 
-    INNER JOIN Sensors ON sensorData.id = Sensors.id  
-       WHERE  40. < temperature ;
-   
-SELECT DISTINCT(sensorData.id) FROM SensorData 
-    INNER JOIN Sensors ON sensorData.id = Sensors.id  
-       WHERE 40. < temperature ;
-
-SELECT COUNT(DISTINCT(Sensors.id)) FROM SensorData 
-    INNER JOIN Sensors ON sensorData.id = Sensors.id  
-       WHERE 40. < sensorData.temperature ;
 
 SELECT COUNT(DISTINCT(sensorData.id)) FROM SensorData 
     INNER JOIN Sensors ON sensorData.id = Sensors.id  

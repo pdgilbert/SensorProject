@@ -62,7 +62,7 @@ However, they will need to be done again if sensors are added or changed.
 The first is that the sensor IDs corresponding to modules/sockets must be added to the database.
 The second is that sensor locations from the construction drawings are added to the database.
 
-There is a third data flow that is less important and currently unused. A description
+There is another data flow that is less important and currently unused. A description
 of the transmitting module profiles is kept in a file and added to the database.
 
 [The sensor locations are of interest for display in the construction like drawings.

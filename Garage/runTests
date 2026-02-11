@@ -5,7 +5,18 @@ mkdir -p tmp
 export DB="target/SensorReadings.db"
 
 echo "*************** testing" ${DB}
-echo "****** comparison results from SensorReadings_2026-01-19.db"
+echo "*** comparison results from SensorReadings_2026-01-19.db ***"
+
+echo 
+echo "*** Data Summary - expect changes if testing with different data ***"
+
+echo -n sql_test0.sql ... 
+sqlite3 ${DB} <tests/sql_test0.sql  >tmp/sql_test0_out.txt
+echo "      diff:"
+diff tests/sql_test0_out.txt_result  tmp/sql_test0_out.txt
+
+echo 
+echo "*** These should have no changes if the original sample is a subset of new data ***"
 
 echo -n sql_test1.sql ... 
 sqlite3 ${DB} <tests/sql_test1.sql  >tmp/sql_test1_out.txt

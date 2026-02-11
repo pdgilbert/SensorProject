@@ -20,8 +20,8 @@ It also requires the (SQLite) database of the
 sensors' temperatures  [and humidity] readings and associated times.
 
 The Rhino display on the `.3dm` drawing is controlled by `sliders` in a
-Grasshopper program (eg. 'Garage/slab_sensor_Vis.ghx')
-which uses a python script ('DisplayData/utils/extractReadingsSlice.py') 
+Grasshopper program (eg. `Garage/slab_sensors_Vis.ghx`)
+which uses a python script (`DisplayData/utils/extractReadingsSlice.py`) 
 to access the database.
 The python script is moved by copy and paste into the `.ghx` script
 until I figure out something better.
