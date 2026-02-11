@@ -9,20 +9,9 @@ Put everything in SQL db then we will see if it needs to be filtered to remove d
 - Edit ModuleIdHash.txt  to add description for new modules.
 - Extract new  sensorLocations.txt from .3dm drawing.
 
- ../buildDB
+-    cat raw_data/SensorRecordOuput*.txt  \
+         [  |  ../utils/SensorDataFreqFilter  30  ]  >tmp/All_data.txt
 
-Bash script does
+-    ./buildDB tmp/All_data.txt  SensorReadings.db
 
-1/ Put files in raw_data/  from basestation `SensorRecord` into one file.
-
-2/ Filter and convert module Id & J# to sensor ID.
-    test file STILL USING test_data_2026-01-19.txt??
-     ../utils/SensorDataReformat --infile='test_data_2026-01-19.txt' \
-            --SensorHash='SensorIdHash.txt' --outfile='tmp/test_data_2026-01-19.csv'  --debug=True 
-
-3/ Load readings and sensor information files into db.
-
-    test file STILL USING THIS???
-     ../utils/loadReadings --infile='test_data_2026-01-19.csv' --outdb='test_2026-01-19.db'
-
-4/ ./runTests   MORE TESTS CAN BE ADDED HERE AND UPDATED.
+Tests need more work.

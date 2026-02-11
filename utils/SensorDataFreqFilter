@@ -26,7 +26,8 @@ import sys
 
 ###################################################################
 
-maxFreq =30  # skip any modules readings that are sooner the maxFreq  minutes
+#maxFreq =30  # skip any modules readings that are sooner than maxFreq  minutes
+maxFreq = int(sys.argv[1])
 
 # data circa August 2025 does not have UTC in the time stamp
 # Both with and without are handled below by removing UTC.

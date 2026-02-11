@@ -129,29 +129,41 @@ Files used to build the database are as follows:
      with Grasshopper script `extractSensorIDLocations.ghx`.
 - `SensorRecordOuput*.txt` files are moved from basestation(s) to directory `raw_data/`. 
 
-The shell (bash) script `buildDB` uses these files and python programs in `utils/` to
+The process is as follows.
+- The intermediate file of readings `tmp/All_data.txt` needs to be prepared by:
+```
+           cat raw_data/SensorRecordOuput*.txt >tmp/All_data.txt
+```
+      Or optionally run through `SensorDataFreqFilter` to reduce frequency, for example
+```
+           cat raw_data/SensorRecordOuput*.txt | \
+               ../utils/SensorDataFreqFilter  120   >tmp/All_data.txt
+```
+      This reduces the number of readings so there is at least 120 minutes (2 hours)
+      between readings for a module.
+      (Beware that runTests will indicate differences because the test sample is changed.)
+
+- The shell (bash) script `buildDB` uses these files and python programs in `utils/` to
 build the database. In the directory corresponding to a building (eg `Garage`) run
 
 ```
- ../buildDB
+   ../buildDB   tmp/All_data.txt  target/SensorReadings.db
 ```
 This generates a (SQLite) database file `target/SensorReadings.db`
 and runs some tests to check things have loaded properly.
 
 The `buildDB` script does the following:
 
-1/ All files `raw_data/SensorRecordOuput*.txt` are combined into one file.
-
-2/ The combined file is filter to remove some (obvious) faulty transmition recordings
+1/ The combined file is filter to remove some (obvious) faulty transmition recordings
      and module Id and J# are converted to a sensor ID.
 
-3/ The resulting converted file is loaded into the target database (table `SensorData`).
+2/ The resulting converted file is loaded into the target database (table `SensorData`).
 
-4/ The sensor details (id, location, module id, module socket number) is loaded into 
+3/ The sensor details (id, location, module id, module socket number) are loaded into 
      the target database (table `Sensors`) and the module descriptions are loaded into 
      the target database (table `Modules`).
 
-5/ The script ./runTests is run to check the database.
+4/ The script ./runTests is run to check the database.
 
 See the `buildDB` script for syntax details. For working notes see [README_garage](./Garage/README_garage.md).
 

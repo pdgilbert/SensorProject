@@ -1,8 +1,13 @@
 #!/bin/bash
 
-mkdir -p tmp
+if [ $# -lt 1 ]; then 
+  echo Error. Needs 1 arguments indicating the database file!
+  exit 1
+fi;
 
-export DB="target/SensorReadings.db"
+export DB=${1}
+
+mkdir -p tmp
 
 echo "*************** testing" ${DB}
 echo "*** comparison results from SensorReadings_2026-01-19.db ***"

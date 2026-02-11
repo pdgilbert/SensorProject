@@ -1,43 +1,64 @@
 #!/bin/bash
 
-# writes file  DB=target/SensorReadings.db
+# using sensor record  .txt file given by ${1}
+# write file  DB given by ${2}
+
+if [ $# -lt 2 ]; then 
+  echo Error. Needs 2 arguments indicating source txt file and target database file!
+  exit 1
+fi;
+
+export SRC=${1}
+export DB=${2}
 
 # uses files 
-#     SensorIdHash.txt - manually edited for any new sensors installed.
-#     ModuleIdHash.txt - manually edited to add description for any new modules.
-#     sensorLocations.txt - extracted from .3dm drawing by script extractSensorIDLocations.ghx
-#     raw_data/SensorRecordOuput*.txt - copied from basestation(s) 
+# - SensorIdHash.txt - manually edited for any new sensors installed.
+# - ModuleIdHash.txt - manually edited to add description for any new modules.
+# - sensorLocations.txt - extracted from .3dm drawing by script extractSensorIDLocations.ghx
+# - SRC=${1} which is built from 
+#         raw_data/SensorRecordOuput*.txt which are copied from basestation(s).
+#
+# - Before running this script:
+#      Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
+#      Put all SensorRecord files into a file, eg tmp/All_data.txt,  with
+#          cat raw_data/SensorRecordOuput*.txt >tmp/All_data.txt
+#      Or optionally run through SensorDataFreqFilter to reduce frequency, for example
+#          cat raw_data/SensorRecordOuput*.txt | \
+#              ../utils/SensorDataFreqFilter  30   >tmp/All_data.txt
+#      This drops readings so there is at least 1/2 hour between readings for a module.
+#      (Beware that runTests will indicate differences becasue the test sample is changed.)
 
-# Then to produce the database run this script
-#   ../buildDB
+# Then produce the database by running this script, for example
+#      ./buildDB  tmp/All_data.txt    target/SensorReadings.db
+#      ./buildDB  tmp/All_data.txtOK  target/SensorReadings.db
+
 
 mkdir -p target
 mkdir -p tmp
 
-export DB="target/SensorReadings.db"
-
 echo "*************** building" ${DB}
 
 # rm files, but touch ensures it exists so rm doesn't cause error
-touch  ${DB} tmp/All_data.txt tmp/All_data.csv 
-rm     ${DB} tmp/All_data.txt tmp/All_data.csv
+touch  ${DB}  tmp/All_data.csv 
+rm     ${DB}  tmp/All_data.csv
 
-echo Put all SensorRecord files into tmp/All_data.txt  ...
-cat raw_data/SensorRecordOuput*.txt >>tmp/All_data.txt
+# if All_data.txt is constructed here by next two lines then optional FreqFilter is not possible.
+# echo Put all SensorRecord files into ${SRC}  ...
+# cat raw_data/SensorRecordOuput*.txt >>${SRC}
 
 echo  Filter and convert module Id and J# to sensor ID, output to .csv ...
 ../utils/SensorDataReformat  --SensorHash='SensorIdHash.txt'  \
-         --infile='tmp/All_data.txt'  --outfile='tmp/All_data.csv' 
+         --infile=${SRC}  --outfile='tmp/zzz.csv' 
 
 echo Load csv file into db ...
-../utils/loadReadings --infile='tmp/All_data.csv' --outdb=${DB}
+../utils/loadReadings --infile='tmp/zzz.csv' --outdb=${DB}
 
 echo Load sensor ID, location, module, etc into  db ...
 ../utils/loadSensors  --sensorLocations='sensorLocations.txt' --SensorIdHash='SensorIdHash.txt' \
          --ModuleIdHash='ModuleIdHash.txt' --outdb=${DB}
 
 # NOTE THAT ABOVE IS GENERIC AS LONG AS NAMING CONVENTION IS RESPECTED.
-# IT COULD BE IN utils AND USED FOR House/.
+# IT COULD BE USED FOR House/.
 # BUT NEXT runTests is specific to Garage/.
 echo done load. Running tests ...
-./runTests
+./runTests ${DB}
