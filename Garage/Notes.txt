@@ -1,0 +1,12 @@
+The roof axis is NW-SE.
+
+The garage door is on the SE wall.
+The person door is in roughly the middle NE wall.
+
+Two windows are one in the SW and NE wall, 3/4 way back from 
+the garage door end. Only the one on  the NE has sensors.
+
+The profiles module IDs and  description are recorded in `ModuleIdHash.txt`
+which gets loaded into the database with script `loadSensors`.
+
+profile B:  Floor around person door has 2 extra unused sensors AW & AS.
