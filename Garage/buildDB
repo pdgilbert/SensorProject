@@ -5,6 +5,7 @@
 
 if [ $# -lt 2 ]; then 
   echo Error. Needs 2 arguments indicating source txt file and target database file!
+  echo Example: ./buildDB  tmp/All_data.txt  target/SensorReadings.db
   exit 1
 fi;
 
@@ -14,8 +15,8 @@ export DB=${2}
 # uses files 
 # - SensorIdHash.txt - manually edited for any new sensors installed.
 # - ModuleIdHash.txt - manually edited to add description for any new modules.
-# - sensorLocations.txt - extracted from .3dm drawing by script extractSensorIDLocations.ghx
-# - SRC=${1} which is built from 
+# - sensorLocations.txt - extracted from .3dm drawing by python program extract3dmSensorLocations
+# - SRC=${1} the source txt file of recocorded measurements which is built from 
 #         raw_data/SensorRecordOuput*.txt which are copied from basestation(s).
 #
 # - Before running this script:
@@ -30,7 +31,6 @@ export DB=${2}
 
 # Then produce the database by running this script, for example
 #      ./buildDB  tmp/All_data.txt    target/SensorReadings.db
-#      ./buildDB  tmp/All_data.txtOK  target/SensorReadings.db
 
 
 mkdir -p target
@@ -39,26 +39,39 @@ mkdir -p tmp
 echo "*************** building" ${DB}
 
 # rm files, but touch ensures it exists so rm doesn't cause error
-touch  ${DB}  tmp/All_data.csv 
-rm     ${DB}  tmp/All_data.csv
+   touch  ${DB}  tmp/All_data.csv 
+   rm     ${DB}  tmp/All_data.csv
 
 # if All_data.txt is constructed here by next two lines then optional FreqFilter is not possible.
 # echo Put all SensorRecord files into ${SRC}  ...
 # cat raw_data/SensorRecordOuput*.txt >>${SRC}
 
 echo  Filter and convert module Id and J# to sensor ID, output to .csv ...
-../utils/SensorDataReformat  --SensorHash='SensorIdHash.txt'  \
-         --infile=${SRC}  --outfile='tmp/zzz.csv' 
+   #../utils/SensorDataReformat  --SensorHash='SensorIdHash.txt'  \
+   #         --infile=${SRC}  --outfile='tmp/zzz.csv' 
+   ../utils/SensorDataReformat  --SensorHash='SensorIdHash.txt'  \
+           --infile=${SRC}  --outfile='tmp/zzz.csv' 
 
-echo Load csv file into db ...
-../utils/loadReadings --infile='tmp/zzz.csv' --outdb=${DB}
+echo Load csv file of sensor readings into db ...
+   ../utils/loadReadings --infile='tmp/zzz.csv' --outdb=${DB}
+
+echo extract sensor locations from .3dm file and write sensorLocations.txt ...
+   # next requires having once in utils/  done  `python3 -m venv  Rhino3dm`
+   # and  pip install rhino3dm in that environment.
+
+   mkdir -p intermediate
+   source ../utils/Rhino3dm/bin/activate  # activate python environment
+
+   ../utils/extract3dmSensorLocations slab_sensors.3dm >intermediate/sensorLocations.txt
+
+   deactivate    
 
 echo Load sensor ID, location, module, etc into  db ...
-../utils/loadSensors  --sensorLocations='sensorLocations.txt' --SensorIdHash='SensorIdHash.txt' \
+   ../utils/loadSensors  --sensorLocations='sensorLocations.txt' --SensorIdHash='SensorIdHash.txt' \
          --ModuleIdHash='ModuleIdHash.txt' --outdb=${DB}
 
 # NOTE THAT ABOVE IS GENERIC AS LONG AS NAMING CONVENTION IS RESPECTED.
 # IT COULD BE USED FOR House/.
 # BUT NEXT runTests is specific to Garage/.
 echo done load. Running tests ...
-./runTests ${DB}
+   ./runTests ${DB}

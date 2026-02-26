@@ -23,33 +23,29 @@ diff tests/sql_test0_out.txt_result  tmp/sql_test0_out.txt
 echo 
 echo "*** These should have no changes if the original sample is a subset of new data ***"
 
-echo -n sql_test1.sql ... 
-sqlite3 ${DB} <tests/sql_test1.sql  >tmp/sql_test1_out.txt
-echo "      diff:"
-diff tests/sql_test1_out.txt_result  tmp/sql_test1_out.txt
+export SQL=" sql_test1 sql_test2 sql_test3 "       
+export  PY=" test1 test2 test3 "  
 
-echo -n sql_test2.sql ...
-sqlite3 ${DB} <tests/sql_test2.sql  >tmp/sql_test2_out.txt
-echo "      diff:"
-diff tests/sql_test2_out.txt_result  tmp/sql_test2_out.txt
+for tst in $SQL ; do
+  echo -n ${tst}.sql ... 
+  sqlite3 ${DB} <tests/${tst}.sql  >tmp/${tst}_out.txt
+  echo -n "      diff:"
+  diff tests/${tst}_out.txt_result  tmp/${tst}_out.txt
+  if [ $? -ne 0 ]; then
+      echo "";
+  else
+      echo "ok";
+  fi
+  done
 
-echo -n sql_test3.sql ... 
-sqlite3 ${DB} <tests/sql_test3.sql  >tmp/sql_test3_out.txt
-echo "      diff:"
-diff tests/sql_test3_out.txt_result  tmp/sql_test3_out.txt
-
-
-echo -n test1.py ... 
-python3 tests/test1.py --dbName=${DB} >tmp/test1_out.txt
-echo "      diff:"
-diff     tests/test1_out.txt_result    tmp/test1_out.txt
-
-echo -n test2.py ... 
-python3 tests/test2.py --dbName=${DB} >tmp/test2_out.txt
-echo "      diff:"
-diff     tests/test2_out.txt_result    tmp/test2_out.txt
-
-echo -n test3.py  ...
-python3 tests/test3.py --dbName=${DB} >tmp/test3_out.txt
-echo "      diff:"
-diff     tests/test3_out.txt_result    tmp/test3_out.txt
+for tst in $PY ; do
+  echo -n ${tst}.py ... 
+  python3 tests/${tst}.py --dbName=${DB} >tmp/${tst}_out.txt
+  echo -n "      diff:"
+  diff     tests/${tst}_out.txt_result    tmp/${tst}_out.txt
+  if [ $? -ne 0 ]; then
+      echo "";
+  else
+      echo "ok";
+  fi
+  done

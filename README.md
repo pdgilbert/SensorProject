@@ -93,8 +93,10 @@ while humidity sensors cannot be waterproof.)
 In the `Garage` example there are 9 floor, 1 wall, and 1 roof profiles. CHECK
 
 The sensors are each given a two letter ID (eg. `AB`) and their locations are recorded in
-the (Rhino) construction drawings. The `Grasshopper` script `extractSensorIDLocations.ghx`
-is used to extract senser locations from the Rhino 3dm file.
+the (Rhino) construction drawings. The python program `extract3dmSensorLocations`
+is used to extract senser locations from the Rhino 3dm file. Previously the`Grasshopper`
+script `extractSensorIDLocations.ghx`was used but that requires a working version of `Rhino`
+and `Grasshopper`.
 The script puts the location data in a file `sensorLocations.txt`.
 
 The correspondance between sensor ID and module ID/socket# needs to be recorded
@@ -125,8 +127,7 @@ The directory `Garage/` is the most developed example.
 Files used to build the database are as follows:
 - `SensorIdHash.txt` is manually edited for any new sensors installed.
 - `ModuleIdHash.txt` is manually edited to add a description for any new module.
-- `sensorLocations.txt` is extracted from the construction `.3dm` drawing 
-     with Grasshopper script `extractSensorIDLocations.ghx`.
+- `sensorLocations.txt` is extracted from the construction `.3dm` drawing.
 - `SensorRecordOuput*.txt` files are moved from basestation(s) to directory `raw_data/`. 
 
 The process is as follows.
@@ -134,7 +135,7 @@ The process is as follows.
 ```
            cat raw_data/SensorRecordOuput*.txt >tmp/All_data.txt
 ```
-Or optionally run through `SensorDataFreqFilter` to reduce frequency, for example
+and optionally run through `SensorDataFreqFilter` to reduce frequency, for example
 ```
            cat raw_data/SensorRecordOuput*.txt | \
                ../utils/SensorDataFreqFilter  120   >tmp/All_data.txt
