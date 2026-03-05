@@ -77,7 +77,9 @@ echo extract sensor locations from .3dm file and write sensorLocations.txt ...
    deactivate    
 
 echo Load sensor ID, location, module, etc into  db ...
-   ../utils/loadSensors  --sensorLocations='sensorLocations.txt' --SensorIdHash='SensorIdHash.txt' \
+   ../utils/loadSensors    \
+         --sensorLocations='intermediate/sensorLocations.txt'  \
+         --SensorIdHash='SensorIdHash.txt' \
          --ModuleIdHash='ModuleIdHash.txt' --outdb=${DB}
 
 # NOTE THAT ABOVE IS GENERIC AS LONG AS NAMING CONVENTION IS RESPECTED.

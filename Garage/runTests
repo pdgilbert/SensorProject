@@ -9,6 +9,17 @@ export DB=${1}
 
 mkdir -p tmp
 
+
+echo "*************** checking intermediate/sensorLocations.txt"
+echo "      diff:"
+diff intermediate/sensorLocations.txt_result  intermediate/sensorLocations.txt
+if [ $? -ne 0 ]; then
+      echo "";
+else
+      echo "ok";
+fi
+
+
 echo "*************** testing" ${DB}
 echo "*** comparison results from SensorReadings_2026-01-19.db ***"
 
@@ -20,8 +31,9 @@ sqlite3 ${DB} <tests/sql_test0.sql  >tmp/sql_test0_out.txt
 echo "      diff:"
 diff tests/sql_test0_out.txt_result  tmp/sql_test0_out.txt
 
+
 echo 
-echo "*** These should have no changes if the original sample is a subset of new data ***"
+echo "*** Following should have no changes if the original sample is a subset of new data ***"
 
 export SQL=" sql_test1 sql_test2 sql_test3 "       
 export  PY=" test1 test2 test3 "  
@@ -49,3 +61,4 @@ for tst in $PY ; do
       echo "ok";
   fi
   done
+

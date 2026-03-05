@@ -12,7 +12,7 @@ Put everything in SQL db then we will see if it needs to be filtered to remove d
      cat raw_data/SensorRecordOuput*.txt  \
          [  |  ../utils/SensorDataFreqFilter  30  ]  >tmp/All_data.txt
 
--    ./buildDB tmp/All_data.txt slab_sensors.3dm  target/SensorReadings.db
+-  ./buildDB tmp/All_data.txt   slab_sensors.3dm   target/SensorReadings.db
 
 See the `buildDB` script in `Garage` for more specific details.
 Tests need more work.

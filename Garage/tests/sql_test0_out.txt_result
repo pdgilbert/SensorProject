@@ -1,6 +1,6 @@
-02bb911b737fc0bac8fffe8507affe363e9135cae4e87a6b2ee39192
+c46c031ac6e67393938f3b5fd5bbafaad6ad074c6c68c6e9db45d371
 Sensors COUNT(*) 141
-sensorData COUNT(*) 1421215
+sensorData COUNT(*) 1776292
 CE
 GP
 AY
@@ -34,7 +34,10 @@ BH
 CB
 GO
 CV
+DG
+AD
 IV
-34
-34
-34
+IW
+37
+37
+37
