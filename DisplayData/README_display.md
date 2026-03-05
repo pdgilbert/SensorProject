@@ -14,12 +14,12 @@ Time and location slices can be controlled by a Grasshopper program.
 
 This requires the Rhino .3dm file with a representation of the building
 (eg `Garage/slab_sensors.3dm`).
-The locations of the sensors will have been taken from this drawing 
-using `extractSensorIDLocations.ghx` when building the database. 
+The locations of the sensors will have been taken from the 3dm file 
+using python program `extract3dmSensorLocations` when building the database. 
 It also requires the (SQLite) database of the 
 sensors' temperatures  [and humidity] readings and associated times.
 
-The Rhino display on the `.3dm` drawing is controlled by `sliders` in a
+The Rhino display of the `.3dm` drawing is controlled by `sliders` in a
 Grasshopper program (eg. `Garage/slab_sensors_Vis.ghx`)
 which uses a python script (`DisplayData/utils/extractReadingsSlice.py`) 
 to access the database.

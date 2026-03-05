@@ -7,13 +7,12 @@ Put everything in SQL db then we will see if it needs to be filtered to remove d
 
 - Edit SensorIdHash.txt   NEED TO ADD MORE SENSORS AND MODULES.
 - Edit ModuleIdHash.txt  to add description for new modules.
-- Extract new  sensorLocations.txt from .3dm drawing.
 
 - Optionally pipe SensorRecordOuput*.txt trough a filter 
      cat raw_data/SensorRecordOuput*.txt  \
          [  |  ../utils/SensorDataFreqFilter  30  ]  >tmp/All_data.txt
 
--    ./buildDB tmp/All_data.txt  target/SensorReadings.db
+-    ./buildDB tmp/All_data.txt slab_sensors.3dm  target/SensorReadings.db
 
 See the `buildDB` script in `Garage` for more specific details.
 Tests need more work.

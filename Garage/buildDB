@@ -1,38 +1,48 @@
 #!/bin/bash
 
-# using sensor record  .txt file given by ${1}
-# write file  DB given by ${2}
+# read  sensor recordings from  .txt file given by ${1}
+# read sensor locations from  ${2}
+# write file  sensor locations to intermediate/sensorLocations.txt
+# write file  DB given by ${3}
 
-if [ $# -lt 2 ]; then 
-  echo Error. Needs 2 arguments indicating source txt file and target database file!
-  echo Example: ./buildDB  tmp/All_data.txt  target/SensorReadings.db
+if [ $# -ne 3 ]; then 
+  echo Error. Needs 3 arguments indicating source txt file, 
+  echo   3dm file with sensor locations, and target database file!
+  echo Example: ./buildDB  tmp/All_data.txt slab_sensors.3dm  target/SensorReadings.db
   exit 1
 fi;
 
 export SRC=${1}
-export DB=${2}
+export F3DM=${2}
+export DB=${3}
 
 # uses files 
 # - SensorIdHash.txt - manually edited for any new sensors installed.
 # - ModuleIdHash.txt - manually edited to add description for any new modules.
-# - sensorLocations.txt - extracted from .3dm drawing by python program extract3dmSensorLocations
 # - SRC=${1} the source txt file of recocorded measurements which is built from 
 #         raw_data/SensorRecordOuput*.txt which are copied from basestation(s).
+# - 3dm (Rhino) file with sensor locations. These are extracted by python 
+#         program extract3dmSensorLocations and written to file intermediate/sensorLocations.txt
+# - sensorLocations.txt - witten to database.
 #
-# - Before running this script:
-#      Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
-#      Put all SensorRecord files into a file, eg tmp/All_data.txt,  with
+# Subdirectory intermediate/ has files that might be kept in git as they could be
+#   useful for reproducing results and debugging. Subdirectory tmp/ is not kept.
+#
+# Before running this script:
+#  -   Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
+#  -   Put all SensorRecord files into a file, eg tmp/All_data.txt,  with
 #          cat raw_data/SensorRecordOuput*.txt >tmp/All_data.txt
-#      Or optionally run through SensorDataFreqFilter to reduce frequency, for example
+#  -   Optionally run through SensorDataFreqFilter to reduce frequency, for example
 #          cat raw_data/SensorRecordOuput*.txt | \
 #              ../utils/SensorDataFreqFilter  30   >tmp/All_data.txt
-#      This drops readings so there is at least 1/2 hour between readings for a module.
-#      (Beware that runTests will indicate differences becasue the test sample is changed.)
+#  -   This drops readings so there is at least 1/2 hour between readings for a module.
+#      (Beware that runTests will indicate differences because the test sample is changed.)
 
 # Then produce the database by running this script, for example
 #      ./buildDB  tmp/All_data.txt    target/SensorReadings.db
 
 
+mkdir -p intermediate
 mkdir -p target
 mkdir -p tmp
 
@@ -62,7 +72,7 @@ echo extract sensor locations from .3dm file and write sensorLocations.txt ...
    mkdir -p intermediate
    source ../utils/Rhino3dm/bin/activate  # activate python environment
 
-   ../utils/extract3dmSensorLocations slab_sensors.3dm >intermediate/sensorLocations.txt
+   ../utils/extract3dmSensorLocations ${F3DM} >intermediate/sensorLocations.txt
 
    deactivate    
 

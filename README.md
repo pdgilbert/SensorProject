@@ -57,8 +57,9 @@ base station roughly monthly. Both timings reflect the development status and co
 substantially.
 
 There are two important secondary data flows to establish the sensor configuration. 
-These may only need to be done once, when the sensors are installed.
-However, they will need to be done again if sensors are added or changed. 
+In theory these only need to be done once, when the sensors are installed.
+However, they will need to be done again if sensors are added or changed,
+so in practice they are included in the database build process. 
 The first is that the sensor IDs corresponding to modules/sockets must be added to the database.
 The second is that sensor locations from the construction drawings are added to the database.
 
@@ -160,13 +161,17 @@ The `buildDB` script does the following:
 
 2/ The resulting converted file is loaded into the target database (table `SensorData`).
 
-3/ The sensor details (id, location, module id, module socket number) are loaded into 
+3a/ The sensor locations are extracted from (Rhino) 3dm file by python 
+      program extract3dmSensorLocations and written to file intermediate/sensorLocations.txt
+
+3b/ The sensor details (id, location, module id, module socket number) are loaded into 
      the target database (table `Sensors`) and the module descriptions are loaded into 
      the target database (table `Modules`).
 
 4/ The script `./runTests` is run to check the database.
 
-See the `buildDB` script for syntax details. For working notes see [README_garage](./Garage/README_garage.md).
+See the `buildDB` script for syntax details.
+For working notes see [README_garage](./Garage/README_garage.md).
 
 
 ### Data Display
