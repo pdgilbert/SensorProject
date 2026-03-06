@@ -1,14 +1,38 @@
 #!/bin/bash
 
-# read  sensor recordings from  .txt file given by ${1}
-# read sensor locations from  ${2}
-# write file  sensor locations to intermediate/sensorLocations.txt
-# write file  DB given by ${3}
+# Compare ../README.md###Database, which gives generic description of the
+# following script. This script is specific to Garage.
+# read  sensor recordings from  .txt file given by ${1}.
+#       The source txt ${1} is built from raw_data/SensorRecordOuput*.txt 
+#       which are copied from basestation(s).
+# read sensor locations (Rhino) from 3dm file ${2}. The sensor locations
+#        are extracted by python program extract3dmSensorLocations and 
+#        written to file intermediate/sensorLocations.txt.
+# write DB file given by ${3}
+#
+# Also uses files 
+# - SensorIdHash.txt - manually edited for any new sensors installed.
+# - ModuleIdHash.txt - manually edited to add description for any new modules.
+#
+# Before running this script:
+#  -   Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
+#  -   Put all SensorRecord files into a file, eg intermediate/All_data.txt,  with
+#          cat raw_data/SensorRecordOuput*.txt >intermediate/All_data.txt
+#  -   Optionally run through SensorDataFreqFilter to reduce frequency, for example
+#          cat raw_data/SensorRecordOuput*.txt | \
+#              ../utils/SensorDataFreqFilter  30   >intermediate/All_data.txt
+#  -   This drops readings so there is at least 1/2 hour between readings for a module.
+#      (Beware that runTests will indicate differences because the test sample is changed.)
+
+
+# Subdirectory intermediate/ has files that might be kept in git as they could be
+#   useful for reproducing results and debugging. Subdirectory tmp/ is not kept.
+
 
 if [ $# -ne 3 ]; then 
-  echo Error. Needs 3 arguments indicating source txt file, 
-  echo   3dm file with sensor locations, and target database file!
-  echo Example: ./buildDB  tmp/All_data.txt slab_sensors.3dm  target/SensorReadings.db
+  echo Error. Needs 3 arguments indicating 1/ the source txt file of data readings, 
+  echo   2/ 3dm file with sensor locations, and 3/ target database file.
+  echo Example: ./buildDB  intermediate/All_data.txt slab_sensors.3dm  target/SensorReadings.db
   exit 1
 fi;
 
@@ -16,49 +40,20 @@ export SRC=${1}
 export F3DM=${2}
 export DB=${3}
 
-# uses files 
-# - SensorIdHash.txt - manually edited for any new sensors installed.
-# - ModuleIdHash.txt - manually edited to add description for any new modules.
-# - SRC=${1} the source txt file of recocorded measurements which is built from 
-#         raw_data/SensorRecordOuput*.txt which are copied from basestation(s).
-# - 3dm (Rhino) file with sensor locations. These are extracted by python 
-#         program extract3dmSensorLocations and written to file intermediate/sensorLocations.txt
-# - sensorLocations.txt - witten to database.
-#
-# Subdirectory intermediate/ has files that might be kept in git as they could be
-#   useful for reproducing results and debugging. Subdirectory tmp/ is not kept.
-#
-# Before running this script:
-#  -   Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
-#  -   Put all SensorRecord files into a file, eg tmp/All_data.txt,  with
-#          cat raw_data/SensorRecordOuput*.txt >tmp/All_data.txt
-#  -   Optionally run through SensorDataFreqFilter to reduce frequency, for example
-#          cat raw_data/SensorRecordOuput*.txt | \
-#              ../utils/SensorDataFreqFilter  30   >tmp/All_data.txt
-#  -   This drops readings so there is at least 1/2 hour between readings for a module.
-#      (Beware that runTests will indicate differences because the test sample is changed.)
-
-# Then produce the database by running this script, for example
-#      ./buildDB  tmp/All_data.txt    target/SensorReadings.db
-
-
 mkdir -p intermediate
 mkdir -p target
 mkdir -p tmp
 
 echo "*************** building" ${DB}
 
-# rm files, but touch ensures it exists so rm doesn't cause error
-   touch  ${DB}  tmp/All_data.csv 
-   rm     ${DB}  tmp/All_data.csv
+# rm old tmp files, 
+   rm -f    ${DB}  tmp/All_data.csv  tmp/zzz.csv
 
 # if All_data.txt is constructed here by next two lines then optional FreqFilter is not possible.
 # echo Put all SensorRecord files into ${SRC}  ...
-# cat raw_data/SensorRecordOuput*.txt >>${SRC}
+# cat raw_data/SensorRecordOuput*.txt >${SRC}
 
 echo  Filter and convert module Id and J# to sensor ID, output to .csv ...
-   #../utils/SensorDataReformat  --SensorHash='SensorIdHash.txt'  \
-   #         --infile=${SRC}  --outfile='tmp/zzz.csv' 
    ../utils/SensorDataReformat  --SensorHash='SensorIdHash.txt'  \
            --infile=${SRC}  --outfile='tmp/zzz.csv' 
 

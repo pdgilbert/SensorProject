@@ -98,7 +98,8 @@ the (Rhino) construction drawings. The python program `extract3dmSensorLocations
 is used to extract senser locations from the Rhino 3dm file. Previously the`Grasshopper`
 script `extractSensorIDLocations.ghx`was used but that requires a working version of `Rhino`
 and `Grasshopper`.
-The script puts the location data in a file `sensorLocations.txt`.
+The script puts the location data in a file `intermidiate/sensorLocations.txt`
+which is used to construct the database.
 
 The correspondance between sensor ID and module ID/socket# needs to be recorded
 when the modules are installed. This is kept by manually editing file `SensorIdHash.txt`.
@@ -128,47 +129,74 @@ The directory `Garage/` is the most developed example.
 Files used to build the database are as follows:
 - `SensorIdHash.txt` is manually edited for any new sensors installed.
 - `ModuleIdHash.txt` is manually edited to add a description for any new module.
-- `sensorLocations.txt` is extracted from the construction `.3dm` drawing.
-- `SensorRecordOuput*.txt` files are moved from basestation(s) to directory `raw_data/`. 
+- The sensor locations are manually recorded in the (Rhino) `3dm` file,
+  for example, `slab_sensors.3dm`.
+  Locations are extracted by python program `extract3dmSensorLocations` and 
+  written to file `intermediate/sensorLocations.txt`.
+- If new data recording files are being used, the `SensorRecordOuput*.txt` 
+  files need to be moved from basestation(s) to directory `raw_data/`. 
 
-The process is as follows.
-- The intermediate file of readings, for example `tmp/All_data.txt`, needs to be prepared by:
+These items should be checked in preparation for processing the data.
+- `SensorIdHash.txt`, `ModuleIdHash.txt`, and the `.3dm` may need to be updated
+   if there are any new modules or sensors.
+- The python environment `Rhino3dm` needs to be defined in `utils/` by
 ```
-           cat raw_data/SensorRecordOuput*.txt >tmp/All_data.txt
+      cd utils/
+      python3 -m venv  Rhino3dm
+      source Rhino3dm/bin/activate
+      pip install rhino3dm
+      deactivate
+      cd ../
+```
+
+The process for building the database is as follows:
+1/ Change into the directory of the building, for example
+```
+    cd Garage
+```
+
+2/ The file of readings, for example `intermediate/All_data.txt`, needs to be prepared,
+possibly by:
+```
+           cat raw_data/SensorRecordOuput*.txt >intermediate/All_data.txt
 ```
 and optionally run through `SensorDataFreqFilter` to reduce frequency, for example
 ```
            cat raw_data/SensorRecordOuput*.txt | \
-               ../utils/SensorDataFreqFilter  120   >tmp/All_data.txt
+               ../utils/SensorDataFreqFilter  120   >intermediate/All_data.txt
 ```
 The filter reduces the number of readings so there is at least 120 minutes (2 hours)
 between readings for a module. (Beware that runTests will indicate 
 differences because the test sample is changed.)
 
-- The shell (bash) script `buildDB` uses these files and python programs in `utils/` to
-build the database. In the directory corresponding to a building (eg `Garage`) run
+Alternately, the file of readings can be a previously saved file 
+such as `All_data_2026-01-19.txt` which may need to be unzipped.
+
+3/ The shell (bash) script `buildDB` uses these files and python programs in `utils/` to
+build the database. This script is specific to a building. 
+In the directory corresponding to a building (for example `Garage`) run
 
 ```
-   ../buildDB   tmp/All_data.txt  target/SensorReadings.db
+ ./buildDB  intermediate/All_data.txt  slab_sensors.3dm  target/SensorReadings.db
 ```
 This generates a (SQLite) database file `target/SensorReadings.db`
 and runs some tests to check things have loaded properly.
 
 The `buildDB` script does the following:
 
-1/ The combined `.txt` file is filter to remove some (obvious) faulty transmition recordings
-     and module Id and J# are converted to a sensor ID.
+- The combined readings `.txt` file is filter to remove some (obvious) faulty 
+   transmition recordings and module Id and J# are converted to a sensor ID.
 
-2/ The resulting converted file is loaded into the target database (table `SensorData`).
+- The resulting converted file is loaded into the target database (table `SensorData`).
 
-3a/ The sensor locations are extracted from (Rhino) 3dm file by python 
+- The sensor locations are extracted from (Rhino) 3dm file by python 
       program extract3dmSensorLocations and written to file intermediate/sensorLocations.txt
 
-3b/ The sensor details (id, location, module id, module socket number) are loaded into 
+- The sensor details (id, location, module id, module socket number) are loaded into 
      the target database (table `Sensors`) and the module descriptions are loaded into 
      the target database (table `Modules`).
 
-4/ The script `./runTests` is run to check the database.
+- The script `./runTests` is run to check the database.
 
 See the `buildDB` script for syntax details.
 For working notes see [README_garage](./Garage/README_garage.md).
