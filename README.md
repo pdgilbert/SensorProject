@@ -150,6 +150,7 @@ These items should be checked in preparation for processing the data.
 ```
 
 The process for building the database is as follows:
+
 1/ Change into the directory of the building, for example
 ```
     cd Garage
@@ -189,8 +190,8 @@ The `buildDB` script does the following:
 
 - The resulting converted file is loaded into the target database (table `SensorData`).
 
-- The sensor locations are extracted from (Rhino) 3dm file by python 
-      program extract3dmSensorLocations and written to file intermediate/sensorLocations.txt
+- The sensor locations are extracted from (Rhino) `3dm` file by `python` 
+      program `extract3dmSensorLocations` and written to file `intermediate/sensorLocations.txt`.
 
 - The sensor details (id, location, module id, module socket number) are loaded into 
      the target database (table `Sensors`) and the module descriptions are loaded into 
@@ -205,8 +206,8 @@ For working notes see [README_garage](./Garage/README_garage.md).
 ### Data Display
 
 Currently, displaying the data requires Rhino 8, the building model file `Garage/slab_sensors.3dm`,
-the Grasshopper script `Garage/slab_sensor_Vis.ghx` and python code 
-`extractReadingsSlice.py` which must be loaded into the Grasshopper script.
+the `Grasshopper` script `Garage/slab_sensor_Vis.ghx` and `python` code 
+`extractReadingsSlice.py` which must be loaded into the `Grasshopper` script.
 More detail is described in [README_display](./DisplayData/README_display.md).
 
 
