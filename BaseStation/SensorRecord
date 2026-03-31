@@ -40,6 +40,9 @@ CodingRates = {"4_5": CODING_RATE.CR4_5,  "4_6": CODING_RATE.CR4_6,
 parser = argparse.ArgumentParser(description= 
            'Listen for  LoRa messages and record to file. Optionally print to screen (for debugging transmitters).')
 
+parser.add_argument('--filename', type=str, default='SensorRecordOuput.txt',
+                    help='Output file name. (default: SensorRecordOuput.txt)')
+
 parser.add_argument('--quiet', type=bool, default=False,
                     help='if True suppress message printing. (default: False)')
 
@@ -88,7 +91,7 @@ class LoRaRx(LoRa):
       verbose True/False  is used by pySX127x to print extra information (mode setting).
       do_calibration=True, calibration_freq=915
     '''
-    def __init__(self, quiet=False, debug=False, filename='SensorRecordOuput.txt',
+    def __init__(self, quiet=args.quiet, debug=args.debug, filename=args.filename,
            freq=915, bw=125, Cr='4_8', Sf=7,
            verbose=False, do_calibration=True, calibration_freq=915):
         
@@ -97,7 +100,7 @@ class LoRaRx(LoRa):
         self.quiet=quiet
         self.debug=debug
         
-        self.file = open(filename, 'w')
+        self.file = open(filename, 'a')
 
 
         # SX127x class LoRa has (Medium Range  Defaults after init):
@@ -146,13 +149,14 @@ class LoRaRx(LoRa):
         # something like this if tz needed. Assuming UTC above.
         #tznow = datetime.datetime.now(datetime.timezone.utc).astimezone().tzname()
 
-        #if self.debug :
-        print(rx + ' ' + now)
-        print(' SNR ' + str(snr) + '  RSSI ' + str(rssi) )
+        if self.debug :
+           print(rx + ' ' + now)
+           print(' SNR ' + str(snr) + '  RSSI ' + str(rssi) )
         
         self.file.write('\n' + rx + ' ' + now)
         self.file.write('\n' + ' SNR ' + str(snr) + '  RSSI ' + str(rssi) )
-
+        self.file.flush()
+        
         #print( [ord(ch) for ch in payload])
         #print(chr(payload[0]))
         self.set_mode(MODE.RXCONT)

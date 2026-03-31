@@ -1,6 +1,6 @@
 ## Base Station Summary
 
-Code for the base station is in the subdirectory `RecordData`.
+Code for the base station is in the subdirectory `BaseStation`.
 The program `SensorRecord` is `python3` code which runs on a base station. 
 It receives and records data from the sensor modules. 
 The current version simply listens on a LoRa channel and records any transmissions received.
@@ -16,14 +16,15 @@ receive information. It can be run headless but a monitor is very useful for ini
 ### Recording software setup
 
 `SensorRecord` is `python3` code for receiving and recording data from the sensor modules.
-To run it with default argument values:
+It can be run with defaults, or argument values can be specified:
 
 ```
- ./SensorRecord  --debug=True
+ ./SensorRecord
+ ./SensorRecord --filename='SensorRecordOuput.txt'  --debug=True
 ```
 
-`SensorRecord`  takes command line arguments to set the
-frequency, bandwidth, coding rate, and spreading factor. Use the `--help` argument for
+`SensorRecord`  also takes command line arguments to set the
+frequency channel, bandwidth, coding rate, and spreading factor. Use the `--help` argument for
 more details. There are trade-offs among competing objectives: distance, data rate, 
 data reliability, channel congestion, battery life ... . 
 These are affected by the various settings.
@@ -33,6 +34,8 @@ For more information, see for example:
 and
 [Mark Zachmann blog](https://medium.com/home-wireless/testing-lora-radios-with-the-limesdr-mini-part-2-37fa481217ff)
 
+There is also a bash script `startSensorRecord` which is especially useful for 
+starting from a cron job.
 
 ##  Example Configuration of a Base Station using Raspberry Pi
 
@@ -255,3 +258,17 @@ Received messages are recorded in file `SensorRecordOuput.txt` by default.
 The `--debug=True` argument causes messages to also be printed on the terminal.
 The `--help` argument displays argument options.
 
+The bash script `startSensorRecord` will (re)start `SensorRecord` with an output
+file named 'SensorRecordOuput_<hostname>_<YYYY-MM>.txt'.
+The file is opened in append mode so previous data is not lost.
+The script stores the process `PID' in the file 'SensorRecord.PID' and
+uses the `PID' to stop a running process before restarting.
+
+This script is especially useful in a cron job. For example, edit the
+crontab file ('crontab -e') and add
+```
+   @reboot   ~/startSensorRecord
+   @monthly  ~/startSensorRecord
+```
+This will automatically start the process when the system is booted, and also
+restart it at the beginning of each month.
