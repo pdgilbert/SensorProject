@@ -263,6 +263,8 @@ file named 'SensorRecordOuput_<hostname>_<YYYY-MM>.txt'.
 The file is opened in append mode so previous data is not lost.
 The script stores the process `PID' in the file 'SensorRecord.PID' and
 uses the `PID' to stop a running process before restarting.
+(Note that the script assumes the python virtual env is activate 
+by `source LoRaVenv/bin/activate`.)
 
 This script is especially useful in a cron job. For example, edit the
 crontab file ('crontab -e') and add
