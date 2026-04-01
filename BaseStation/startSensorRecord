@@ -5,8 +5,14 @@
 # (eg, if the system was powered down), but gives an error message from kill.
 
 #This can be added to cron (crontab -e) with lines
-#   @reboot   ~/startSensorRecord
-#   @monthly  ~/startSensorRecord
+#   @reboot   /home/pi/startSensorRecord  2> SensorRecord_Errors
+#   @monthly  /home/pi/startSensorRecord  2> SensorRecord_Errors
+#  and to cancel sending mail
+#   MAIL=""  
+
+# crontab seems to use the local tz and system clock so set it, eg
+#   sudo timedatectl set-timezone America/Halifax
+# but note that data is recorded in utc time.
 
 if [ -f SensorRecord.PID ]; then
     source SensorRecord.PID

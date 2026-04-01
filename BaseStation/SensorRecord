@@ -20,7 +20,7 @@ import os
 import socket
 import json
 
-import datetime
+from datetime import datetime, timezone
 
 #https://www.rfwireless-world.com/Tutorials/LoRa-channels-list.html
 channels = {
@@ -145,9 +145,11 @@ class LoRaRx(LoRa):
         self.reset_ptr_rx()
         rx = bytes(payload).decode("utf-8",'ignore')
         
-        now =  str(datetime.datetime.now()) + ' UTC'
-        # something like this if tz needed. Assuming UTC above.
-        #tznow = datetime.datetime.now(datetime.timezone.utc).astimezone().tzname()
+        #now =  str(datetime.now()) + ' localtime'
+        #now =  str(datetime.now(timezone.utc)) + ' UTC'
+        now =  datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S') + ' UTC'
+        # something like this if another tz needed.
+        #tznow = datetime.now(timezone.utc).astimezone().tzname()
 
         if self.debug :
            print(rx + ' ' + now)
