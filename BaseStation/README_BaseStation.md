@@ -127,7 +127,7 @@ Instructions here were tested with Raspberry Pi OS Lite 32 bit Release date 4 De
 Downloaded file `2025-12-04-raspios-trixie-armhf-lite.img.xz` 
 and in file `checksums.sha256` add a line
 1b3e49b67b15050a9f20a60267c145e6d468dc9559dd9cd945130a11401a49ff 2025-12-04-raspios-trixie-armhf-lite.img.xz
-
+[also tested with  2026-04-21-raspios-trixie-armhf-lite.img.xz ]
 Check the checksum:
 ```
 sha256sum --check checksums.sha256
@@ -152,11 +152,36 @@ The first bootup
    - configures the wired network if attached
    - sets clock but may make bad guess at time zone
 
+[Note that boot and reboot may take awhile to send output so the monitor may go
+to sleep and need reset.]
+
+
 The wired network connects automatically. For wifi
 ```
    sudo raspi-config  # System Options > Wireless LAN
 ```
+#################################
 (Some details for wireless are skipped here. )
+Booting with wifi (KanaKit) but no wired attached ifonfig does show eth0
+recognized but no IP address.
+[   sudo raspi-config  # System Options > Wireless LAN
+This is client brings up wlan0 but fails looking for ssid. 
+]
+To start up wifi do 
+   sudo nmcli device wifi hotspot ssid  <whatever>  password <MySecret>
+   nmcli dev wifi show-password
+
+[ This may give "...activation failed...too long to authenticate" on 
+  Pi 3B so need to disable PMF, which has security implications on 
+  untrusted network, do
+    sudo nmcli con modify Hotspot 802-11-wireless-security.pmf 1
+    sudo nmcli con up Hotspot
+]
+
+   nmcli dev wifi show-password
+
+(Some details for wireless are skipped here. )
+#################################
 
 Set up ssh service if you want to run headless or remotely. 
 ```
@@ -170,13 +195,15 @@ Optionally, remote login can now be used to do the remainder.
 Possibly change the base station name:
 
 ```
-sudo hostname basestationX   # or whatever
+sudo raspi-config  # ...> change hostname > #Preferred, also changes /etc/hosts.
 #or
-sudo hostnamectl set-hostname  basestationX   # (this does not change /etc/hosts)
+sudo hostname basestationX
 #or
-sudo raspi-config  # ...> change hostname >   # (this changes /etc/hosts too)
+sudo hostnamectl set-hostname  basestationX   # does not change /etc/hosts
+#or
 ```
-The old hostname should also be replace with the new in /etc/hosts file too, eg sudo nano /etc/hosts,
+The hostname needs to be updated in /etc/hosts file.
+If not, edit it, eg sudo nano /etc/hosts,
 otherwise there are error messages about `unable to resolve host`. 
 
 The new name does not appear as the prompt until a new terminal is started.)
@@ -243,11 +270,14 @@ something other than 915 MHz should be used for LoRa transmitions.
 Be sure to check the command line arguments for options.
 (A different RFM95 LoRa module will also be needed.)
 
-Copy the `SensorRecord` program from this repository and check that the file has execute permission.
-If you already have it on a local computer it can be copied with
+Copy `SensorRecord` and `startSensorRecord` from this repository and check that they have execute permission.
+If you already have them on a local computer they can be copied with
 
 ```
 scp userID@somewhere:SensorRecord   SensorRecord
+scp userID@somewhere:startSensorRecord   startSensorRecord
+scp SensorRecord pi@10.42.0.1:SensorRecord  
+scp startSensorRecord pi@10.42.0.1:startSensorRecord  
 ```   
 Make sure the virtual environment is activated and start the program with defaults:
 ```
