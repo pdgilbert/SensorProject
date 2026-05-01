@@ -1,3 +1,9 @@
+The roof axis is NE-SW.
+
+The front door is in roughly the middle SE wall.
+The sliding door is in the NE wall.
+
+
 Need to better confirm positions and place on sketches.
 2 sensors to hK need connectors.
 Need profile drawings with sensor locations.

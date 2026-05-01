@@ -1,9 +1,5 @@
-The roof axis is NE-SW.
-
-The front door is in roughly the middle SE wall.
-The sliding door is in the NE wall.
-
-
-hA:  Wall profile in NE wall of office.
-hb:  Roof profile roughly at the peak about 10' from the NE wall.
-hK   Foundation profile in utility room.
+#: see file Notes.txt for more details. For comments start line with #:
+#:  moduleID    description      hardware_version             software_version_SensorProject_th8
+HA:  "Wall profile in NE wall of office."                           "th8-F411  v0.3.1  2025-12"  "b7f3b3ce967d2b6a472"
+hb:  "Roof profile roughly at the peak about 10' from the NE wall." "th8-F411  v0.3.1  2025-12"  "b7f3b3ce967d2b6a472"
+hK   "Foundation profile in utility room."                          "t16-F411  v0.2.2  2025-09"

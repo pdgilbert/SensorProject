@@ -118,3 +118,12 @@ L       J5      MK
 L       J6      MS
 L       J7      MI
 L       J8      NONE
+
+M       J1      HD
+M       J2      HH
+M       J3      HM
+M       J4      HE
+M       J5      HA
+M       J6      HC
+M       J7      HB
+M       J8      HG
