@@ -1,0 +1,121 @@
+# ModID, socket, sensorID   "#" in first character of line for a comment line
+lthA       J1      xx
+lthA       J2      
+lthA       J3      
+lthA       J4      
+lthA       J5      
+lthA       J6      
+lthA       J7      
+lthA       J8      
+
+B       J1      xx
+B       J2      
+B       J3      
+B       J4      
+B       J5      
+B       J6      
+B       J7      
+B       J8      
+B       J9      
+B       J10     
+B       J11     
+B       J12     
+B       J13     
+B       J14     
+B       J15     
+B       J16     
+
+C       J1      
+C       J2      
+C       J3      
+C       J4      
+C       J5      
+C       J6      
+C       J7      
+C       J8      
+C       J9      
+C       J10     
+C       J11     
+C       J12     
+C       J13     
+C       J14     
+C       J15     
+C       J16     
+
+D       J1      
+D       J2      
+D       J3      
+D       J4      
+D       J5      
+D       J6      
+D       J7      
+D       J8      
+D       J9      
+D       J10     
+D       J11     
+D       J12     
+D       J13     
+D       J14     
+D       J15     
+D       J16     
+
+E       J1      
+E       J2      
+E       J3      
+E       J4      
+E       J5      
+E       J6      
+E       J7      
+E       J8      
+E       J9      
+E       J10     
+E       J11     
+E       J12     
+E       J13     
+E       J14     
+E       J15     
+E       J16     
+
+F       J1      
+F       J2      
+F       J3      
+F       J4      
+F       J5      
+F       J6      
+F       J7      
+F       J8      
+F       J9      
+F       J10     
+F       J11     
+F       J12     
+F       J13     
+F       J14     
+F       J15     
+F       J16     
+
+K       J1      
+K       J2      
+K       J3      
+K       J4      
+K       J5      
+K       J6      
+K       J7      
+K       J8      
+
+L       J1      
+L       J2      
+L       J3      
+L       J4      
+L       J5      
+L       J6      
+L       J7      
+L       J8      
+
+M       J1      
+M       J2      
+M       J3      
+M       J4      
+M       J5      
+M       J6      
+M       J7      
+M       J8      

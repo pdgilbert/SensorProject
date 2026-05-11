@@ -56,24 +56,26 @@ The manual/datasheet is at https://cdn.sparkfun.com/assets/learn_tutorials/8/0/4
 Re DIO see "pinouts" and p40-41.
 
 A shielded module like G-NiceRF LoRa1276-C1-915 is probably better but I have not tested.
+LLCC68 seems to be "stripped down" sx126x.
 
 Pin settings for the RFM95W to Raspberry Pi are as follows:
-
-|  RFM95 |Pi pin|   Pi GPIO=BCM     |       
-|:------:|:----:|:-----------------:|       
-|  DIO0  |   7  |     GPIO  4       |       
-|  DIO1  |  11  |     GPIO 17       |       
-|  DIO2  |  12  |     GPIO 18       |       
-|  DIO3  |  13  |     GPIO 27       |       
-|  REST  |  15  |     GPIO 22       |       
-|  VCC   |  17  |      3v3          |       
-|  MOSI  |  19  | spi0 MOSI GPIO 10 |       
-|  MISO  |  21  | spi0 MISO GPIO  9 |       
-|  SCK   |  23  | spi0 SCK  GPIO 11 |       
-| NSS/CS |  24  | spi0 CE0  GPIO  8 |       
-|  GND   |  25  |     GND           |       
-|  GND   |  20  |     GND           |        
-|  GND   |  14  |     GND           |        
+| RFM95 sx1276|   LLCC68    |   Raspberry Pi          |
+| pin|  label | pin| label  | pin | label (GPIO=BCM)  |       
+|:---|:------:|:---|:------:|:---:|:-----------------:|       
+| 14 |  DIO0  |  x |  DIO0  |   7 |     GPIO  4       |       
+| 15 |  DIO1  | 15 |  DIO1  |  11 |     GPIO 17       |       
+|  x |  DIO2  |  x |  DIO2  |  12 |     GPIO 18       |       
+|  x |  DIO3  | 11 |  DIO3  |  13 |     GPIO 27       |       
+|  6 |  REST  |  6 |  REST  |  15 |     GPIO 22       |       
+| 13 |  VCC   | 13 |  VCC   |  17 |      3v3          |       
+|  3 |  MOSI  |  3 |  MOSI  |  19 | spi0 MOSI GPIO 10 |       
+|  2 |  MISO  |  2 |  MISO  |  21 | spi0 MISO GPIO  9 |       
+|  4 |  SCK   |  4 |  SCK   |  23 | spi0 SCK  GPIO 11 |       
+|  5 | NSS/CS |  5 | NSS/CS |  24 | spi0 CE0  GPIO  8 |       
+|  1 |  GND   |  1 |  GND   |  25 |     GND           |       
+|  8 |  GND   |  8 |  GND   |  20 |     GND           |        
+| 10 | ANT GND| 10 |  GND   |  14 |     GND           |     
+|  x |   x    | 16 |  BUSY  |  16 |     GPIO 23       |       
                       
 Raspberry Pi 3B, 2B, and Zero W all have the same pinouts.  See for example
 https://www.etechnophiles.com/raspberry-pi-3-gpio-pinout-pin-diagram-and-specs-in-detail-model-b/
@@ -162,7 +164,8 @@ The wired network connects automatically. For wifi
 ```
 #################################
 (Some details for wireless are skipped here. )
-Booting with wifi (KanaKit) but no wired attached ifonfig does show eth0
+REVISE
+Booting with wifi (KanaKit NOT) but no wired attached ifconfig does show eth0
 recognized but no IP address.
 [   sudo raspi-config  # System Options > Wireless LAN
 This is client brings up wlan0 but fails looking for ssid. 
@@ -210,7 +213,7 @@ The new name does not appear as the prompt until a new terminal is started.)
 
 
 
-Ensure that SPI is enabled for the RFM95 LoRa module
+Ensure that SPI is enabled for the LoRa module
 ```
    ls -l /dev/spidev*
 ```
@@ -236,7 +239,8 @@ source LoRaVenv/bin/activate  #deactivate when done
 
 pip install spidev lgpio rpi-lgpio
 
-# install /pySX127x from git repo
+# install /pySX127x from git repo. This provides package pyLoRa.
+# It has support for Semtech SX1276/7/8/9 radios. 
 git clone https://github.com/rpsreal/pySX127x
 cd pySX127x
 pip install .  # uses setup.py

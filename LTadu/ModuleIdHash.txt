@@ -1,0 +1,10 @@
+#: see file Notes.txt for more details. For comments start line with #:
+#: moduleID    description                    hardware_version                  software_version
+ltaA:    "Wall profile N  wall, utility rm"   "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
+lta?:    "Wall profile N  wall, utility rm"   "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
+lta?:    "Wall profile N  wall, utility rm"   "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
+lta?:    "Wall profile N  wall, utility rm"   "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
+lta?:    "Wall profile N  wall, utility rm"   "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
+lta?:    "Wall profile N  wall, utility rm"   "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
+lta?:    "Wall profile N  wall, utility rm"   "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
+ltaX:    "Floor profile from ? wall" 
