@@ -1,12 +1,12 @@
 # ModID, socket, sensorID   "#" in first character of line for a comment line
-lthA       J1      xx
-lthA       J2      
-lthA       J3      
-lthA       J4      
-lthA       J5      
-lthA       J6      
-lthA       J7      
-lthA       J8      
+lthA       J1      HJ
+lthA       J2      HL
+lthA       J3      None
+lthA       J4      None
+lthA       J5      None
+lthA       J6      None
+lthA       J7      None
+lthA       J8      None
 
 B       J1      xx
 B       J2      
