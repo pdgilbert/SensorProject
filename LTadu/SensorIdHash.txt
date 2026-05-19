@@ -35,63 +35,104 @@ ltaD       J6      NM
 ltaD       J7      NH
 ltaD       J8      None
 
-E       J1      
-E       J2      
-E       J3      
-E       J4      
-E       J5      
-E       J6      
-E       J7      
-E       J8      
-E       J9      
-E       J10     
-E       J11     
-E       J12     
-E       J13     
-E       J14     
-E       J15     
-E       J16     
+ltaE       J1      FN
+ltaE       J2      LC
+ltaE       J3      HZ
+ltaE       J4      FK
+ltaE       J5      HX
+ltaE       J6      LS
+ltaE       J7      HN
+ltaE       J8      HQ
+ltaE       J9      HT
+ltaE       J10     LF
+ltaE       J11     JV
+ltaE       J12     None
+ltaE       J13     None
+ltaE       J14     None
+ltaE       J15     None
+ltaE       J16     None
 
-F       J1      
-F       J2      
-F       J3      
-F       J4      
-F       J5      
-F       J6      
-F       J7      
-F       J8      
-F       J9      
-F       J10     
-F       J11     
-F       J12     
-F       J13     
-F       J14     
-F       J15     
-F       J16     
+ltaF       J1      FI
+ltaF       J2      DT
+ltaF       J3      EA
+ltaF       J4      BG
+ltaF       J5      DX
+ltaF       J6      JQ
+ltaF       J7      GY
+ltaF       J8      FH
+ltaF       J9      JP
+ltaF       J10     DZ
+ltaF       J11     LI
+ltaF       J12     IR
+ltaF       J13     LN
+ltaF       J14     LD
+ltaF       J15     JK
+ltaF       J16     JB
 
-K       J1      
-K       J2      
-K       J3      
-K       J4      
-K       J5      
-K       J6      
-K       J7      
-K       J8      
+ltaG       J1      FS
+ltaG       J2      GB
+ltaG       J3      AG
+ltaG       J4      JG
+ltaG       J5      LH
+ltaG       J6      JA
+ltaG       J7      LB
+ltaG       J8      JF
+ltaG       J9      GV
+ltaG       J10     LJ
+ltaG       J11     JI
+ltaG       J12     None
+ltaG       J13     None
+ltaG       J14     None
+ltaG       J15     None
+ltaG       J16     None
 
-L       J1      
-L       J2      
-L       J3      
-L       J4      
-L       J5      
-L       J6      
-L       J7      
-L       J8      
+ltaH       J1      FO
+ltaH       J2      NoneForFR
+ltaH       J3      FE
+ltaH       J4      FD
+ltaH       J5      FF
+ltaH       J6      GT
+ltaH       J7      IF
+ltaH       J8      JL
+ltaH       J9      JO
+ltaH       J10     EB
+ltaH       J11     GW
+ltaH       J12     HV
+ltaH       J13     LP
+ltaH       J14     LE
+ltaH       J15     IQ
+ltaH       J16     GQ
 
-M       J1      
-M       J2      
-M       J3      
-M       J4      
-M       J5      
-M       J6      
-M       J7      
-M       J8      
+ltaI       J1      FL
+ltaI       J2      FM
+ltaI       J3      FF
+ltaI       J4      FA
+ltaI       J5      FQ
+ltaI       J6      JX
+ltaI       J7      ??
+ltaI       J8      JM
+ltaI       J9      LZ
+ltaI       J10     IP
+ltaI       J11     JU
+ltaI       J12     LL
+ltaI       J13     HW
+ltaI       J14     JE
+ltaI       J15     HR
+ltaI       J16     None
+
+ltaJ       J1      FG??
+ltaJ       J2      EC
+ltaJ       J3      DS
+ltaJ       J4      FG??
+ltaJ       J5      IB
+ltaJ       J6      JY
+ltaJ       J7      DY
+ltaJ       J8      JW
+ltaJ       J9      FB
+ltaJ       J10     LM
+ltaJ       J11     JJ
+ltaJ       J12     JN
+ltaJ       J13     LA
+ltaJ       J14     LG
+ltaJ       J15     HP
+ltaJ       J16     LT

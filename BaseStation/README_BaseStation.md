@@ -179,6 +179,8 @@ To start up wifi do
   untrusted network, do
     sudo nmcli con modify Hotspot 802-11-wireless-security.pmf 1
     sudo nmcli con up Hotspot
+
+    sudo ifconfig eth0 down
 ]
 
    nmcli dev wifi show-password

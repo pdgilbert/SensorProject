@@ -1,0 +1,1 @@
+- outside wall sensors GM and LQ were cut off when siding was installed.

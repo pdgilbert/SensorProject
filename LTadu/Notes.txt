@@ -1,1 +1,12 @@
-th modules J8 seems to be failing. Software or hardware?
+- th modules J8 seems to be failing. Software or hardware?
+
+- S floor profile  (t16 module ltaF)  had one sensor with red tape and
+no label. It must be JB by elimination of other labelled sensors.
+
+- red LED on ltaH not working, but seems to program ok, and blue LED flashes.
+
+- plug is broken on sensor FR (in module ltaH).
+
+- module ltaF J16 sensor has no label. Must be JB as all others are labelled.
+
+- module ltaI J7 sensor has no label. Should be ? or ?. The other is missing.
