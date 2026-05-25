@@ -1,1 +1,2 @@
 - outside wall sensors GM and LQ were cut off when siding was installed.
+- sensor added in module cavity for lthB, lthC, lthE. Not yet in 3dm.

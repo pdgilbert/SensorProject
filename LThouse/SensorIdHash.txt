@@ -23,7 +23,7 @@ lthB       J12     None
 lthB       J13     None
 lthB       J14     None
 lthB       J15     None
-lthB       J16     None
+lthB       J16     AB
 
 lthC       J1      LU 
 lthC       J2      KD
@@ -40,7 +40,7 @@ lthC       J12     None
 lthC       J13     None
 lthC       J14     None
 lthC       J15     None
-lthC       J16     None
+lthC       J16     MF
 
 lthD       J1      KR
 lthD       J2      JR
@@ -70,9 +70,9 @@ lthE       J8      None
 lthE       J9      None
 lthE       J10     None
 lthE       J11     None
-lthE       J12     
-lthE       J13     
-lthE       J14     
-lthE       J15     
-lthE       J16     
+lthE       J12     None
+lthE       J13     None
+lthE       J14     None
+lthE       J15     None
+lthE       J16     ED
 
