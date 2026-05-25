@@ -24,17 +24,20 @@ There are also programs for processing data and example programs for displaying 
 described in sections below.
 
  * [SensorProject_t16-pcb](https://github.com/pdgilbert/SensorProject_t16-pcb) has a Kicad 
-design for a module with analog digital converters and connectors for
+design for a pcb module with analog digital converters and connectors for
 sixteen 10K NTC 3950 temperature sensors.
 
  * [`SensorProject_t16`](https://github.com/pdgilbert/SensorProject_t16) has Rust code for
 the `SensorProject_t16-pcb` hardware.
 
  * [`multiplexI2C`](https://github.com/pdgilbert/multiplexI2C) has a Kicad design for a
-module with I2C connections for eight (eg. AHT10) temperature and humidity sensors.
+pcb module with I2C connections for eight (eg. AHT10) temperature and humidity sensors.
 
  * [`SensorProject_th8`](https://github.com/pdgilbert/SensorProject_th8) has  Rust code
 for the `multiplexI2C` hardware.
+
+ * [`sensor_module_mount`](https://github.com/pdgilbert/sensor_module_mount) has FreeCAD/python code
+for a simple 3D printed mount design to put the pcb modules in a light switch (NA) sized wall openning.
 
 
 ## Data Flow 
