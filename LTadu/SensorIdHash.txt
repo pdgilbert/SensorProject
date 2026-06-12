@@ -120,10 +120,10 @@ ltaI       J14     JE
 ltaI       J15     HR
 ltaI       J16     None
 
-ltaJ       J1      FG??
+ltaJ       J1      FG
 ltaJ       J2      EC
 ltaJ       J3      DS
-ltaJ       J4      FG??
+ltaJ       J4      FC
 ltaJ       J5      IB
 ltaJ       J6      JY
 ltaJ       J7      DY

@@ -123,13 +123,17 @@ This has been tested to work with 2025-12-04-raspios-trixie-armhf-lite.img (Rasp
 Download and burn an SD with Pi Os (formerly  Raspian) follow instructions at
 https://www.raspberrypi.com/software/operating-systems/.  Rough summary:
 
-Instructions here were tested with Raspberry Pi OS Lite 32 bit Release date 4 Dec 2025
-(Raspbian 1:6.12.47-1+rpt1). This is a 32 bit version of the OS.
+Instructions here were tested with 
+- `2025-12-04-raspios-trixie-armhf-lite.img.xz` Raspberry Pi OS Lite 32 bit Release date 2025-12-04
+- `2026-04-21-raspios-trixie-armhf-lite.img.xz` 
+- '2026-04-21-raspios-trixie-arm64-lite.img.xz` Raspberry Pi OS Lite 64 bit
+
+Instructions below indicate `2025-12-04-raspios-trixie-armhf-lite.img.xz`. Obvious changes need for others.
 
 Downloaded file `2025-12-04-raspios-trixie-armhf-lite.img.xz` 
-and in file `checksums.sha256` add a line
+and add the checksum from download site in file `checksums.sha256` add a line
 1b3e49b67b15050a9f20a60267c145e6d468dc9559dd9cd945130a11401a49ff 2025-12-04-raspios-trixie-armhf-lite.img.xz
-[also tested with  2026-04-21-raspios-trixie-armhf-lite.img.xz ]
+
 Check the checksum:
 ```
 sha256sum --check checksums.sha256
@@ -157,36 +161,34 @@ The first bootup
 [Note that boot and reboot may take awhile to send output so the monitor may go
 to sleep and need reset.]
 
+Set the time zone in 
+```
+   sudo raspi-config  # Localization Options > Timezone
+```
+and the wifi country
+```
+   sudo raspi-config  # Localization Options > WLAN country
+```
 
-The wired network connects automatically. For wifi
+The wired network connects automatically. 
+[Note, if wifi is to be used for a hotspot (further below) it is best not to configure it for LAN. ]
+To connect to LAN with wifi
 ```
    sudo raspi-config  # System Options > Wireless LAN
 ```
-#################################
+This brings up wlan0 and connects to SSID but will fail looking for ssid if no wifi LAN is available.
 (Some details for wireless are skipped here. )
-REVISE
-Booting with wifi (KanaKit NOT) but no wired attached ifconfig does show eth0
-recognized but no IP address.
-[   sudo raspi-config  # System Options > Wireless LAN
-This is client brings up wlan0 but fails looking for ssid. 
-]
-To start up wifi do 
-   sudo nmcli device wifi hotspot ssid  <whatever>  password <MySecret>
-   nmcli dev wifi show-password
 
-[ This may give "...activation failed...too long to authenticate" on 
-  Pi 3B so need to disable PMF, which has security implications on 
-  untrusted network, do
-    sudo nmcli con modify Hotspot 802-11-wireless-security.pmf 1
-    sudo nmcli con up Hotspot
+Note that wifi on Pi demands additional power. Be sure to use a power suppy
+with adequate power or the wifi will be unstable.
 
-    sudo ifconfig eth0 down
-]
+Either the wired or wifi will connect the RPi to a LAN,  permiting logon from another computer on the LAN.
 
-   nmcli dev wifi show-password
+The system can be run without an internet connection, but part of the below install does
+require a connection to the internet.
 
-(Some details for wireless are skipped here. )
-#################################
+In the event there is not LAN available, the RPi can be set up as a hotspot to provide the LAN. 
+That is described further below.
 
 Set up ssh service if you want to run headless or remotely. 
 ```
@@ -200,7 +202,7 @@ Optionally, remote login can now be used to do the remainder.
 Possibly change the base station name:
 
 ```
-sudo raspi-config  # ...> change hostname > #Preferred, also changes /etc/hosts.
+sudo raspi-config  # System Options> hostname > #Preferred, also changes /etc/hosts.
 #or
 sudo hostname basestationX
 #or
@@ -234,6 +236,7 @@ ls -l /dev/spidev*  #should show 2 devices (may require reboot)
 ```
 sudo apt install git
 sudo apt install python3-setuptools swig python3-lgpio  liblgpio-dev
+[may need sudo apt-get update ]
 sudo apt install python-dev-is-python3 # has headers to build with pip install .. 
 
 python3 -m venv  LoRaVenv
@@ -277,11 +280,14 @@ Be sure to check the command line arguments for options.
 (A different RFM95 LoRa module will also be needed.)
 
 Copy `SensorRecord` and `startSensorRecord` from this repository and check that they have execute permission.
-If you already have them on a local computer they can be copied with
+If you already have them on a local computer they can be copied. From a session on the RPi do
 
 ```
 scp userID@somewhere:SensorRecord   SensorRecord
 scp userID@somewhere:startSensorRecord   startSensorRecord
+```
+or on the local computer, assuming the RPi address is 10.42.0.1, do
+```
 scp SensorRecord pi@10.42.0.1:SensorRecord  
 scp startSensorRecord pi@10.42.0.1:startSensorRecord  
 ```   
@@ -310,3 +316,111 @@ crontab file ('crontab -e') and add
 ```
 This will automatically start the process when the system is booted, and also
 restart it at the beginning of each month.
+
+#### RPi Hotspot
+
+Default Raspberry Pi OS wireless setup is to connect the Pi to an access point and the Internet.
+That is generally straightforward (if your RPi's wifi hardware is recognized).
+Described here are steps to set the RPi up as an access point (hotspot) so remote login by wifi
+can be used to collect the `SensorRecord` saved data even when a LAN is not available.
+
+To set up, login to the RPi with monitor and keyboard or remotely using the wired ethernet.
+The wifi is being configured, so do not login on that.
+
+Following assumes the wifi was previously activated. If not, `sudo raspi-config  # System Options > Wireless LAN`. 
+If the wifi automatically connects to a SSID on boot then it will need to be turned off.
+```
+     sudo ifconfig wlan0 down  # This does nothing if it is not needed 
+```
+These information commands are all helpful for understanding the status.
+```
+    ifconfig              # to check status. Should not show wlan0
+    iwconfig              # Should show wlan0  IEEE 802.11  ESSID:off/any  Mode:Managed  
+                          #    Access Point: Not-Associated   
+                          #    Retry short limit:7   RTS thr:off   Fragment thr:off
+                          #    Power Management:on
+    nmcli dev wifi list   # If wifi LAN is up (which it should not be) this show any SSID in reach.
+```
+
+REVISE
+   
+Just
+    nmcli dev wifi hotspot
+will generate a password and start a hotspot with SSID Hotspot-<YOUR_HOSTNAME> on the default wifi interface.
+
+https://raspberrytips.com/nmcli-linux-command/
+nmcli connection show
+nmcli dev status
+nmcli dev show wlan0
+
+nmcli connection add type <connection_type> ifname <interface> con-name <connection_name>
+  where connection_type is ethernet or wifi 
+        ifname is eg eth0, wlan0
+        connection_name is name to give the connection
+nmcli device connect <device>
+nmcli device disconnect <device>
+eg  nmcli device connect eth0
+
+https://raspberrytips.com/access-point-setup-raspberry-pi/
+sudo nmcli con add con-name hotspot ifname wlan0 type wifi ssid "basestation"
+sudo nmcli con modify hotspot wifi-sec.key-mgmt wpa-psk
+sudo nmcli con modify hotspot 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared
+sudo nmcli con modify hotspot wifi-sec.psk "MySecret"  #works on 64-bit OS but not 32-bit.
+sudo nmcli con up hotspot
+
+On 32-bit  sudo nmcli device wifi hotspot ssid  basestation  password MySecret 
+
+[ Above may give "...activation failed...too long to authenticate" on 
+  Pi 3B so need to disable PMF(which has security implications on 
+  untrusted network):
+    sudo nmcli con modify hotspot 802-11-wireless-security.pmf 1
+    sudo nmcli con up hotspot
+]
+
+nmcli dev wifi show-password
+
+
+
+To start up wifi do 
+   sudo nmcli device wifi hotspot ssid  <whatever>  password <MySecret>
+   nmcli dev wifi show-password
+
+[ This may give "...activation failed...too long to authenticate" on 
+  Pi 3B so need to disable PMF, which has security implications on 
+  untrusted network, do
+    sudo nmcli con modify Hotspot 802-11-wireless-security.pmf 1
+    sudo nmcli con up Hotspot
+
+    sudo ifconfig eth0 down
+]
+
+ifconfig
+iwconfig
+nmcli dev wifi list
+sudo more '/etc/NetworkManager/system-connections/Auto basestationLT.nmconnection'
+
+   sudo nmcli device wifi hotspot ssid  basestation  password xxx
+
+Process to start an AP should be three commands
+
+nmcli connection add type wifi ifname wlan0 con-name local-ap autoconnect yes ssid test-ap mode ap
+nmcli connection add type wifi ifname wlan0 con-name Hotspot  local-ap autoconnect yes ssid basestation mode ap
+
+nmcli connection modify con-name 802-11-wireless.mode ap 802-11-wireless-security.key-mgmt wpa-psk ipv4.method shared 802-11-wireless-security.psk 'PASSWORD'
+nmcli connection up con-name
+
+To verify:
+nmcli dev wifi list
+
+   nmcli dev wifi show-password
+   
+try alternate?  
+sudo nmcli con add con-name hotspot ifname wlan0 type wifi ssid "basestationLT"
+sudo nmcli con modify hotspot wifi-sec.key-mgmt wpa-psk
+sudo nmcli con modify hotspot wifi-sec.psk "whatever"
+sudo nmcli con modify hotspot 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared
+
+On the RPi make a note of its wifi LAN address.
+Now, from a remote computer, connect to the basestation hotspot and  `ssh pi@10.42.0.1` 
+
+#################################
