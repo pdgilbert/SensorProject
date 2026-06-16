@@ -1,13 +1,15 @@
-#: see file Notes.txt for more details. For comments start line with #:
-#:  moduleID    description      hardware_version             software_version_SensorProject_th8
-A:  "Floor profile from NE wall"             "t16-F411  v0.2.0  2025-05"
-B:  "Floor around person door"               "t16-F411  v0.2.2  2025-09"
-C:  "Floor around garage door"
-D:  "Floor profile from E corner"
-E:  "Floor profile from W corner"
-F:  "Floor profile from S corner"
-G:  "Floor profile "
-H:  "Floor profile "
-K:  "Wall profile around window on NE wall"  "multiplexI2C (th8)  v0.1.0  2024-09 (blackpill)"  "b7f3b3ce967d2b6a472"
-L:  "Roof profile up middle of SW roof"
-M:  "Wall profile SW  wall"                  "th8-F411  v0.3.1  2025-12"                        "tag April2026"
+#: See file Notes.txt for more details. For comments start line with #:
+#: Module ID followed by :
+#: Separate fields with  ;
+#:  moduleID :   description;                      hardware_version;             software_version
+A:  Floor profile from NE wall;             t16-F411  v0.2.0  2025-05;             NA
+B:  Floor around person door;               t16-F411  v0.2.2  2025-09;             NA
+C:  Floor around garage door;                   NA;                                NA
+D:  Floor profile from E corner;                NA;                                NA
+E:  Floor profile from W corner;                NA;                                NA
+F:  Floor profile from S corner;                NA;                                NA
+G:  Floor profile ;                             NA;                                NA
+H:  Floor profile ;                             NA;                                NA
+K:  Wall profile around window on NE wall;  multiplexI2C (th8)  v0.1.0  2024-09 (blackpill);  b7f3b3ce967d2b6a472
+L:  Roof profile up middle of SW roof;          NA;                                NA
+M:  Wall profile SW  wall;                  th8-F411  v0.3.1  2025-12;                        tag April2026

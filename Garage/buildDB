@@ -32,7 +32,8 @@
 if [ $# -ne 3 ]; then 
   echo Error. Needs 3 arguments indicating 1/ the source txt file of data readings, 
   echo   2/ 3dm file with sensor locations, and 3/ target database file.
-  echo Example: ./buildDB  intermediate/All_data.txt slab_sensors.3dm  target/SensorReadings.db
+  echo Example: ./buildDB  intermediate/All_data.txt slab_sensors.3dm    target/SensorReadings.db
+  echo          ./buildDB  intermediate/All_data.txt garage_sensors.3dm  target/SensorReadings.db
   exit 1
 fi;
 

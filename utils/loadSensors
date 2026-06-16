@@ -73,16 +73,20 @@ dbpath = args.outdb
 
 ###################################################################
 con = sqlite3.connect(dbpath)
+#con = sqlite3.connect("target/SensorReadings.db")
 
 # drop the table if it exists, so it can be replaced
 con.execute("DROP TABLE IF EXISTS Modules")
 
 #create and populate Modules  table
-con.execute("""
-  CREATE TABLE IF NOT EXISTS Modules (
+q = '''CREATE TABLE IF NOT EXISTS Modules (
     modID TEXT PRIMARY KEY, 
-    description TEXT NOT NULL 
-  );""")
+    description TEXT NOT NULL,
+    hardwareVersion TEXT NOT NULL,
+    softwareVersion TEXT NOT NULL
+  )'''
+#print(q)
+con.execute(q)
 
 # figure out if this is really helpful for joins
 #FOREIGN KEY (user_id) REFERENCES users (id)
@@ -93,10 +97,15 @@ with open(ModuleIdHashpath, 'r') as f:
       fd = ln.split(':')
       if (fd != [] ):        # should skip blank lines but not working
          if (fd[0] != '#'):  # skip lines starting with "#:" eg header line
-            s = '("' + fd[0] + '", "' + fd[1].lstrip().rstrip()  + '")'
-            q = 'INSERT INTO Modules (modID, description) VALUES ' + s 
-            #print(q)
-            z = con.execute(q) #z= mutes printing returned obj.
+            v = fd[1].split(';')
+            if (len(v) !=3) :
+               print("line:", flush=True)
+               print(ln, flush=True)
+               print("modID does not have 3 fields:", flush=True)
+               print(fd[0], v, flush=True)
+            s = '("' + fd[0] + '", "' + v[0].lstrip().rstrip() + '", "' + v[1].lstrip().rstrip() + '", "' + v[2].lstrip().rstrip()  + '")'
+            q = 'INSERT INTO Modules (modID, description, hardwareVersion, softwareVersion) VALUES ' + s 
+            z = con.execute(q)
 
 
 ###################################################################
@@ -104,15 +113,16 @@ with open(ModuleIdHashpath, 'r') as f:
 con.execute("DROP TABLE IF EXISTS Sensors")
 
 #create and populate Sensors  table
-con.execute("""
-  CREATE TABLE IF NOT EXISTS Sensors (
+q = '''CREATE TABLE IF NOT EXISTS Sensors (
      id TEXT PRIMARY KEY, 
      x   FLOAT,
      y   FLOAT,
      z   FLOAT, 
      modID  TEXT, 
      socket TEXT
-  );""")
+  )'''
+#print(q)
+con.execute(q)
 
 #populate sensor locations in table  Sensors
 with open(locationPath, 'r') as f:
@@ -120,7 +130,14 @@ with open(locationPath, 'r') as f:
       fd = ln.replace(' ', '').split('{') #remove blanks, in case space was used as separater
       s = '("' + fd[0] + '", ' + fd[1].replace('}', '') + ' )' # rm '}' in fd[1]
       q = 'INSERT INTO Sensors (id, x, y, z) VALUES ' + s 
-      zz = con.execute(q) #zz= mutes printing returned obj.
+      try:
+         zz = con.execute(q) #zz= mutes printing returned obj.
+      except Exception as e:
+         print("insert failed:", flush=True)
+         print(q, flush=True)
+         print("line:", flush=True)
+         print(ln, flush=True)
+         print(e, flush=True)
 
 
 #for v in con.execute("PRAGMA table_info(Sensors)"): print(v)  #SHOW TABLE 
