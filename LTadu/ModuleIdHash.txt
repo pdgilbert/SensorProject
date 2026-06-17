@@ -1,12 +1,14 @@
 #: see file Notes.txt for more details. For comments start line with #:
+#: Module ID followed by :
+#: Separate fields with  ;
 #: moduleID    description                                  hardware_version              software_version
-ltaA:    "N  wall profile, utility rm"                      "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
-ltaB:    "SW corner wall profile & patio door"              "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
-ltaC:    "NE corner wall profile (module in bedrm closet)"  "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
-ltaD:    "Roof profile (attic)"                             "th8-F411  v0.3.1  2025-12"    "SensorProject_th8 tag April2026"
-ltaE:    "person door floor profile S side"                 "t16-F411  v0.3.1  2026-04"    "SensorProject_t16 tag May2026"
-ltaF:    "S side floor profile (module on wall in bedrm)"   "t16-F411  v0.3.1  2026-04"    "SensorProject_t16 tag May2026"
-ltaG:    "Patio door floor profile S side(module in bedrm)" "t16-F411  v0.3.1  2026-04"    "SensorProject_t16 tag May2026"
-ltaH:    "SE corner floor profile"                          "t16-F411  v0.3.1  2026-04"    "SensorProject_t16 tag May2026"
-ltaI:    "NE corner floor profile (module in bedrm closet)" "t16-F411  v0.3.1  2026-04"    "SensorProject_t16 tag May2026"
-ltaJ:    "N side floor profile (module in mech rm)"         "t16-F411  v0.3.1  2026-04"    "SensorProject_t16 tag May2026"
+ltaA: N  wall profile, utility rm;                      th8-F411  v0.3.1  2025-12;   SensorProject_th8 tag April2026
+ltaB: SW corner wall profile & patio door;              th8-F411  v0.3.1  2025-12;   SensorProject_th8 tag April2026
+ltaC: NE corner wall profile (module in bedrm closet);  th8-F411  v0.3.1  2025-12;   SensorProject_th8 tag April2026
+ltaD: Roof profile (attic);                             th8-F411  v0.3.1  2025-12;   SensorProject_th8 tag April2026
+ltaE: person door floor profile S side;                 t16-F411  v0.3.1  2026-04;   SensorProject_t16 tag May2026
+ltaF: S side floor profile (module on wall in bedrm);   t16-F411  v0.3.1  2026-04;   SensorProject_t16 tag May2026
+ltaG: Patio door floor profile S side(module in bedrm); t16-F411  v0.3.1  2026-04;   SensorProject_t16 tag May2026
+ltaH: SE corner floor profile;                          t16-F411  v0.3.1  2026-04;   SensorProject_t16 tag May2026
+ltaI: NE corner floor profile (module in bedrm closet); t16-F411  v0.3.1  2026-04;   SensorProject_t16 tag May2026
+ltaJ: N side floor profile (module in mech rm);         t16-F411  v0.3.1  2026-04;   SensorProject_t16 tag May2026

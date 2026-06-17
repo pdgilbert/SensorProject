@@ -18,10 +18,11 @@
 #  -   Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
 #  -   Put all SensorRecord files into a file, eg intermediate/All_data.txt,  with
 #          cat raw_data/SensorRecordOuput*.txt >intermediate/All_data.txt
+#       [If there is only one file then copy it to intermediate/. ]
 #  -   Optionally run through SensorDataFreqFilter to reduce frequency, for example
 #          cat raw_data/SensorRecordOuput*.txt | \
 #              ../utils/SensorDataFreqFilter  30   >intermediate/All_data.txt
-#  -   This drops readings so there is at least 1/2 hour between readings for a module.
+#      This drops readings so there is at least 1/2 hour between readings for a module.
 #      (Beware that runTests will indicate differences because the test sample is changed.)
 
 
@@ -30,10 +31,12 @@
 
 
 if [ $# -ne 3 ]; then 
-  echo Error. Needs 3 arguments indicating 1/ the source txt file of data readings, 
-  echo   2/ 3dm file with sensor locations, and 3/ target database file.
-  echo Example: ./buildDB  intermediate/All_data.txt slab_sensors.3dm    target/SensorReadings.db
-  echo          ./buildDB  intermediate/All_data.txt garage_sensors.3dm  target/SensorReadings.db
+  echo Error. Needs 3 arguments indicating 
+  echo   1/ the source txt file of data readings, 
+  echo   2/ 3dm file with sensor locations, and
+  echo   3/ target database file.
+  echo Example: ./buildDB  intermediate/All_data.txt     slab_sensors.3dm   target/SensorReadings.db
+  echo          ./buildDB  intermediate/All_data.txt   garage_sensors.3dm   target/SensorReadings.db
   exit 1
 fi;
 
@@ -81,5 +84,10 @@ echo Load sensor ID, location, module, etc into  db ...
 # NOTE THAT ABOVE IS GENERIC AS LONG AS NAMING CONVENTION IS RESPECTED.
 # IT COULD BE USED FOR House/.
 # BUT NEXT runTests is specific to Garage/.
-echo done load. Running tests ...
-   ./runTests ${DB}
+echo done load.
+# It is possible to automatically run tests here, but that obscures loading errors,
+# so it may work better to run tests separately.
+# Running tests ...
+#   ./runTests ${DB}
+echo Now run tests with
+echo "    ./runTests ${DB}"
