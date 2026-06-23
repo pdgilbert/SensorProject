@@ -423,4 +423,25 @@ sudo nmcli con modify hotspot 802-11-wireless.mode ap 802-11-wireless.band bg ip
 On the RPi make a note of its wifi LAN address.
 Now, from a remote computer, connect to the basestation hotspot and  `ssh pi@10.42.0.1` 
 
+
+### Retrieving Data 
+
+- Connect to wifi hotspot basestation. [`ifconfig` to check network is `10.42.0.x` ]
+
+- `scp pi@10.42.0.1:SensorRecordOutput*  raw_data/`
+    [respond to prompt for password.]
+
+- Check/set date
+```
+   ssh  pi@10.42.0.1
+   date     # to check
+   sudo date  -s '2026-06-19 13:30:00'   # to set
+```
+
+- Occassionally remove old files for space on the basestation
+ ```
+   ssh  pi@10.42.0.1
+   rm  whatever
+ ```
+ 
 #################################

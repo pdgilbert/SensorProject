@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Compare ../README.md###Database, which gives generic description of the
-# following script. This script is specific to Garage.
-# read  sensor recordings from  .txt file given by ${1}.
+# following script. This script
+# 1/ Reads  sensor recordings from a .txt file given by argument ${1}.
 #       The source txt ${1} is built from raw_data/SensorRecordOuput*.txt 
 #       which are copied from basestation(s).
-# read sensor locations (Rhino) from 3dm file ${2}. The sensor locations
+# 2/ Reads sensor locations from (Rhino) 3dm file ${2}. The sensor locations
 #        are extracted by python program extract3dmSensorLocations and 
 #        written to file intermediate/sensorLocations.txt.
-# write DB file given by ${3}
+# 3/ Writes the database file given by ${3}.
 #
-# Also uses files 
+# The script also uses files 
 # - SensorIdHash.txt - manually edited for any new sensors installed.
 # - ModuleIdHash.txt - manually edited to add description for any new modules.
 #
@@ -35,8 +35,8 @@ if [ $# -ne 3 ]; then
   echo   1/ the source txt file of data readings, 
   echo   2/ 3dm file with sensor locations, and
   echo   3/ target database file.
-  echo Example: ./buildDB  intermediate/All_data.txt     slab_sensors.3dm   target/SensorReadings.db
-  echo          ./buildDB  intermediate/All_data.txt   garage_sensors.3dm   target/SensorReadings.db
+  echo Examples: ../utils/buildDB  intermediate/All_data.txt     slab_sensors.3dm   target/SensorReadings.db
+  echo           ../utils/buildDB  intermediate/All_data.txt   garage_sensors.3dm   target/SensorReadings.db
   exit 1
 fi;
 
@@ -81,13 +81,9 @@ echo Load sensor ID, location, module, etc into  db ...
          --SensorIdHash='SensorIdHash.txt' \
          --ModuleIdHash='ModuleIdHash.txt' --outdb=${DB}
 
-# NOTE THAT ABOVE IS GENERIC AS LONG AS NAMING CONVENTION IS RESPECTED.
-# IT COULD BE USED FOR House/.
-# BUT NEXT runTests is specific to Garage/.
 echo done load.
-# It is possible to automatically run tests here, but that obscures loading errors,
-# so it may work better to run tests separately.
-# Running tests ...
-#   ./runTests ${DB}
+
+# NOTE THAT ABOVE IS GENERIC AS LONG AS NAMING CONVENTION IS RESPECTED.
+# BUT  runTests is specific to a building.
 echo Now run tests with
 echo "    ./runTests ${DB}"

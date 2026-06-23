@@ -13,7 +13,7 @@ from sensors at various locations in the Rhino drawing.
 Time and location slices can be controlled by a Grasshopper program.
 
 This requires the Rhino .3dm file with a representation of the building
-(eg `Garage/slab_sensors.3dm`).
+(eg `garage_sensors.3dm` or `Garage/slab_sensors.3dm`).
 The locations of the sensors will have been taken from the 3dm file 
 using python program `extract3dmSensorLocations` when building the database. 
 It also requires the (SQLite) database of the 
@@ -27,5 +27,12 @@ The python script is moved by copy and paste into the `.ghx` script
 until I figure out something better.
 
 ##Details
+
+First make sure the database is available.
+
+In `Rhino` open the 3dm of the building, 
+then open `Grasshoper`  (`Tools> Grasshopper`, close the Getting Started window)
+and in `Grasshopper`  
+use `File> Open` to open  a `sensors_Vis.ghx`.
 
 To be continued...

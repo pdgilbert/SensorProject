@@ -176,15 +176,14 @@ differences because the test sample is changed.)
 Alternately, the file of readings can be a previously saved file 
 such as `All_data_2026-01-19.txt` which may need to be unzipped.
 
-3/ The shell (bash) script `buildDB` uses these files and python programs in `utils/` to
-build the database. This script is specific to a building. 
+3/ The shell (bash) script `utils/buildDB` uses these files and python programs in `utils/` to
+build the database.
 In the directory corresponding to a building (for example `Garage`) run
 
 ```
- ./buildDB  intermediate/All_data.txt  slab_sensors.3dm  target/SensorReadings.db
+ ../utils//buildDB  intermediate/All_data.txt  slab_sensors.3dm  target/SensorReadings.db
 ```
-This generates a (SQLite) database file `target/SensorReadings.db`
-and runs some tests to check things have loaded properly.
+This generates a (SQLite) database file `target/SensorReadings.db`.
 
 The `buildDB` script does the following:
 
@@ -200,9 +199,18 @@ The `buildDB` script does the following:
      the target database (table `Sensors`) and the module descriptions are loaded into 
      the target database (table `Modules`).
 
-- The script `./runTests` is run to check the database.
 
-See the `buildDB` script for syntax details.
+
+4/ Finally, run some tests to check things have loaded properly:
+
+```
+  ./runTest  target/SensorReadings.db
+```
+
+Note that the `../utils/buildDB` script is generic to all buildings but the `./runTest` script
+is specific to a building.
+
+See the `../utils/buildDB` script for syntax details.
 For working notes see [README_garage](./Garage/README_garage.md).
 
 
