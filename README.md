@@ -20,8 +20,13 @@ The repositories for the various pieces are as follows;
 
  * This repository (`SensorProject`) has (Python) code for a base station that receives and 
 records data from sensor modules. A Raspberry Pi base station setup is described. 
-There are also programs for processing data and example programs for displaying it,
+There are also programs for processing data and example programs for displaying it
 described in sections below.
+
+ * [`garageTest`](https://github.com/pdgilbert/garageTest) has a simplified subset of the 
+essential files for displaying sensor data in a Rhino model and gives details to do that.
+The purpose is to illustrate one approach to data display and to explore the file organization.
+
 
  * [SensorProject_t16-pcb](https://github.com/pdgilbert/SensorProject_t16-pcb) has a Kicad 
 design for a pcb module with analog digital converters and connectors for
@@ -38,6 +43,9 @@ for the `multiplexI2C` hardware.
 
  * [`sensor_module_mount`](https://github.com/pdgilbert/sensor_module_mount) has FreeCAD/python code
 for a simple 3D printed mount design to put the pcb modules in a light switch (NA) sized wall openning.
+
+ * [`LoRa-Pi-hat`](https://github.com/pdgilbert/LoRa-Pi-hat) has a Kicad design for a
+pcb module to fit on a Raspberry Pi and add a Lora chip with antenna, etc.
 
 
 ## Data Flow 

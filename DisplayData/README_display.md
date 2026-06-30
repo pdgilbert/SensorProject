@@ -29,10 +29,26 @@ until I figure out something better.
 ##Details
 
 First make sure the database is available.
+```
+   sqlite3 target/SensorReadings.db
+   
+   # next should show Modules SensorData  Sensors
+   .tables   
+
+   SELECT COUNT(*) FROM sensorData ;
+   SELECT COUNT(*) FROM Sensors;
+   SELECT COUNT(*) FROM Modules;
+   .exit
+```
 
 In `Rhino` open the 3dm of the building, 
 then open `Grasshoper`  (`Tools> Grasshopper`, close the Getting Started window)
 and in `Grasshopper`  
 use `File> Open` to open  a `sensors_Vis.ghx`.
+
+In icon `C/` set the path (>select one existing file) to the 
+datbase (eg .../target/SensorReadings.db).
+
+May have to click on main control icon to recalculate and/or adjust settings.
 
 To be continued...

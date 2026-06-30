@@ -81,6 +81,10 @@ Raspberry Pi 3B, 2B, and Zero W all have the same pinouts.  See for example
 https://www.etechnophiles.com/raspberry-pi-3-gpio-pinout-pin-diagram-and-specs-in-detail-model-b/
 or https://pinout.xyz/
 
+See also [`LoRa-Pi-hat`](https://github.com/pdgilbert/LoRa-Pi-hat) for a Kicad design of a
+pcb module with above connections, to fit on a Raspberry Pi and add a Lora chip with antenna, etc.
+
+
 ### Install Base Station Software
 
 #### Background
@@ -117,7 +121,6 @@ Instruction below have been tested and work on
 (Yes I had to brush dust off them.)
 This has been tested to work with 2025-12-04-raspios-trixie-armhf-lite.img (Raspbian 1:6.12.47-1+rpt1).
 
-
 #### Install Raspberry Pi OS
 
 Download and burn an SD with Pi Os (formerly  Raspian) follow instructions at
@@ -129,6 +132,15 @@ Instructions here were tested with
 - '2026-04-21-raspios-trixie-arm64-lite.img.xz` Raspberry Pi OS Lite 64 bit
 
 Instructions below indicate `2025-12-04-raspios-trixie-armhf-lite.img.xz`. Obvious changes need for others.
+
+Wifi testing (see further below) has only been successfully tested with 
+'2026-04-21-raspios-trixie-arm64-lite.img.xz` so that version is recommended if wifi is used.
+
+[To check OS version on a running Pi use
+ - `hostnamectl`
+ - `uname -a`
+ - `cat /etc/os-release`
+]
 
 Downloaded file `2025-12-04-raspios-trixie-armhf-lite.img.xz` 
 and add the checksum from download site in file `checksums.sha256` add a line
@@ -148,6 +160,8 @@ Select the SD card unit and press Start. (I tested with a 16GB SD card.)
 The writer may give a message that the image does not fill the SD. That is ok.
 
 Put the SD card in R Pi, attach to network (if you want that configured), and power up.
+[Note. If wifi hotspot is to be used (below) then the wired LAN network should be configured
+so that it can be used for setup.]
 
 The first bootup 
    - resizes image to use the full sd (So may take 5 minutes to boot.
@@ -156,10 +170,11 @@ The first bootup
    - prompts for user/passwd,  eg pi/whatever
    - sets up ssh keys host key
    - configures the wired network if attached
-   - sets clock but may make bad guess at time zone
+   - sets clock but may make bad guess at time zone, and bad time and date if not network connected.
+       [ sudo date  -s '2026-06-19 13:30:00'   # eg to set manually if needed. ]
 
 [Note that boot and reboot may take awhile to send output so the monitor may go
-to sleep and need reset.]
+to sleep and need power on again.]
 
 Set the time zone in 
 ```
@@ -170,7 +185,8 @@ and the wifi country
    sudo raspi-config  # Localization Options > WLAN country
 ```
 
-The wired network connects automatically. 
+The wired network connects automatically.
+ 
 [Note, if wifi is to be used for a hotspot (further below) it is best not to configure it for LAN. ]
 To connect to LAN with wifi
 ```
@@ -182,7 +198,7 @@ This brings up wlan0 and connects to SSID but will fail looking for ssid if no w
 Note that wifi on Pi demands additional power. Be sure to use a power suppy
 with adequate power or the wifi will be unstable.
 
-Either the wired or wifi will connect the RPi to a LAN,  permiting logon from another computer on the LAN.
+Either the wired or wifi will connect the RPi to a LAN,  permitting logon from another computer on the LAN.
 
 The system can be run without an internet connection, but part of the below install does
 require a connection to the internet.
@@ -232,6 +248,7 @@ ls -l /dev/spidev*  #should show 2 devices (may require reboot)
 ```
 
 #### Install Python Virtual environment and Packages
+The following requires Internet access.
 
 ```
 sudo apt install git
