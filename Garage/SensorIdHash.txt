@@ -101,6 +101,57 @@ F       J14     BN
 F       J15     AI
 F       J16     DI
 
+G       J1      ES
+G       J2      GR
+G       J3      EJ
+G       J4      DU
+G       J5      FT
+G       J6      EH
+G       J7      IG
+G       J8      BE
+G       J9      IH
+G       J10     CQ
+G       J11     DN
+G       J12     BO
+G       J13     AR
+G       J14     AU
+G       J15     DK
+G       J16     DM
+
+H       J1      EW
+H       J2      GC
+H       J3      EX
+H       J4      FV
+H       J5      IY
+H       J6      CC
+H       J7      BX
+H       J8      GF
+H       J9      CT
+H       J10     CR
+H       J11     AA
+H       J12     CL
+H       J13     DC
+H       J14     CF
+H       J15     CX
+H       J16     AB
+
+I       J1      CD
+I       J2      FY
+I       J3      EM
+I       J4      BK
+I       J5      ID
+I       J6      GA
+I       J7      GE
+I       J8      EG
+I       J9      CN
+I       J10     CH
+I       J11     BI
+I       J12     CS
+I       J13     AV
+I       J14     AJ
+I       J15     AZ
+I       J16     DD
+
 K       J1      ML
 K       J2      MY
 K       J3      MD

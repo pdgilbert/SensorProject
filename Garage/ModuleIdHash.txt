@@ -8,8 +8,9 @@ C:  Floor around garage door;                   NA;                             
 D:  Floor profile from E corner;                NA;                                NA
 E:  Floor profile from W corner;                NA;                                NA
 F:  Floor profile from S corner;                NA;                                NA
-G:  Floor profile ;                             NA;                                NA
-H:  Floor profile ;                             NA;                                NA
+G:  Floor profile from SW wall;              t16-F411  v0.3.1  2026-04;    SensorProject_t16 tag May2026
+H:  Floor profile from NW wall;              t16-F411  v0.3.1  2026-04;    SensorProject_t16 tag May2026
+I:  Floor profile from N corner;             t16-F411  v0.3.1  2026-04;    SensorProject_t16 tag May2026
 K:  Wall profile around window on NE wall;  multiplexI2C (th8)  v0.1.0  2024-09 (blackpill);  b7f3b3ce967d2b6a472
 L:  Roof profile up middle of SW roof;          NA;                                NA
-M:  Wall profile SW  wall;                  th8-F411  v0.3.1  2025-12;                        tag April2026
+M:  Wall profile SW  wall;                  th8-F411  v0.3.1  2025-12;    SensorProject_th8 tag April2026

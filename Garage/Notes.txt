@@ -10,3 +10,5 @@ The profiles module IDs and  description are recorded in `ModuleIdHash.txt`
 which gets loaded into the database with script `loadSensors`.
 
 profile B:  Floor around person door has 2 extra unused sensors AW & AS.
+
+Sensor AB had two id tags on module end of wire.
