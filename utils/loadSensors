@@ -118,8 +118,8 @@ q = '''CREATE TABLE IF NOT EXISTS Sensors (
      x   FLOAT,
      y   FLOAT,
      z   FLOAT, 
-     modID  TEXT, 
-     socket TEXT
+     modID  TEXT DEFAULT 'XX' , 
+     socket TEXT DEFAULT 'JX' 
   )'''
 #print(q)
 con.execute(q)
@@ -128,8 +128,8 @@ con.execute(q)
 with open(locationPath, 'r') as f:
    for ln in f:
       fd = ln.replace(' ', '').split('{') #remove blanks, in case space was used as separater
-      s = '("' + fd[0] + '", ' + fd[1].replace('}', '') + ' )' # rm '}' in fd[1]
-      q = 'INSERT INTO Sensors (id, x, y, z) VALUES ' + s 
+      s = "('" + fd[0] + "', " + fd[1].replace("}", "") + " )" # rm '}' in fd[1]
+      q = "INSERT INTO Sensors (id, x, y, z) VALUES " + s 
       try:
          zz = con.execute(q) #zz= mutes printing returned obj.
       except Exception as e:
@@ -143,18 +143,27 @@ with open(locationPath, 'r') as f:
 #for v in con.execute("PRAGMA table_info(Sensors)"): print(v)  #SHOW TABLE 
 #con.execute("DROP TABLE Sensors")    #to start over
 
-
 #populate module and connector in table Sensors 
 with open(SensorIdHashpath, 'r') as f: 
    for ln in f:
       fd = ln.split()  #by white space
       if (fd != [] ):        # skip blank lines
          if (fd[0] != '#'):  # skip lines starting with "# " eg header line
-            s = 'modID="' + fd[0] + '", socket="' + fd[1] + '"'
-            q = 'UPDATE Sensors SET  ' + s + ' WHERE id="' + fd[2]  + '"'
-            #print(q)
-            z = con.execute(q) #z= mutes printing returned obj.
-
+            # beware that there is a sensor label ID and
+            # sqlite treats id="ID" differently than  id='ID'.
+            # The second works whereas the first selects all ids, 
+            # which messes up badly. So be careful about quotes here!
+            s = "modID='" + fd[0] + "', socket='" + fd[1] + "'"
+            q = "UPDATE Sensors SET  " + s + " WHERE id='" + fd[2]  + "'"
+            con.execute(q) #z= mutes printing returned obj.
 
 con.commit()
+
+#q = "SELECT * FROM Sensors"
+#q = "SELECT * FROM Sensors WHERE id = 'CD'"  # should give modID='I', socket='J1'
+#
+#print(q)
+#zz = con.execute(q).fetchall()
+#print(zz)
+
 con.close()

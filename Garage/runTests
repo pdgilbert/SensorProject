@@ -62,3 +62,4 @@ for tst in $PY ; do
   fi
   done
 
+echo "Need to check all test results more carefully!";

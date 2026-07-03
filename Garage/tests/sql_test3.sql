@@ -5,7 +5,12 @@
 #show table
 PRAGMA table_info(Sensors);
 
+SELECT * FROM Sensors WHERE id = 'HG';
+SELECT * FROM Sensors WHERE id = 'CD';  -- modID="I", socket="J1"
+SELECT * FROM Sensors WHERE id = 'ID';
+
 SELECT * FROM Sensors;
+
 SELECT printf('COUNT(*) %i', COUNT(*)) FROM Sensors;
 
 SELECT COUNT(*) FROM Sensors WHERE modID IS NOT NULL ;

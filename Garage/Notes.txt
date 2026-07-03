@@ -1,5 +1,9 @@
 The roof axis is NW-SE.
 
+Note that in plans (pdf) the profile name designations suggest a N-S axis:
+the "Floor profile from S corner" is called SW profile,
+the "Floor profile from SW wall" is called WEST profile, etc.
+
 The garage door is on the SE wall.
 The person door is in roughly the middle NE wall.
 
@@ -12,3 +16,10 @@ which gets loaded into the database with script `loadSensors`.
 profile B:  Floor around person door has 2 extra unused sensors AW & AS.
 
 Sensor AB had two id tags on module end of wire.
+
+Module F socket J1 had no tag but is determined to be sensor BS by elimination.
+
+Module E sockets J1 and J2 had no tags but is determined to be sensors 
+DQ and BR by elimination.  DQ is under exterior apron and 
+BR is under insulation, nearest to center of slab.
+Assigning BR to J1 and DQ to J2, but check again when some temperature data is available.

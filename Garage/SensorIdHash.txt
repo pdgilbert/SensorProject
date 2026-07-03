@@ -67,8 +67,8 @@ D       J14     BV
 D       J15     FU
 D       J16     BD
 
-E       J1      xx 
-E       J2      xx
+E       J1      BR 
+E       J2      DQ
 E       J3      CV 
 E       J4      FX
 E       J5      GO
@@ -84,7 +84,7 @@ E       J14     AF
 E       J15     CO
 E       J16     AM
 
-F       J1      xx
+F       J1      BS
 F       J2      FW
 F       J3      BC
 F       J4      EO
