@@ -444,10 +444,13 @@ Now, from a remote computer, connect to the basestation hotspot and  `ssh pi@10.
 ### Retrieving Data 
 
 - Connect to wifi hotspot basestation. [`ifconfig` to check network is `10.42.0.x` ]
-
-- `scp pi@10.42.0.1:SensorRecordOutput*  raw_data/`
+  
+- `scp -p pi@10.42.0.1:/home/pi/SensorRecordOu*2026*  raw_data/`
     [respond to prompt for password.]
+   (`-p` to preserve date)
 
+(NB typo  Ouput instead of Output in some file names.)
+ 
 - Check/set date
 ```
    ssh  pi@10.42.0.1
