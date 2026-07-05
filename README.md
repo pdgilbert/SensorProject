@@ -162,12 +162,12 @@ These items should be checked in preparation for processing the data.
 
 The process for building the database is as follows:
 
-1/ Change into the directory of the building, for example
+0/ Change into the directory of the building, for example
 ```
     cd Garage
 ```
 
-2/ The file of readings, for example `intermediate/All_data.txt`, needs to be prepared,
+1/ The file of readings, for example `intermediate/All_data.txt`, needs to be prepared,
 possibly by:
 ```
            cat raw_data/SensorRecordOuput*.txt >intermediate/All_data.txt
@@ -184,30 +184,40 @@ differences because the test sample is changed.)
 Alternately, the file of readings can be a previously saved file 
 such as `All_data_2026-01-19.txt` which may need to be unzipped.
 
-3/ The shell (bash) script `utils/buildDB` uses these files and python programs in `utils/` to
-build the database.
+2/ Prepare the sensor locations file  `intermediate/sensorLocations.txt`. 
+(This file will not change once hardware in the building is fully installed.)
+Next requires the python3  environment as above.
+
+The `.txt` file information is extracted from the `.3dm` by `python` program 
+   `extract3dmSensorLocations` and written to `intermediate/sensorLocations.txt`.
+```
+      mkdir -p intermediate
+      source ../utils/Rhino3dm/bin/activate  # activate python environment
+
+      ../utils/extract3dmSensorLocations garage_sensors.3dm >intermediate/sensorLocations.txt
+
+      deactivate    
+```
+   
+[The file `sensorLocations.txt` can be edited if necessary, to fix errors
+in any location information in the `.3dm` file.]
+
+3/ The shell (bash) script `utils/buildDB` uses these files and python programs
+in `utils/` to build the database.
 In the directory corresponding to a building (for example `Garage`) run
 
 ```
- ../utils//buildDB  intermediate/All_data.txt  slab_sensors.3dm  target/SensorReadings.db
+ ../utils//buildDB  intermediate/All_data.txt  intermediate/sensorLocations.txt  target/SensorReadings.db
 ```
 This generates a (SQLite) database file `target/SensorReadings.db`.
 
 The `buildDB` script does the following:
 
-- The combined readings `.txt` file is filter to remove some (obvious) faulty 
-   transmition recordings and module Id and J# are converted to a sensor ID.
-
-- The resulting converted file is loaded into the target database (table `SensorData`).
-
-- The sensor locations are extracted from (Rhino) `3dm` file by `python` 
-      program `extract3dmSensorLocations` and written to file `intermediate/sensorLocations.txt`.
+- The sensor readings are loaded into the target database table `SensorData`.
 
 - The sensor details (id, location, module id, module socket number) are loaded into 
      the target database (table `Sensors`) and the module descriptions are loaded into 
      the target database (table `Modules`).
-
-
 
 4/ Finally, run some tests to check things have loaded properly:
 

@@ -1,22 +1,24 @@
 #!/bin/bash
 
-# Compare ../README.md###Database, which gives generic description of the
-# following script. This script
-# 1/ Reads  sensor recordings from a .txt file given by argument ${1}.
-#       The source txt ${1} is built from raw_data/SensorRecordOuput*.txt 
-#       which are copied from basestation(s).
-# 2/ Reads sensor locations from (Rhino) 3dm file ${2}. The sensor locations
-#        are extracted by python program extract3dmSensorLocations and 
-#        written to file intermediate/sensorLocations.txt.
-# 3/ Writes the database file given by ${3}.
-#
-# The script also uses files 
+# ../README.md###Database gives a generic description of this script.
+
+# In addition to arguments, this script uses files 
 # - SensorIdHash.txt - manually edited for any new sensors installed.
 # - ModuleIdHash.txt - manually edited to add description for any new modules.
 #
+# Subdirectory tmp/ is not kept.
+#
+# Subdirectory intermediate/ has files prepared for arguments ${1} and &{2}.
+# These files should not need to be reproduced frequently. Versions might be
+# kept in git as they could be useful for reproducing results and debugging.
+#
 # Before running this script:
-#  -   Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
-#  -   Put all SensorRecord files into a file, eg intermediate/All_data.txt,  with
+#
+# 1/ Prepare the sensor recordings in a .txt file used as argument ${1}
+#    (eg intermediate/All_data.txt), This file is built with data  
+#    copied from basestation(s):
+#    - Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
+#    - Put all SensorRecord files into one file with
 #          cat raw_data/SensorRecordOuput*.txt >intermediate/All_data.txt
 #       [If there is only one file then copy it to intermediate/. ]
 #  -   Optionally run through SensorDataFreqFilter to reduce frequency, for example
@@ -24,24 +26,36 @@
 #              ../utils/SensorDataFreqFilter  30   >intermediate/All_data.txt
 #      This drops readings so there is at least 1/2 hour between readings for a module.
 #      (Beware that runTests will indicate differences because the test sample is changed.)
-
-
-# Subdirectory intermediate/ has files that might be kept in git as they could be
-#   useful for reproducing results and debugging. Subdirectory tmp/ is not kept.
-
+#
+# 2/ Prepare the sensor locations in a .txt file used as argument ${2}.
+#    (eg. intermediate/sensorLocations.txt). This file will not change
+#    once hardware in the building is fully installed. 
+#    Next requires having once in utils/  done  `python3 -m venv  Rhino3dm`
+#    and  pip install rhino3dm in that environment.
+#
+#    The .txt file information is extracted from the .3dm by python program 
+#    extract3dmSensorLocations and written to intermediate/sensorLocations.txt.
+#       mkdir -p intermediate
+#       source ../utils/Rhino3dm/bin/activate  # activate python environment
+#
+#       ../utils/extract3dmSensorLocations garage_sensors.3dm >intermediate/sensorLocations.txt
+#
+#       deactivate    
+#    
+#    [The file sensorLocations.txt can be edited if necessary, to fix errors
+#     in any location information in the .3dm file.]
 
 if [ $# -ne 3 ]; then 
   echo Error. Needs 3 arguments indicating 
   echo   1/ the source txt file of data readings, 
-  echo   2/ 3dm file with sensor locations, and
+  echo   2/ the source txt file of sensor locations, and
   echo   3/ target database file.
-  echo Examples: ../utils/buildDB  intermediate/All_data.txt     slab_sensors.3dm   target/SensorReadings.db
-  echo           ../utils/buildDB  intermediate/All_data.txt   garage_sensors.3dm   target/SensorReadings.db
+  echo Example: ../utils/buildDB  intermediate/All_data.txt   intermediate/sensorLocations.txt  target/SensorReadings.db
   exit 1
 fi;
 
 export SRC=${1}
-export F3DM=${2}
+export SLOC=${2}
 export DB=${3}
 
 mkdir -p intermediate
@@ -53,10 +67,6 @@ echo "*************** building" ${DB}
 # rm old tmp files, 
    rm -f    ${DB}  tmp/All_data.csv  tmp/zzz.csv
 
-# if All_data.txt is constructed here by next two lines then optional FreqFilter is not possible.
-# echo Put all SensorRecord files into ${SRC}  ...
-# cat raw_data/SensorRecordOuput*.txt >${SRC}
-
 echo  Filter and convert module Id and J# to sensor ID, output to .csv ...
    ../utils/SensorDataReformat  --SensorHash='SensorIdHash.txt'  \
            --infile=${SRC}  --outfile='tmp/zzz.csv' 
@@ -64,20 +74,10 @@ echo  Filter and convert module Id and J# to sensor ID, output to .csv ...
 echo Load csv file of sensor readings into db ...
    ../utils/loadReadings --infile='tmp/zzz.csv' --outdb=${DB}
 
-echo extract sensor locations from .3dm file and write sensorLocations.txt ...
-   # next requires having once in utils/  done  `python3 -m venv  Rhino3dm`
-   # and  pip install rhino3dm in that environment.
-
-   mkdir -p intermediate
-   source ../utils/Rhino3dm/bin/activate  # activate python environment
-
-   ../utils/extract3dmSensorLocations ${F3DM} >intermediate/sensorLocations.txt
-
-   deactivate    
 
 echo Load sensor ID, location, module, etc into  db ...
    ../utils/loadSensors    \
-         --sensorLocations='intermediate/sensorLocations.txt'  \
+         --sensorLocations=${SLOC}  \
          --SensorIdHash='SensorIdHash.txt' \
          --ModuleIdHash='ModuleIdHash.txt' --outdb=${DB}
 
