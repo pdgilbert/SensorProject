@@ -54,22 +54,30 @@ con.execute("""
 
 i=0
 e=0
+m=0
 #populate sensorData  table
 with open(inpath, 'r') as f:
    for ln in f:
       i += 1
       fd = ln.split(',')  
-      s = '("' + fd[0] + '", ' + fd[1] + ', "' + fd[2].lstrip() + '" )' # rm leading blank fd[2]
-      q = 'INSERT INTO SensorData (id, temperature, timeStamp) VALUES ' + s 
-      try:
-         z = con.execute(q) #z= mutes printing of returned obj
-      except:
-         e += 1
-         #print("query '" + q + "' failed!")
-         #print("ln    '" + ln + "'")
+      # The database could handle 'NONE' as the id for empty sockets, but queries are more
+      # complicated because it often needs to be checked, so better to just omit.
+      if (fd[0] == 'NONE'):
+         m +=1
+      else:  
+         # sqlite uses UTC by default, but adding text in TIMESTAMP string seems to mess up.
+         s = '("' + fd[0] + '", ' + fd[1] + ', "' + fd[2].replace('UTC', '').lstrip() + '" )' # rm leading blank fd[2]
+         q = 'INSERT INTO SensorData (id, temperature, timeStamp) VALUES ' + s 
+         try:
+            z = con.execute(q) #z= mutes printing of returned obj
+         except:
+            e += 1
+            #print("query '" + q + "' failed!")
+            #print("ln    '" + ln + "'")
 
 print(inpath + " lines " + str(i))
 print(str(e) + " data lines with errors omitted.")
+print(str(m) + " data lines for empty module sockets omitted.")
 
 con.commit()
 con.close()

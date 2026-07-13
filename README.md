@@ -134,101 +134,57 @@ See [README_BaseStation](./BaseStation/README_BaseStation.md) for more details.
 
 ### Database
 
-Data associated with sensors for a building is arranged in a subdirectory. 
+Data associated with sensors for a building are arranged in a subdirectory. 
 The directory `Garage/` is the most developed example.
 
 Files used to build the database are as follows:
-- `SensorIdHash.txt` is manually edited for any new sensors installed.
-- `ModuleIdHash.txt` is manually edited to add a description for any new module.
-- The sensor locations are manually recorded in the (Rhino) `3dm` file,
-  for example, `slab_sensors.3dm`.
-  Locations are extracted by python program `extract3dmSensorLocations` and 
-  written to file `intermediate/sensorLocations.txt`.
-- If new data recording files are being used, the `SensorRecordOuput*.txt` 
+- If new sensor data files are being used, the `SensorRecordOuput*.txt` 
   files need to be moved from basestation(s) to directory `raw_data/`. 
+- File `SensorIdHash.txt` is manually edited for any new sensors.
+- File `ModuleIdHash.txt` is manually edited to add a description for any new module.
+- The sensor locations were manually recorded in the (Rhino) `.3dm` file from construction notes,
+  for example, `garage_sensors.3dm`. The locations can be extracted from the `.3dm` by python 
+  program `extract3dmSensorLocations` and written to a `.txt` file, 
+  for example, `intermediate/sensorLocations.txt`. 
+  If there are any changes to modules or sensors then the file `intermediate/sensorLocations.txt`
+  needs to be updated. Details are described in the program file `utils/extract3dmSensorLocations`.
+ 
+The above files should be checked in preparation for building the database.
 
-These items should be checked in preparation for processing the data.
-- `SensorIdHash.txt`, `ModuleIdHash.txt`, and the `.3dm` may need to be updated
-   if there are any new modules or sensors.
-- The python environment `Rhino3dm` needs to be defined in `utils/` by
-```
-      cd utils/
-      python3 -m venv  Rhino3dm
-      source Rhino3dm/bin/activate
-      pip install rhino3dm
-      deactivate
-      cd ../
-```
-
-The process for building the database is as follows:
+The process to building the database is described in detail in the script `utils//buildDB`,
+summarized as follows:
 
 0/ Change into the directory of the building, for example
-```
-    cd Garage
-```
 
-1/ The file of readings, for example `intermediate/All_data.txt`, needs to be prepared,
-possibly by:
+1/ Whenever there is new data the `.txt` file of all sensor data readings must be prepared. 
+For example
 ```
            cat raw_data/SensorRecordOuput*.txt >intermediate/All_data.txt
 ```
-and optionally run through `SensorDataFreqFilter` to reduce frequency, for example
-```
-           cat raw_data/SensorRecordOuput*.txt | \
-               ../utils/SensorDataFreqFilter  120   >intermediate/All_data.txt
-```
-The filter reduces the number of readings so there is at least 120 minutes (2 hours)
-between readings for a module. (Beware that runTests will indicate 
-differences because the test sample is changed.)
+Other options and  details are described in comments in the script `utils//buildDB`.
 
-Alternately, the file of readings can be a previously saved file 
-such as `All_data_2026-01-19.txt` which may need to be unzipped.
 
-2/ Prepare the sensor locations file  `intermediate/sensorLocations.txt`. 
-(This file will not change once hardware in the building is fully installed.)
-Next requires the python3  environment as above.
+2/ The file of sensor locations needs to be prepared 
+as described in  `utils/buildDB`,
+This file only changes if hardware in the building is changed.
 
-The `.txt` file information is extracted from the `.3dm` by `python` program 
-   `extract3dmSensorLocations` and written to `intermediate/sensorLocations.txt`.
-```
-      mkdir -p intermediate
-      source ../utils/Rhino3dm/bin/activate  # activate python environment
-
-      ../utils/extract3dmSensorLocations garage_sensors.3dm >intermediate/sensorLocations.txt
-
-      deactivate    
-```
-   
-[The file `sensorLocations.txt` can be edited if necessary, to fix errors
-in any location information in the `.3dm` file.]
 
 3/ The shell (bash) script `utils/buildDB` uses these files and python programs
-in `utils/` to build the database.
-In the directory corresponding to a building (for example `Garage`) run
+in `utils/` to build the (SQLite) database file. It does the following:
 
-```
- ../utils//buildDB  intermediate/All_data.txt  intermediate/sensorLocations.txt  target/SensorReadings.db
-```
-This generates a (SQLite) database file `target/SensorReadings.db`.
-
-The `buildDB` script does the following:
-
-- The sensor readings are loaded into the target database table `SensorData`.
-
+- The sensor readings from the `.txt` file are loaded into the database table `SensorData`.
 - The sensor details (id, location, module id, module socket number) are loaded into 
-     the target database (table `Sensors`) and the module descriptions are loaded into 
-     the target database (table `Modules`).
+  the database table `Sensors`.
+- The module descriptions are loaded into 
+  the database table `Modules`.
 
-4/ Finally, run some tests to check things have loaded properly:
+See the `../utils/buildDB` script for more details.
 
-```
-  ./runTest  target/SensorReadings.db
-```
+4/ Finally, run some tests to check things have loaded properly.
 
-Note that the `../utils/buildDB` script is generic to all buildings but the `./runTest` script
-is specific to a building.
+Note that the `../utils/buildDB` script is generic to all buildings but tests are
+specific to a building.
 
-See the `../utils/buildDB` script for syntax details.
 For working notes see [README_garage](./Garage/README_garage.md).
 
 

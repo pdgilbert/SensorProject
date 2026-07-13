@@ -96,11 +96,6 @@ for i in reversed(range(len(d))):
 for i in reversed(range(len(d))):
    if ('RSSI' in d[i]): z = d.pop(i)  # remove RSSI lines
 
-#for i in reversed(range(len(d))):
-#         d[i] = d[i].replace(' ', '')  # remove white space, it messes up .split() below
-#for i in reversed(d):
-#         d = d.replace(' ', '')  # remove white space, it messes up .split() below
-
 # Could clean out some junk lines here. Most? will get caught by check while writing.
 
 

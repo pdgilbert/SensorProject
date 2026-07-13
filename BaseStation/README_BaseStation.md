@@ -440,6 +440,54 @@ sudo nmcli con modify hotspot 802-11-wireless.mode ap 802-11-wireless.band bg ip
 On the RPi make a note of its wifi LAN address.
 Now, from a remote computer, connect to the basestation hotspot and  `ssh pi@10.42.0.1` 
 
+##### Real Time Clock (RTC)
+
+If the RPi is not connected to the internet then the time will be affected 
+by power outages, unless an RTC is installed. See, for example, 
+[here.](https://raspberry.tips/en/raspberrypi-tutorials/raspberry-pi-rtc-ds3231-setup)
+But note that that description is outdate. In newer Raspberry Pi OS versions
+`hwclock` is not needed and not available, and also not part of `apt` 
+package `util-linux`. While not totally clear, this is discussed in [this forum.](
+https://forums.raspberrypi.com/viewtopic.php?t=384707&__cf_chl_f_tk=fbyX84xZ9q2typ9fidSlhrPFkPLosJ6AFYS7qn7LTPU-1783393705-1.0.1.1-6oK0TBm.rHjuilmqc.DuqQOtzlhKP8aZvn07gW1Sxng)
+
+(Following is based on some experimenting, using `timedatectl status` to confirm.)
+Once the overlay is installed synchonize is almost magical.
+If the system has internet and NTP service is active then the NTP adjustment
+changes both the system time and the RTC time.
+If the NTP service is inactive then `timedatectl set-time TIME` can be used to
+changes both the system time and the RTC time.
+(`timedatectl set-ntp True` and `timedatectl set-ntp False`  to switch.)
+
+When the system boots, if there is no internet then the RTC is used to update
+the system time.
+
+Briefly, to set up a DS3231 RTC:
+
+- Connect a DS3231 RTC module VCC(3.3v), SDA, SCL, and GND to the RPi (RPi 3b 
+  pins 1, 3, 5, 6 respectively)
+- `sudo raspi-config`
+      then >Interface Options > I2C
+
+To check the RTC module is recognized use
+```
+sudo apt install i2c-tools -y
+sudo i2cdetect -y 1
+```
+This should report `68`, but in the next step the driver takes the port and
+`UU` is reported, meaning the port is busy and the check was skipped. 
+So if you want to check the module do it before the next step.
+
+Now `sudo nano /boot/firmware/config.txt`  and append line
+     `dtoverlay=i2c-rtc,ds3231`.
+A reboot may be needed to activate th overlay.
+
+To see if everything is working use `timedatectl status`.
+
+To properly test the setup, shutdown, power off, disconnect the internet, 
+wait awhile, then boot up and  check the date.
+
+If the system is never connected to the internet it is best to leave the
+NTP service as inactive so the system startup does not wait looking for it.
 
 ### Retrieving Data 
 

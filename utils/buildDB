@@ -14,11 +14,12 @@
 #
 # Before running this script:
 #
-# 1/ Prepare the sensor recordings in a .txt file used as argument ${1}
+# 1/ (Needs to be done when there are new sensor data readings.)
+#    Prepare the sensor recordings in a .txt file used as argument ${1}
 #    (eg intermediate/All_data.txt), This file is built with data  
 #    copied from basestation(s):
 #    - Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
-#    - Put all SensorRecord files into one file with
+#    - Put all SensorRecord files into one file with, for example
 #          cat raw_data/SensorRecordOuput*.txt >intermediate/All_data.txt
 #       [If there is only one file then copy it to intermediate/. ]
 #  -   Optionally run through SensorDataFreqFilter to reduce frequency, for example
@@ -27,19 +28,25 @@
 #      This drops readings so there is at least 1/2 hour between readings for a module.
 #      (Beware that runTests will indicate differences because the test sample is changed.)
 #
-# 2/ Prepare the sensor locations in a .txt file used as argument ${2}.
-#    (eg. intermediate/sensorLocations.txt). This file will not change
-#    once hardware in the building is fully installed. 
-#    Next requires having once in utils/  done  `python3 -m venv  Rhino3dm`
-#    and  pip install rhino3dm in that environment.
+# 2/ (Needs to be done when there is a change to sensors or sensor modules.)
+#    Prepare the sensor locations in a .txt file used as argument ${2}.
+#    (eg. intermediate/sensorLocations.txt).  
+#    This file only changes if hardware in the building is changed.
 #
-#    The .txt file information is extracted from the .3dm by python program 
+#    The python program extract3dmSensorLocations requires an evironment with
+#    package rhino3dm installed. This only needs to be setup once, in utils/:
+#       cd ../utils/
+#       python3 -m venv  Rhino3dm
+#       source Rhino3dm/bin/activate
+#       pip install rhino3dm
+#       deactivate
+#
+#    The .txt file information is extracted from the .3dm by the python program 
 #    extract3dmSensorLocations and written to intermediate/sensorLocations.txt.
+#       cd ../Garage/
 #       mkdir -p intermediate
 #       source ../utils/Rhino3dm/bin/activate  # activate python environment
-#
 #       ../utils/extract3dmSensorLocations garage_sensors.3dm >intermediate/sensorLocations.txt
-#
 #       deactivate    
 #    
 #    [The file sensorLocations.txt can be edited if necessary, to fix errors
