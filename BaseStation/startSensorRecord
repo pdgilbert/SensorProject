@@ -23,5 +23,5 @@ if [ -f SensorRecord.PID ]; then
 
 # restart and write new pid to SensorRecord.PID
 source LoRaVenv/bin/activate
-./SensorRecord  --filename='SensorRecordOuput_'${HOSTNAME}'_'`date --utc +'%Y-%m'`'.txt' &
+./SensorRecord  --filename='SensorRecordOutput_'${HOSTNAME}'_'`date --utc +'%Y-%m'`'.txt' &
 echo PID=$! > SensorRecord.PID

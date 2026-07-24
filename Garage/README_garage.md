@@ -10,3 +10,6 @@ See script `utils/buildDB` for details about data preparation, filtering, and lo
 database.
 
 Tests need more work.
+
+Sensor modules finally all installed about July 1, 2026.
+Some sensor connections need to be checked.

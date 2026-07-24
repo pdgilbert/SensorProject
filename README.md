@@ -27,7 +27,6 @@ described in sections below.
 essential files for displaying sensor data in a Rhino model and gives details to do that.
 The purpose is to illustrate one approach to data display and to explore the file organization.
 
-
  * [SensorProject_t16-pcb](https://github.com/pdgilbert/SensorProject_t16-pcb) has a Kicad 
 design for a pcb module with analog digital converters and connectors for
 sixteen 10K NTC 3950 temperature sensors.
@@ -102,7 +101,7 @@ have sockets for up to 16 sensors.
 (Temperature only sensors are waterproof and thus can be embedded in concrete, 
 while humidity sensors cannot be waterproof.)
 
-In the `Garage` example there are 9 floor, 1 wall, and 1 roof profiles. CHECK
+In the `Garage` example there are 9 floor, 2 wall, and 1 roof profiles.
 
 The sensors are each given a two letter ID (eg. `AB`) and their locations are recorded in
 the (Rhino) construction drawings. The python program `extract3dmSensorLocations`
@@ -159,7 +158,7 @@ summarized as follows:
 1/ Whenever there is new data the `.txt` file of all sensor data readings must be prepared. 
 For example
 ```
-           cat raw_data/SensorRecordOuput*.txt >intermediate/All_data.txt
+           cat raw_data/SensorRecordOutput*.txt >intermediate/All_data.txt
 ```
 Other options and  details are described in comments in the script `utils//buildDB`.
 

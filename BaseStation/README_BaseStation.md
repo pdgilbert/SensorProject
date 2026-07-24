@@ -195,8 +195,9 @@ To connect to LAN with wifi
 This brings up wlan0 and connects to SSID but will fail looking for ssid if no wifi LAN is available.
 (Some details for wireless are skipped here. )
 
-Note that wifi on Pi demands additional power. Be sure to use a power suppy
-with adequate power or the wifi will be unstable.
+Note that wifi on Pi demands additional power, and the LoRa module already put the power
+demand fairly hight.. Be sure to use a power suppy with adequate power or the wifi will 
+be unstable. Also some USB cables have very fine wire and can result in a voltage drop.
 
 Either the wired or wifi will connect the RPi to a LAN,  permitting logon from another computer on the LAN.
 
@@ -497,7 +498,7 @@ NTP service as inactive so the system startup does not wait looking for it.
     [respond to prompt for password.]
    (`-p` to preserve date)
 
-(NB typo  Ouput instead of Output in some file names.)
+(NB possible typo  "Ouput" instead of "Output" in some file names.)
  
 - Check/set date
 ```

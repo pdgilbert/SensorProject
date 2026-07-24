@@ -20,12 +20,12 @@
 #    copied from basestation(s):
 #    - Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
 #    - Put all SensorRecord files into one file with, for example
-#          cat raw_data/SensorRecordOuput*.txt >intermediate/All_data.txt
+#          cat raw_data/SensorRecordOutput*.txt >intermediate/All_data.txt
 #       [If there is only one file then copy it to intermediate/. ]
 #  -   Optionally run through SensorDataFreqFilter to reduce frequency, for example
-#          cat raw_data/SensorRecordOuput*.txt | \
-#              ../utils/SensorDataFreqFilter  30   >intermediate/All_data.txt
-#      This drops readings so there is at least 1/2 hour between readings for a module.
+#          cat raw_data/SensorRecordOutput*.txt | \
+#              ../utils/SensorDataFreqFilter  60   >intermediate/hourly_data.txt
+#      This drops readings so there is at least 1 hour between readings for a module.
 #      (Beware that runTests will indicate differences because the test sample is changed.)
 #
 # 2/ (Needs to be done when there is a change to sensors or sensor modules.)
@@ -49,7 +49,7 @@
 #       ../utils/extract3dmSensorLocations garage_sensors.3dm >intermediate/sensorLocations.txt
 #       deactivate    
 #    
-#    [The file sensorLocations.txt can be edited if necessary, to fix errors
+#    [The file intermediate/sensorLocations.txt can be edited if necessary, to fix errors
 #     in any location information in the .3dm file.]
 
 if [ $# -ne 3 ]; then 
