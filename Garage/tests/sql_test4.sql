@@ -188,3 +188,25 @@ SELECT temperature, timeStamp, sensorData.id, modID, socket  FROM sensorData
          AND (timeStamp < '2026-01-03 00:14:00') 
          AND (-3.1 < z ) AND (z < -2.9)
          AND (temperature > 45.0) ;
+
+
+
+
+# TEMPERATURE BELOW -10 C IN JULY IS PROBABLY DEFECTIVE AND NEEDS SOCKET CONNECTION CHECKED.
+
+SELECT count(DISTINCT(sensorData.id)) FROM SensorData 
+    INNER JOIN Sensors ON sensorData.id = Sensors.id  
+       WHERE temperature < -10
+       AND   (timeStamp > '2026-07-04 00:00:0.0') ;
+
+SELECT count(DISTINCT(sensorData.id)) FROM SensorData 
+    INNER JOIN Sensors ON sensorData.id = Sensors.id  
+       WHERE temperature < 5
+       AND   (timeStamp > '2026-07-04 00:00:0.0') ;
+
+SELECT Sensors.id, Sensors.modID, Sensors.socket, sensorData.temperature FROM Sensors 
+    INNER JOIN sensorData ON sensorData.id = Sensors.id  
+       WHERE temperature < 5 
+       AND   (timeStamp > '2026-07-04 00:00:0.0');
+
+SELECT description  FROM Modules WHERE modID = "D" ;

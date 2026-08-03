@@ -1,19 +1,21 @@
-# ModID, socket, sensorID   "#" in first character of line for a comment line
+# "#" in first character of line for a comment line
+# see Notes.txt regarding some disconnected defective sensors.
+# ModID, socket, sensorID 
 A       J1      BH
 A       J2      AK
 A       J3      BQ
 A       J4      CU
 A       J5      EN
 A       J6      BM
-A       J7      DE
+A       J7      NONE
 A       J8      EQ
 A       J9      IA
 A       J10     GK
-A       J11     CE
+A       J11     NONE
 A       J12     FZ
 A       J13     GD
 A       J14     EZ
-A       J15     BY
+A       J15     NONE
 A       J16     EF
 
 B       J1      II
@@ -33,7 +35,7 @@ B       J14     AC
 B       J15     IX
 B       J16     AE
 
-C       J1      GP
+C       J1      NONE
 C       J2      CG
 C       J3      GX
 C       J4      IK
@@ -41,7 +43,7 @@ C       J5      GZ
 C       J6      AX
 C       J7      IL
 C       J8      IC
-C       J9      CB
+C       J9      NONE
 C       J10     AD
 C       J11     IT
 C       J12     IJ

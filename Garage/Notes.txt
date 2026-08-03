@@ -23,3 +23,11 @@ Module E sockets J1 and J2 had no tags but is determined to be sensors
 DQ and BR by elimination.  DQ is under exterior apron and 
 BR is under insulation, nearest to center of slab.
 Assigning BR to J1 and DQ to J2, but check again when some temperature data is available.
+
+The following sensors where showing very high temperatures (40 to 80 C) and are
+disconnected. (High suggest partially shorted, wire damage? water in wire or sensor?):
+A: DE in J7, CE in J11, BY in J15
+C: GP in J1, CB in J9
+F:
+I:
+
