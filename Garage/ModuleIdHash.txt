@@ -2,8 +2,8 @@
 #: Module ID followed by :
 #: Separate fields with  ;
 #:  moduleID :   description;                      hardware_version;             software_version
-A:  Floor profile from NE wall;             t16-F411  v0.2.0  2025-05;             NA
-B:  Floor around person door;               t16-F411  v0.2.2  2025-09;             NA
+A:  Floor profile from NE wall;             t16-F411  v0.3.1  2026-04 with soldered power wires;     SensorProject_t16 tag May2026
+B:  Floor around person door;               t16-F411  v0.3.1  2026-04 with soldered power wires;     SensorProject_t16 tag May2026
 C:  Floor around garage door;                   NA;                                NA
 D:  Floor profile from E corner;                NA;                                NA
 E:  Floor profile from W corner;                NA;                                NA

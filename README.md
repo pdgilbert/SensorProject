@@ -18,14 +18,17 @@ results and (optionally) connect to the Internet.
 
 The repositories for the various pieces are as follows;
 
- * This repository (`SensorProject`) has (Python) code for a base station that receives and 
-records data from sensor modules. A Raspberry Pi base station setup is described. 
+ * The repository (`SensorProject`) has data from sensor modules in some buildings. 
 There are also programs for processing data and example programs for displaying it
-described in sections below.
+described in sections below. The most general overview of the project is provide below.
 
  * [`garageTest`](https://github.com/pdgilbert/garageTest) has a simplified subset of the 
 essential files for displaying sensor data in a Rhino model and gives details to do that.
 The purpose is to illustrate one approach to data display and to explore the file organization.
+
+ * [`BaseStation`](https://github.com/pdgilbert/BaseStation) has (Python) code for 
+a base station that receives and records data from sensor modules. 
+A Raspberry Pi base station setup is described. 
 
  * [SensorProject_t16-pcb](https://github.com/pdgilbert/SensorProject_t16-pcb) has a Kicad 
 design for a pcb module with analog digital converters and connectors for
@@ -117,7 +120,7 @@ when the modules are installed. This is kept by manually editing file `SensorIdH
 The transmitting modules (profile) description is kept in the file `ModuleIdHash.txt`.
 
 The broadcasts from the modules are received, a time stamp added, and they are recorded
-into a file on the basestation(s). Two basestations provides redundancy.
+into a file on the basestation(s). Two basestations can provides redundancy.
 The time interval between broadcasts is still under consideration. For development purposes
 it has been set at 10 minutes. This is considerably shorter than is needed generally for 
 tracing heat flow in a building, although there can be occasional events where that
@@ -128,8 +131,8 @@ so the previous data is not erased by the new recording. (A better solution will
 eventually.) These recording files need to be moved from the basestation(s) to another
 computer for processing and display. This has been done by USB transfer or by `scp`.
 
-See [README_BaseStation](./BaseStation/README_BaseStation.md) for more details.
-
+See the [`README for the BaseStation repo`](https://github.com/pdgilbert/BaseStation)
+for more details.
 
 ### Database
 
@@ -176,6 +179,7 @@ in `utils/` to build the (SQLite) database file. It does the following:
   the database table `Sensors`.
 - The module descriptions are loaded into 
   the database table `Modules`.
+
 
 See the `../utils/buildDB` script for more details.
 
