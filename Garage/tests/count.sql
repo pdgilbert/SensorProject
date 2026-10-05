@@ -1,5 +1,12 @@
-#  sqlite3 SensorReadings_2026-01-19.db  <tests/sql_test1.sql  >tmp/sql_test1_out.txt
+#  sqlite3 target/SensorReadings.db  <tests/count.sql  >tmp/count_out.txt
+#  diff     tests/count_out.txt_result  tmp/count_out.txt
+#  diff     tests/sql_test1_out.txt_result  tmp/count_out.txt
+
+# old tests using
+#  sqlite3 target/SensorReadings_2026-01-19.db  <tests/count.sql  >tmp/sql_test1_out.txt
 #  diff     tests/sql_test1_out.txt_result  tmp/sql_test1_out.txt
+
+# count records in a know historic time frame
 
 #print("database: ", dbName) 
 #.databases

@@ -18,13 +18,14 @@ results and (optionally) connect to the Internet.
 
 The repositories for the various pieces are as follows;
 
- * The repository (`SensorProject`) has data from sensor modules in some buildings. 
-There are also programs for processing data and example programs for displaying it
-described in sections below. The most general overview of the project is provide below.
+ * This repository (`SensorProject`) has data from sensor modules in some buildings. 
+The most general overview of the project is provide below.
+Sections below also describe programs for processing data and example programs for displaying it. 
 
  * [`garageTest`](https://github.com/pdgilbert/garageTest) has a simplified subset of the 
 essential files for displaying sensor data in a Rhino model and gives details to do that.
-The purpose is to illustrate one approach to data display and to explore the file organization.
+The purpose is to illustrate one approach to data display and to explore the file organization
+for doing that.
 
  * [`BaseStation`](https://github.com/pdgilbert/BaseStation) has (Python) code for 
 a base station that receives and records data from sensor modules. 
@@ -63,6 +64,8 @@ a recording base station. From there it is passed to a computer that puts the da
 a `SQL` database. It is then extracted from the database to display in the building model
 (`Grasshopper`/`Rhino`). It can also be processed directly on the database with `SQL` 
 for some purposes such as cleaning and filtering. 
+It should be possible to analyse and display with tools other than `Grasshopper`/`Rhino`
+but that has not yet been explored.
 
 Transmission and base station recording happens frequently, currently set at 10 minutes.
 Other transfers happen on an "as needed" basis. Currently data is transferred from the
@@ -153,17 +156,17 @@ Files used to build the database are as follows:
  
 The above files should be checked in preparation for building the database.
 
-The process to building the database is described in detail in the script `utils//buildDB`,
+The process to build the database is described in detail in the script `utils/buildDB`,
 summarized as follows:
 
-0/ Change into the directory of the building, for example
+In the directory of the building, for example `Garage`:
 
 1/ Whenever there is new data the `.txt` file of all sensor data readings must be prepared. 
 For example
 ```
            cat raw_data/SensorRecordOutput*.txt >intermediate/All_data.txt
 ```
-Other options and  details are described in comments in the script `utils//buildDB`.
+Other options and  details are described in comments in the script `utils/buildDB`.
 
 
 2/ The file of sensor locations needs to be prepared 

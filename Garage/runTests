@@ -1,7 +1,10 @@
 #!/bin/bash
 
 if [ $# -lt 1 ]; then 
-  echo Error. Needs 1 arguments indicating the database file!
+  echo  Error. Needs 1 arguments indicating the database file!
+  echo "       For example:"
+  echo  "./runTests  target/SensorReadings.db"
+  echo  "./runTests  target/SensorReadingsGood.db"
   exit 1
 fi;
 
@@ -11,8 +14,8 @@ mkdir -p tmp
 
 
 echo "*************** checking intermediate/sensorLocations.txt"
-echo "      diff:"
-diff intermediate/sensorLocations.txt_result  intermediate/sensorLocations.txt
+echo "      diff tests/sensorLocations.txt_result  intermediate/sensorLocations.txt:"
+diff tests/sensorLocations.txt_result  intermediate/sensorLocations.txt
 if [ $? -ne 0 ]; then
       echo "";
 else
@@ -21,26 +24,29 @@ fi
 
 
 echo "*************** testing" ${DB}
-echo "*** comparison results from SensorReadings_2026-01-19.db ***"
+echo "*** compare with results from SensorReadings_2026-01-19.db ***"
 
 echo 
 echo "*** Data Summary - expect changes if testing with different data ***"
 
 echo -n sql_test0.sql ... 
-sqlite3 ${DB} <tests/sql_test0.sql  >tmp/sql_test0_out.txt
-echo "      diff:"
-diff tests/sql_test0_out.txt_result  tmp/sql_test0_out.txt
+sqlite33 --readonly ${DB} <tests/sql_test0.sql  >tmp/sql_test0_out.txt
+echo "diff tests/sql_test0_out.txt_result  tmp/sql_test0_out.txt:"
+diff       tests/sql_test0_out.txt_result  tmp/sql_test0_out.txt
 
 
 echo 
 echo "*** Following should have no changes if the original sample is a subset of new data ***"
 
-export SQL=" sql_test1 sql_test2 sql_test3 "       
-export  PY=" test1 test2 test3 "  
+#export SQL=" check_modules check_sensors sql_test1 sql_test2 sql_test3  testFloorSensors testWallSensors "       
+#export SQL=" check_modules check_sensors count "       
+# ALL TESTS NEED WORK, EVEN ONES THAT PASS OK.
+export SQL=" check_modules check_sensors testFloorSensors testWallSensors "       
+#export  PY=" test1 test2 test3 "  
 
 for tst in $SQL ; do
   echo -n ${tst}.sql ... 
-  sqlite3 ${DB} <tests/${tst}.sql  >tmp/${tst}_out.txt
+  sqlite3 --readonly ${DB} <tests/${tst}.sql  >tmp/${tst}_out.txt
   echo -n "      diff:"
   diff tests/${tst}_out.txt_result  tmp/${tst}_out.txt
   if [ $? -ne 0 ]; then

@@ -20,7 +20,10 @@
 #    copied from basestation(s):
 #    - Copy SensorRecordOuput*.txt files from basestation(s) to raw_data/.
 #    - Put all SensorRecord files into one file with, for example
+#          cat raw_data/SensorRecordOutput_basestationB*.txt >intermediate/All_data.txt
+#          cat raw_data/SensorRecordOutput_basestation*.txt >intermediate/All_data.txt
 #          cat raw_data/SensorRecordOutput*.txt >intermediate/All_data.txt
+#        BEWARE Output is mis-spelled  Ouput some places.
 #       [If there is only one file then copy it to intermediate/. ]
 #  -   Optionally run through SensorDataFreqFilter to reduce frequency, for example
 #          cat raw_data/SensorRecordOutput*.txt | \
@@ -33,7 +36,7 @@
 #    (eg. intermediate/sensorLocations.txt).  
 #    This file only changes if hardware in the building is changed.
 #
-#    The python program extract3dmSensorLocations requires an evironment with
+#    The python program extract3dmSensorLocations requires an environment with
 #    package rhino3dm installed. This only needs to be setup once, in utils/:
 #       cd ../utils/
 #       python3 -m venv  Rhino3dm
@@ -87,6 +90,9 @@ echo Load sensor ID, location, module, etc into  db ...
          --sensorLocations=${SLOC}  \
          --SensorIdHash='SensorIdHash.txt' \
          --ModuleIdHash='ModuleIdHash.txt' --outdb=${DB}
+
+echo add SensorTypes to tables Sensors and Modules
+sqlite3 target/SensorReadings.db  <../utils/setSensorTypes.sql
 
 echo done load.
 

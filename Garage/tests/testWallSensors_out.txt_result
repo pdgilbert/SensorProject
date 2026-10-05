@@ -1,0 +1,35 @@
+0|id|TEXT|0||1
+1|x|FLOAT|0||0
+2|y|FLOAT|0||0
+3|z|FLOAT|0||0
+4|modID|TEXT|0|'XX'|0
+5|socket|TEXT|0|'JX'|0
+6|sensorType|INTEGER|0|-1|0
+0|modID|TEXT|0||1
+1|description|TEXT|1||0
+2|hardwareVersion|TEXT|1||0
+3|softwareVersion|TEXT|1||0
+4|sensorType|INTEGER|0|-1|0
+0|ref|INTEGER|0||1
+1|id|TEXT|1||0
+2|temperature|REAL|0||0
+3|timeStamp|TIMESTAMP|0||0
+135
+2026-04-01
+2026-09-10
+2026-04-01 01:56:26
+2026-09-10 14:55:38
+0
+0
+1240196|BS|49.3|2026-09-10 14:55:38
+1|CI|6.2|2026-04-01 01:56:26
+timestamp :2026:
+timestamp :2026:
+timestamp :2026:
+timestamp :2026:
+timestamp :2026:
+timestamp :2026:
+timestamp :2026:
+timestamp :2026:
+timestamp :2026:
+timestamp :2026:

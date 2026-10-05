@@ -1,0 +1,17 @@
+DE:   A:  J7:  too hot 48.3 C
+CE:   A:  J11: too hot 60.3 C
+BY:   A:  J15: too hot 68.7 C
+GP:   C:  J1:  too hot 71.7 C
+CB:   C:  J9:  too hot 55.6 C
+
+
+to confirm
+BN:   F:  J14: too hot 71.1 C
+DI:   F:  J16: too hot 62.0 C
+CN:   I:  J9:  too hot 56.6 C
+BI:   I:  J11: too hot 49.0 C
+DD:   I:  J16: too hot 56.5 C
+
+GJ:   D:  J13:  too cold -24.5 in July
+FU:   D:  J15:  too cold -24.5 in July
+BD:   D:  J16:  too cold -24.5 in July

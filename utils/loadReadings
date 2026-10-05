@@ -11,11 +11,13 @@ Usage:
 loadReadings --infile=InputFileName  --outdb=OutputDatabaseName 
 
 Example:
+loadReadings  --infile='All_data.csv'  --outdb='SensorReadings.db'
 loadReadings  --infile='All_data_2026-01-19.csv'  --outdb='SensorReadings_2026-01-19.db'
 """
 import argparse
 import os
-import datetime
+#import datetime
+from datetime import datetime 
 import sqlite3
 
 parser = argparse.ArgumentParser(description= 
@@ -55,6 +57,8 @@ con.execute("""
 i=0
 e=0
 m=0
+t=0
+
 #populate sensorData  table
 with open(inpath, 'r') as f:
    for ln in f:
@@ -65,19 +69,25 @@ with open(inpath, 'r') as f:
       if (fd[0] == 'NONE'):
          m +=1
       else:  
-         # sqlite uses UTC by default, but adding text in TIMESTAMP string seems to mess up.
-         s = '("' + fd[0] + '", ' + fd[1] + ', "' + fd[2].replace('UTC', '').lstrip() + '" )' # rm leading blank fd[2]
-         q = 'INSERT INTO SensorData (id, temperature, timeStamp) VALUES ' + s 
+         ts = fd[2].replace('UTC', '').strip() # rm leading and trailing blanks
          try:
-            z = con.execute(q) #z= mutes printing of returned obj
-         except:
-            e += 1
-            #print("query '" + q + "' failed!")
-            #print("ln    '" + ln + "'")
+             datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
+             # sqlite uses UTC by default, but adding text in TIMESTAMP string seems to mess up.
+             s = '("' + fd[0] + '", ' + fd[1] + ', "' + ts + '" )'
+             q = 'INSERT INTO SensorData (id, temperature, timeStamp) VALUES ' + s 
+             try:
+                z = con.execute(q) #z= mutes printing of returned obj
+             except:
+                e += 1
+                #print("query '" + q + "' failed!")
+                #print("ln    '" + ln + "'")
+         except ValueError:
+             t += 1
 
 print(inpath + " lines " + str(i))
 print(str(e) + " data lines with errors omitted.")
 print(str(m) + " data lines for empty module sockets omitted.")
+print(str(t) + " data lines with improper timestamp omitted.")
 
 con.commit()
 con.close()

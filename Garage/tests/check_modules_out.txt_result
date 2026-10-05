@@ -1,0 +1,72 @@
+0|id|TEXT|0||1
+1|x|FLOAT|0||0
+2|y|FLOAT|0||0
+3|z|FLOAT|0||0
+4|modID|TEXT|0|'XX'|0
+5|socket|TEXT|0|'JX'|0
+6|sensorType|INTEGER|0|-1|0
+0|modID|TEXT|0||1
+1|description|TEXT|1||0
+2|hardwareVersion|TEXT|1||0
+3|softwareVersion|TEXT|1||0
+4|sensorType|INTEGER|0|-1|0
+COUNT(*) 12
+A|Floor profile from NE wall
+B|Floor around person door
+C|Floor around garage door
+D|Floor profile from E corner
+E|Floor profile from W corner
+F|Floor profile from S corner
+G|Floor profile from SW wall
+H|Floor profile from NW wall
+I|Floor profile from N corner
+K|Wall profile around window on NE wall
+L|Roof profile up middle of SW roof
+M|Wall profile SW  wall
+A|Floor profile from NE wall
+F|Floor profile from S corner
+G|Floor profile from SW wall
+L|Roof profile up middle of SW roof
+M|Wall profile SW  wall
+A|Floor profile from NE wall
+B|Floor around person door
+C|Floor around garage door
+D|Floor profile from E corner
+E|Floor profile from W corner
+F|Floor profile from S corner
+G|Floor profile from SW wall
+H|Floor profile from NW wall
+I|Floor profile from N corner
+number of floor sensor modules: 9
+K|Wall profile around window on NE wall
+L|Roof profile up middle of SW roof
+M|Wall profile SW  wall
+number of wall and roof sensor modules: 3
+number of sensor: 165
+number of sensor in walls and roof: 24
+number of sensor in and below slab: 141
+16
+DU|3105.895359|923.565406|-12.5|G|J4|0
+EJ|3105.895359|899.565406|-9.5|G|J3|0
+CQ|3105.895359|893.565406|0.0|G|J10|0
+BO|3105.895359|875.565406|-7.749999|G|J12|0
+AU|3105.895359|867.502906|-2.999999|G|J14|0
+AR|3105.895359|875.565406|-2.999999|G|J13|0
+IH|3105.895359|813.565406|-2.999999|G|J9|0
+IG|3105.895359|813.565406|-7.749999|G|J7|0
+GR|3105.895359|813.565406|-10.125|G|J2|0
+ES|3105.895359|899.565406|0.0|G|J1|0
+DK|3105.895359|899.565406|-12.5|G|J15|0
+DN|3105.895359|911.565406|-12.5|G|J11|0
+DM|3105.895359|893.565406|-12.5|G|J16|0
+FT|3105.895359|893.565406|-10.125|G|J5|0
+EH|3105.895359|893.565406|-7.749999|G|J6|0
+BE|3105.895359|820.565406|-12.5|G|J8|0
+0
+165
+-12.5
+number of sensor in and below slab: 141
+number of sensor in slab: 91
+number of sensor below slab: 50
+number of sensor below foam: 36
+number of sensor just above lowest foam: 14
