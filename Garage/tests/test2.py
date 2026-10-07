@@ -20,7 +20,9 @@ if not os.path.isfile(dbName):
 fmt = '%Y-%m-%d %H:%M:%S'
 
 # slice for first test data
-sliceStart ='2025-08-03 18:18:30'
+#sliceStart ='2025-08-03 18:18:30'
+
+sliceStart ='2026-08-03 18:18:30'
 sliceMinutes = 12
 sliceSeconds = 0
 

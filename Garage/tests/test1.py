@@ -19,7 +19,7 @@ if not os.path.isfile(dbName):
 fmt = '%Y-%m-%d %H:%M:%S'
 
 sliceStartYear  = 2026
-sliceStartMonth = 1
+sliceStartMonth = 8  # previously 1
 sliceStartDay   = 3
 sliceStartHour   =  0
 sliceStartMinute = 12

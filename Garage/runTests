@@ -30,7 +30,7 @@ echo
 echo "*** Data Summary - expect changes if testing with different data ***"
 
 echo -n sql_test0.sql ... 
-sqlite33 --readonly ${DB} <tests/sql_test0.sql  >tmp/sql_test0_out.txt
+sqlite3 --readonly ${DB} <tests/sql_test0.sql  >tmp/sql_test0_out.txt
 echo "diff tests/sql_test0_out.txt_result  tmp/sql_test0_out.txt:"
 diff       tests/sql_test0_out.txt_result  tmp/sql_test0_out.txt
 
@@ -38,12 +38,13 @@ diff       tests/sql_test0_out.txt_result  tmp/sql_test0_out.txt
 echo 
 echo "*** Following should have no changes if the original sample is a subset of new data ***"
 
-#export SQL=" check_modules check_sensors sql_test1 sql_test2 sql_test3  testFloorSensors testWallSensors "       
 # ALL TESTS NEED WORK, EVEN ONES THAT PASS OK.
+# file testSensors.sql is now mostly in other files, but check before removing.
+# It is not run here.
 export SQL=" check_modules check_sensors count \
   FloorLayers_count FloorLayers_temperature FloorLayers_suspect FloorSensors_test \
   WallSensors_test "       
-#export  PY=" test1 test2 test3 "  
+export  PY=" test1 test2 test3 "  
 
 for tst in $SQL ; do
   echo -n ${tst}.sql ... 

@@ -23,7 +23,7 @@ fmt = '%Y-%m-%d %H:%M:%S'
 # sliceStart ='2026-01-03 00:12:00'
 # SliceStart  = datetime.strptime(sliceStart, fmt)
 sliceStartYear  = 2026
-sliceStartMonth = 1
+sliceStartMonth = 8   #previousl 1
 sliceStartDay   = 3
 sliceStartHour   =  0
 sliceStartMinute = 12
@@ -41,6 +41,7 @@ print("SliceStart: ", SliceStart)
 print("SliceEnd:   ", SliceEnd)
 
 con = sqlite3.connect(dbName)
+#con = sqlite3.connect('target/SensorReadings.db')
 
 st = "(timeStamp > '" +SliceStart.strftime(fmt) + "')"
 en = "(timeStamp < '" +   SliceEnd.strftime(fmt) + "')"

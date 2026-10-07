@@ -1,6 +1,7 @@
+# These are mostly now in other files, but check and then remove this.
+
 # Tests below check sensors. They need SensorData.
 # Tests check floor sensors. They need SensorData.
-# See also testFloorSensors.sql and testWallSensors.sql.
 
 # These test for failing sensors. 
 # Known failures will be in the _result file so only new failures will give a diff.
@@ -29,8 +30,9 @@ SELECT COUNT(*) FROM SensorData WHERE timeStamp IS ' ' ; -- 0
 
 SELECT * FROM SensorData ORDER BY timestamp DESC LIMIT 1;
 SELECT * FROM SensorData ORDER BY timestamp ASC  LIMIT 1;
-# next is useful if timestamps are bad
-SELECT printf('timestamp :%i:', timestamp)  FROM SensorData ORDER BY timestamp ASC  LIMIT 10;
+-- next is useful if timestamps are bad
+SELECT printf('first 10 timestamps:') ;
+SELECT timestamp  FROM SensorData ORDER BY timestamp ASC  LIMIT 10;
 
 # changed by newer data
 
@@ -77,12 +79,12 @@ SELECT count(DISTINCT(sensorData.id)) FROM SensorData
 SELECT DISTINCT(Sensors.id) FROM Sensors 
     INNER JOIN sensorData ON sensorData.id = Sensors.id  
        WHERE 40. < temperature
-       AND   (timeStamp > '2026-07-04 00:00:0.0') ;  -- empty
+       AND   (timeStamp > '2026-07-04 00:00:0.0') ; 
 
-SELECT Sensors.id, Sensors.modID, Sensors.socket, sensorData.temperature FROM Sensors 
-    INNER JOIN sensorData ON sensorData.id = Sensors.id  
-       WHERE 40. < temperature
-       AND   (timeStamp > '2026-07-04 00:00:0.0') ;  -- empty
+#SELECT Sensors.id, Sensors.modID, Sensors.socket, sensorData.temperature FROM Sensors 
+#    INNER JOIN sensorData ON sensorData.id = Sensors.id  
+#       WHERE 40. < temperature
+#       AND   (timeStamp > '2026-07-04 00:00:0.0') ; 
 
 SELECT Sensors.id, Sensors.modID, Sensors.socket, sensorData.temperature FROM Sensors 
     INNER JOIN sensorData ON sensorData.id = Sensors.id  
@@ -92,7 +94,6 @@ SELECT Sensors.id, Sensors.modID, Sensors.socket, sensorData.temperature FROM Se
 
 SELECT description  FROM Modules WHERE modID = "A" ; -- Floor...
 
-REVIEW BELOW
 
 SELECT Sensors.id, Sensors.modID, Sensors.socket, sensorData.temperature FROM Sensors 
     INNER JOIN sensorData ON sensorData.id = Sensors.id  
@@ -105,7 +106,7 @@ SELECT Sensors.id, Sensors.modID, Sensors.socket, sensorData.temperature FROM Se
     INNER JOIN sensorData ON sensorData.id = Sensors.id  
        WHERE 40. < temperature 
        AND   (timeStamp > '2026-07-15 00:00:0.0') 
-       AND Sensors.modID == "F" ;  -- empty
+       AND Sensors.modID == "F" ; 
 SELECT description  FROM Modules WHERE modID = "F" ; -- Floor...
 
 SELECT Sensors.id, Sensors.modID, Sensors.socket, sensorData.temperature FROM Sensors 
@@ -116,11 +117,10 @@ SELECT Sensors.id, Sensors.modID, Sensors.socket, sensorData.temperature FROM Se
 SELECT description  FROM Modules WHERE modID = "I" ; -- Floor...
 
 
-# WHAT IS THIS AND WHY 0
 SELECT count(DISTINCT(Sensors.id)) FROM Sensors 
     INNER JOIN sensorData ON sensorData.id = Sensors.id  
        WHERE  Sensors.modID == "A"
-       AND   (timeStamp > '2026-07-15 00:00:0.0') ; -- 0
+       AND   (timeStamp > '2026-07-15 00:00:0.0') ; 
 
 
 # TEMPERATURE below -30 C would need to be investigated.
